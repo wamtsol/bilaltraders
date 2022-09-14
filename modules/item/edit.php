@@ -1,38 +1,17 @@
 <?php
 if(!defined("APP_START")) die("No Direct Access");
 ?>
-
-<div class="page-content">
-
     <div class="page-header">
-
-        <h1>
-
-            Edit Item
-
-            <small>
-
-                <i class="ace-icon fa fa-angle-double-right"></i>
-
-                Manage Item
-
-            </small>
-
-        </h1>
-
+        <h1 class="title">Update Item </h1>
+        <ol class="breadcrumb">
+            <li class="active">Manage Items</li>
+        </ol>
+        <div class="right">
+            <div class="btn-group" role="group" aria-label="..."> <a href="items_manage.php" class="btn btn-light editproject">Back to List</a> </div>
+        </div>
+       
     </div><!-- /.page-header -->
 
-    <div class="row">
-
-        <div class="col-xs-12">
-
-            <div class="align-right">
-
-                <div class="btn-group bottom-20"> <a href="items_manage.php" class="btn btn-sm btn-primary">Back to List</a> </div>
-
-            </div>
-
-            <!-- PAGE CONTENT BEGINS -->
 
             <form class="form-horizontal" role="form" action="items_manage.php?tab=edit" method="post" enctype="multipart/form-data" name="frmAdd"  onSubmit="return checkFields();">
                 <input type="hidden" name="id" value="<?php echo $id;?>">
@@ -172,9 +151,3 @@ if(!defined("APP_START")) die("No Direct Access");
             </form>
 
             <!-- PAGE CONTENT ENDS -->
-
-        </div><!-- /.col -->
-
-    </div><!-- /.row -->
-
-</div>
