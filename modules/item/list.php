@@ -36,22 +36,6 @@ if(!empty($q)){
 
 }
 
-
-if(isset($_GET["item_category"])){
-    $item_category=slash($_GET["item_category"]);
-    $_SESSION["items"]["list"]["item_category"]=$item_category;
-}
-if(isset($_SESSION["items"]["list"]["item_category"]))
-    $item_category=$_SESSION["items"]["list"]["item_category"];
-else
-    $item_category="";
-
-if($item_category!=""){
-    $extra.=" and item_category_id='".$item_category."'";
-    $is_search=true;
-}
-
-
 ?>
 
     <div class="page-header">
@@ -66,19 +50,49 @@ if($item_category!=""){
         </div>
     </div>
     <ul class="topstats clearfix search_filter"<?php if($is_search) echo ' style="display: block"';?>>
-        <li class="col-xs-12 col-lg-12 col-sm-12">
-            <div>
-                <form class="form-horizontal" action="" method="get">
-                    <div class="col-sm-10 col-xs-8">
-                    <input type="text" title="Enter String" value="<?php echo $q;?>" name="q" id="search" class="form-control" >  
-                    </div>
-                    <div class="col-sm-1 col-xs-2">
-                        <input type="submit" class="btn btn-default btn-l" value="Search" alt="Search Record" title="Search Record" />
-                    </div>
-                </form>
-            </div>
-        </li>
-    </ul>
+	<li class="col-xs-12 col-lg-12 col-sm-12">
+        <div>
+        	<form class="form-horizontal" action="" method="get">
+                <span  class="col-sm-10 text-to"></span>
+                <div ng-repeat="item in sales.items" class="col-sm-3">
+                 <select name="items_category_id" id="item_category_id" class="form-control">
+                <option value=""<?php echo ($item_category_id=="")? " selected":"";?>>
+                Select Items Category</option>
+
+                <?php
+
+                    $res=doquery("select * from item_category order by title",$dblink);
+
+                    if(numrows($res)>=0){
+
+                        while($rec=dofetch($res)){
+
+                        ?>
+
+                        <option value="<?php echo $rec["id"]?>" <?php echo($item_category_id==$rec["id"])?"selected":"";?>><?php echo unslash($rec["title"])?></option>
+
+                        <?php
+
+                        }
+
+                    }	
+                ?>
+
+                </select>
+
+                </div>
+                <div class="col-sm-4">
+                  <input type="text" title="Enter String" value="<?php echo $q;?>" name="q" id="search" class="form-control" >  
+                </div>
+                <div class="col-sm-3 text-left">
+                    <input type="button" class="btn btn-danger btn-l reset_search" value="Reset" alt="Reset Record" title="Reset Record" />
+                    <input type="submit" class="btn btn-default btn-l" value="Search" alt="Search Record" title="Search Record" />
+                </div>
+          	</form>
+        </div>
+  	</li>
+</ul>
+
     <div class="panel-body table-responsive">
         <table class="table table-hover list">
             <thead>

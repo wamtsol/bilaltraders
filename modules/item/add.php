@@ -13,35 +13,20 @@ else{
 }
 ?>
 
-<div class="page-content">
+
 
     <div class="page-header">
-
-        <h1>
-
-            Add New Item
-
-            <small>
-
-                <i class="ace-icon fa fa-angle-double-right"></i>
-
-                Manage Items
-
-            </small>
-
-        </h1>
-
+	<h1 class="title">Add New Item </h1>
+  	<ol class="breadcrumb">
+    	<li class="active">Manage Items</li>
+  	</ol>
+  	<div class="right">
+    	<div class="btn-group" role="group" aria-label="..."> <a href="items_manage.php" class="btn btn-light editproject">Back to List</a> </div>
+  	</div>
+       
     </div><!-- /.page-header -->
 
-    <div class="row">
-
-        <div class="col-xs-12">
-
-            <div class="align-right">
-
-                <div class="btn-group bottom-20"> <a href="items_manage.php" class="btn btn-sm btn-primary">Back to List</a> </div>
-
-            </div>
+    
 
             <!-- PAGE CONTENT BEGINS -->
 
@@ -195,10 +180,3 @@ else{
 
             </form>
 
-            <!-- PAGE CONTENT ENDS -->
-
-        </div><!-- /.col -->
-
-    </div><!-- /.row -->
-
-</div>

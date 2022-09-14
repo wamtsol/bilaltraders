@@ -11,6 +11,32 @@ if(isset($_REQUEST["tab"]) && in_array($_REQUEST["tab"], $tab_array)){
 else{
 	$tab="list";
 }
+if(isset($_GET["item_category_id"])){
+
+	$item_category_id=slash($_GET["item_category_id"]);
+
+	$_SESSION["expense"]["list"]["item_category_id"]=$item_category_id;
+
+}
+$q="";
+
+$extra='';
+if(isset($_SESSION["expense"]["list"]["item_category_id"]))
+
+	$item_category_id=$_SESSION["expense"]["list"]["item_category_id"];
+
+else
+
+	$item_category_id="";
+
+if($item_category_id!=""){
+
+	$extra.=" and item_category_id='".$item_category_id."'";
+
+}
+
+$sql="select * from items where 1 $extra order by desc";
+
 
 switch($tab){
 	case 'add':

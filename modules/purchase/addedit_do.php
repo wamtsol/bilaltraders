@@ -116,16 +116,20 @@ if(isset($_POST["action"])){
 					doquery( "insert into purchase (datetime_added, supplier_id, total_items, total_price, discount, net_price, added_by) VALUES ('".slash(datetime_dbconvert($purchase->datetime_added))."', '".slash($supplier_id)."', '".slash($purchase->quantity)."', '".slash($purchase->total)."', '".slash($purchase->discount)."', '".slash($purchase->net_total)."', '".$_SESSION[ "logged_in_admin" ][ "id" ]."')", $dblink );
 					$purchase_id = inserted_id();
 				}
+				
 				$item_ids = array();
 				foreach( $purchase->items as $item ) {
 					if( empty( $item->id ) ) {
 						doquery( "insert into purchase_items( purchase_id, item_category_id, item_id, purchase_price, sale_price, quantity, total ) values( '".$purchase_id."', '".$item->item_category_id."', '".slash( $item->item_id )."',  '".$item->purchase_price."', '".$item->sale_price."', '".$item->quantity."', '".$item->total."' )", $dblink );
 						$item_ids[] = inserted_id();
+						$quantity = $item->quantity;
 					}
 					else {
 						doquery( "update purchase_items set `purchase_id`='".$purchase_id."', `item_category_id`='".$item->item_category_id."', `item_id`='".slash( $item->item_id )."',`purchase_price`='".$item->purchase_price."', `sale_price`='".$item->sale_price."', `quantity`='".$item->quantity."', `total`='".$item->total."' where id='".$item->id."'", $dblink );
 						$item_ids[] = $item->id;
 					}
+					
+					doquery( "update items set quantity = quantity+".$quantity." where id = '".$item->item_id."'", $dblink );
 				}
 				if( !empty( $purchase->id ) && count( $item_ids ) > 0 ) {
 					doquery( "delete from purchase_items where purchase_id='".$purchase_id."' and id not in( ".implode( ",", $item_ids )." )", $dblink );

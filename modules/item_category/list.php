@@ -16,13 +16,13 @@ if(isset($_GET["q"])){
 
     $q=slash($_GET["q"]);
 
-    $_SESSION["items_manage"]["q"]=$q;
+    $_SESSION["item_manage"]["q"]=$q;
 
 }
 
-if(isset($_SESSION["items_manage"]["q"]))
+if(isset($_SESSION["item_manage"]["q"]))
 
-    $q=$_SESSION["items_manage"]["q"];
+    $q=$_SESSION["item_manage"]["q"];
 
 else
 
@@ -35,16 +35,17 @@ if(!empty($q)){
     $is_search=true;
 
 }
+
 ?>
 
     <div class="page-header">
-        <h1 class="title">Manage Items</h1>
+        <h1 class="title">Manage Category Items</h1>
         <ol class="breadcrumb">
             <li class="active">All Items</li>
         </ol>
         <div class="right">
             <div class="btn-group" role="group" aria-label="..."> 
-                <a href="items_manage.php?tab=add" class="btn btn-light editproject">Add New Record</a> <a id="topstats" class="btn btn-light" href="#"><i class="fa fa-search"></i></a>
+                <a href="item_category_manage.php?tab=add" class="btn btn-light editproject">Add New Record</a> <a id="topstats" class="btn btn-light" href="#"><i class="fa fa-search"></i></a>
             </div>
         </div>
     </div>
