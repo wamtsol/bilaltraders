@@ -1,40 +1,34 @@
 <?php
-if(!defined("APP_START")) die("No Direct Access");
-?>
-
-<?php
 
 if(!defined("APP_START")) die("No Direct Access");
-
 $q="";
-
 $extra='';
-
 $is_search=false;
-
 if(isset($_GET["q"])){
-
     $q=slash($_GET["q"]);
-
-    $_SESSION["items_manage"]["q"]=$q;
-
+    $_SESSION["item_manage"]["q"]=$q;
 }
-
-if(isset($_SESSION["items_manage"]["q"]))
-
-    $q=$_SESSION["items_manage"]["q"];
-
+if(isset($_SESSION["item_manage"]["q"]))
+    $q=$_SESSION["item_manage"]["q"];
 else
-
     $q="";
-
 if(!empty($q)){
-
     $extra.=" and title like '%".$q."%'";
-
     $is_search=true;
-
 }
+if(isset($_GET["item_category_id"])){
+	$item_category_id=slash($_GET["item_category_id"]);
+	$_SESSION["item_manage"]["item_category_id"]=$item_category_id;
+}
+if(isset($_SESSION["item_manage"]["item_category_id"]))
+	$item_category_id=$_SESSION["item_manage"]["item_category_id"];
+else
+	$item_category_id="";
+if($item_category_id!=""){
+	$extra.=" and item_category_id='".$item_category_id."'";
+    $is_search=true;
+}
+
 
 ?>
 
@@ -52,9 +46,9 @@ if(!empty($q)){
     <ul class="topstats clearfix search_filter"<?php if($is_search) echo ' style="display: block"';?>>
 	<li class="col-xs-12 col-lg-12 col-sm-12">
         <div>
-        	<form class="form-horizontal" action="" method="get">
+        	<form class="form-horizontal" action="" method="GET">
                 <span  class="col-sm-10 text-to"></span>
-                <div ng-repeat="item in sales.items" class="col-sm-3">
+                <div class="col-sm-3">
                  <select name="items_category_id" id="item_category_id" class="form-control">
                 <option value=""<?php echo ($item_category_id=="")? " selected":"";?>>
                 Select Items Category</option>
@@ -85,7 +79,7 @@ if(!empty($q)){
                   <input type="text" title="Enter String" value="<?php echo $q;?>" name="q" id="search" class="form-control" >  
                 </div>
                 <div class="col-sm-3 text-left">
-                    <input type="button" class="btn btn-danger btn-l reset_search" value="Reset" alt="Reset Record" title="Reset Record" />
+                    <input type="submit" class="btn btn-danger btn-l reset_search" value="Reset" alt="Reset Record" title="Reset Record" />
                     <input type="submit" class="btn btn-default btn-l" value="Search" alt="Search Record" title="Search Record" />
                 </div>
           	</form>

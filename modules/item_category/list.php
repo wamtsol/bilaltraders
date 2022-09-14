@@ -1,8 +1,4 @@
 <?php
-if(!defined("APP_START")) die("No Direct Access");
-?>
-
-<?php
 
 if(!defined("APP_START")) die("No Direct Access");
 
