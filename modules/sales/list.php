@@ -95,12 +95,12 @@ if(!defined("APP_START")) die("No Direct Access");
                             <label for="<?php echo "rec_".$sn?>"></label></div>
                         </td>
                         <td><?php echo datetime_convert($r["datetime_added"]); ?></td>
-                        <td><?php if($r["customer_id"]==0) echo "Cash"; else echo get_field($r["customer_id"], "customer","customer_name");?></td>
+                        <td><?php if($r["customer_id"]==0) echo ""; else echo get_field($r["customer_id"], "customer","customer_name");?></td>
                         <td>
                         	<?php 
 								$items=doquery("select * from sales_items where sales_id='".$r["id"]."'",$dblink);
 								while($item=dofetch($items)){
-									echo unslash($item["quantity"])." x ".get_field($item["purchase_item_id"], "purchase_items","item_id")."<br>";
+									echo unslash($item["quantity"])." x ".get_field($item["item_id"], "items", "title")."<br>";
 								}
 							?>
                         </td>

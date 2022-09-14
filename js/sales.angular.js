@@ -1,4 +1,4 @@
-angular.module('sales', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angularjs-datetime-picker', 'ui.mask']).controller('salesController', 
+angular.module('sales', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angularjs-datetime-picker', 'localytics.directives']).controller('salesController', 
 	function ($scope, $http, $interval, $filter) {
 		$scope.customers = [];
 		$scope.errors = [];
@@ -6,31 +6,28 @@ angular.module('sales', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angularj
 		$scope.sales_id = 0;
 		$scope.categories=[];
 		$scope.items=[];
+		$scope.accounts = [];
 		$scope.item_id = '';
-		$scope.customer = {
-			id: "",
-			name: "",
-			phone: "",
-			address: "",
-		};
-		$scope.purchase_items = [];
 		$scope.sales = {
 			id: 0,
 			datetime_added: '',
-			customer_id: '0',
-			customer: angular.copy($scope.customer),
+			customer_id: 0,
 			items: [],
 			quantity: 0,
 			total: 0,
 			discount: 0,
-			net_total: 0
+			net_total: 0,
+			payment_details: '',
+			payment_account_id: 0,
+			payment_amount: 0
 		};
 		$scope.item = {
-			"id": "",
-			"purchase_item_id":"",
-			"sale_price": "",
-			"discount": 0,
+			"id": 0,
+			"item_id": 0,
+			"item_category_id": 0,
+			"sale_price": 0,
 			"quantity": 0,
+			"discount":0,
 			"total": 0
 		};
 		$scope.updateDate = function(){
@@ -38,6 +35,9 @@ angular.module('sales', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angularj
 			$scope.$apply();
 		}
 		angular.element(document).ready(function () {
+			$scope.wctAJAX( {action: 'get_accounts'}, function( response ){
+				$scope.accounts = response;
+			});
 			$scope.wctAJAX( {action: 'get_customers'}, function( response ){
 				$scope.customers = response;
 			});
@@ -46,9 +46,6 @@ angular.module('sales', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angularj
 			});
 			$scope.wctAJAX( {action: 'get_categories'}, function( response ){
 				$scope.categories = response;
-			});
-			$scope.wctAJAX( {action: 'get_purchase_items', id: $scope.sales_id}, function( response ){
-				$scope.purchase_items = response;
 			});
 			if( $scope.sales_id > 0 ) {
 				$scope.wctAJAX( {action: 'get_sales', id: $scope.sales_id}, function( response ){
@@ -87,46 +84,10 @@ angular.module('sales', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angularj
 			}
 			$scope.update_grand_total();
 		}
-		$scope.addItemM = function( e ) {
-			if( e.which == 13 && $scope.item_id != '' ) {
-				$scope.addItem( $scope.item_id, 1 );
-			}
-		}
-		$scope.addItem = function( item_id, qty ){
-			item_id = ""+parseInt( item_id );
-			if( $scope.sales.items.length == 1 && $scope.sales.items[ 0 ].purchase_item_id == '' ) {
-				$scope.sales.items[ 0 ].purchase_item_id = item_id;
-				$scope.sales.items[ 0 ].quantity = 1;
-				$scope.update_sale_item( 0 );
-			}
-			else{
-				$items = $filter('filter')( $scope.sales.items, {purchase_item_id: item_id}, 1 );
-				if( $items.length == 0 ) {
-					$scope.sales.items.splice(0, 0, angular.copy( $scope.item ) );
-					$scope.sales.items[ 0 ].purchase_item_id = item_id;
-					$scope.sales.items[ 0 ].quantity = 1;
-					$scope.update_sale_item( 0 );
-				}
-				else {
-					for( var i = 0; i < $scope.sales.items.length; i++ ){
-						if( $scope.sales.items[ i ].purchase_item_id == item_id ) {
-							$scope.sales.items[ i ].quantity += 1;
-							$scope.update_sale_item( i );
-							//return;
-						}
-					}	
-				}
-			}
-			$scope.$apply();
-		}		
+				
 		$scope.update_total = function( position ) {
-			var available = $scope.get_available_quantity( position );
-			var quantity = parseFloat( $scope.sales.items[ position ].quantity?$scope.sales.items[ position ].quantity:0 );
-			if( available < quantity ) {
-				quantity = available;
-				$scope.sales.items[ position ].quantity = available;
-			}
-			$scope.sales.items[ position ].total = ( parseFloat( $scope.sales.items[ position ].sale_price ) - parseFloat( $scope.sales.items[ position ].discount?$scope.sales.items[ position ].discount:0 ) ) * quantity;
+			var discount = parseFloat( $scope.sales.items[ position ].discount?$scope.sales.items[ position ].discount:0 ) / 100;
+			$scope.sales.items[ position ].total = ( parseFloat( $scope.sales.items[ position ].sale_price ) - ( parseFloat( $scope.sales.items[ position ].sale_price) * discount ));
 			$scope.update_grand_total();
 		}
         $scope.update_grand_total = function(){
@@ -221,4 +182,16 @@ angular.module('sales', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angularj
 		}
 		
 	}
-);
+).directive('convertToNumber', function() {
+	return {
+		require: 'ngModel',
+		link: function(scope, element, attrs, ngModel) {
+			ngModel.$parsers.push(function(val) {
+				return val != null ? parseInt(val, 10) : null;
+			});
+			ngModel.$formatters.push(function(val) {
+				return val != null ? '' + val : null;
+			});
+		}
+	};
+});
