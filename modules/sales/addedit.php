@@ -56,7 +56,7 @@ else {
                 <label class="form-label" for="customer_id">Customer Name <span class="manadatory">*</span></label>
             </div>
             <div class="col-sm-10">
-                <select class="margin-btm-5" ng-model="sales.customer_id" data-ng-options="customer.id as customer.customer_name for customer in customers" chosen convert-to-number>
+                <select class="margin-btm-5" ng-model="sales.customer_id" data-ng-options="customer.id as customer.name for customer in customers" chosen convert-to-number>
                     <option value="">Select Customer</option>
                 </select>
             </div>
