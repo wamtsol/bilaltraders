@@ -133,10 +133,10 @@ if(!defined("APP_START")) die("No Direct Access");
                         <td class="text-right"><input type="text" name="item[<?php echo $r[ "item_id" ]?>][quantity]" value="<?php echo $r["quantity"]; ?>" /></td>
                         <td class="text-right"><?php echo curr_format( $r[ "quantity" ]*$r[ "purchase_price" ] )?></td>
                         <td class="text-right"><input type="text" name="item[<?php echo $r[ "item_id" ]?>][quantity_sold]" value="<?php echo $r["quantity_sold"]; ?>" /></td>
-                        <td class="text-right"><?php $sale_price = dofetch(doquery( "select sum(total) from sales_items where purchase_item_id='".$r[ "item_id" ]."'", $dblink ));echo curr_format( $sale_price[ "sum(total)" ] )?></td>
-                        <td class="text-right"><?php echo $r["remaining_stock"]-$r["stock_return"]; ?></td>
+                        <td class="text-right"><?php $sale_price = dofetch(doquery( "select sum(total) from sales_items where item_id='".$r[ "item_id" ]."'", $dblink ));echo  $sale_price[ "sum(total)" ] ?></td>
+                        <td class="text-right"><?php echo $r["remaining_stock"]; ?></td>
                         <td class="text-right"><?php echo curr_format( $r[ "remaining_stock" ]*$r[ "purchase_price" ] )?></td>
-                        <td class="text-right"><?php echo $r["stock_return"]; ?></td>
+                        <td class="text-right"></td>
                     </tr>
                     <?php 
                     $sn++;

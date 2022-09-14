@@ -25,7 +25,7 @@ if(!defined("APP_START")) die("No Direct Access");
     <div class="form-group">
         <div class="row">
             <div class="col-sm-2 control-label">
-                <label for="type" class="form-label">Account Type </label>
+                <label for="account_type" class="form-label">Account Type </label>
             </div>
             <div class="col-sm-10">
                 <select name="account_type" id="account_type" title="Choose Option">

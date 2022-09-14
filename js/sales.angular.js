@@ -204,7 +204,7 @@ angular.module('sales', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angularj
             }
         }
 		 $scope.get_available_quantity = function( position ){
-            var id = $scope.sales.items[ position ].purchase_item_id
+            var id = $scope.sales.items[ position ].item_id
             var item = $filter('filter')($scope.purchase_items, {id: id}, true );
             if( item.length > 0 ) {
                 return item[0].quantity;
