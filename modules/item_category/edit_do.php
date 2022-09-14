@@ -6,9 +6,8 @@ if(isset($_POST["item_category_edit"])){
 	if(empty($title))
 		$err="Fields with (*) are Mandatory.<br />";
 	if($err==""){
-		$sql="Update item_category set `parent_id`='".slash($parent_id)."', `title`='".slash($title)."'"." where id='".$id."'";
+		$sql="Update item_category set `title`='".slash($title)."' where id='".$id."' ";
 		doquery($sql,$dblink);
-		sorttable("item_category",$id,$sortorder,"edit");
 		unset($_SESSION["item_category_manage"]["edit"]);
 		header('Location: item_category_manage.php?tab=list&msg='.url_encode("Sucessfully Updated"));
 		die;

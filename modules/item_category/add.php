@@ -22,37 +22,7 @@ else{
 	<?php
     	$i=0;
   	?>
-    <div class="form-group">
-    	<div class="row">
-        	<div class="col-sm-2 control-label">
-            	<label class="form-label" for="parent_id">Parent</label>
-            </div>
-            <div class="col-sm-10">
-                <select name="parent_id" title="Choose Option">
-                    <option value="0">NO Parent</option>
-                    	<?php
-                        $res=doquery("Select * from item_category where parent_id=0 order by sortorder",$dblink);
-                        if(numrows($res)>0){
-                            while($rec=dofetch($res)){
-                    			?>
-                            	<option value="<?php echo $rec["id"]?>"<?php echo($parent_id==$rec["id"])?"selected":"";?>><?php echo unslash($rec["title"]); ?></option>
-			                    <?php			
-								$res1=doquery("select * from item_category where parent_id='".$rec["id"]."' order by sortorder",$dblink);
-								if(numrows($res1)>0){
-									while($rec1=dofetch($res1)){
-										?>
-										<option value="<?php echo $rec1["id"]?>"<?php echo($parent_id==$rec1["id"])?"selected":"";?>><?php echo unslash($rec["title"])." &gt; ".unslash($rec1["title"]); ?></option>
-										<?php
-									}
-								}
-                            }
-                                    
-                        }
-                    ?>
-               </select>
-            </div>
-        </div>
-  	</div>
+    
   	<div class="form-group">
     	<div class="row">
             <div class="col-sm-2 control-label">
@@ -60,16 +30,6 @@ else{
             </div>
             <div class="col-sm-10">
                 <input type="text" title="Enter Title" value="<?php echo $title; ?>" name="title" id="title" class="form-control" >
-            </div>
-        </div>
-  	</div>
-    <div class="form-group">
-    	<div class="row">
-            <div class="col-sm-2 control-label">
-                <label class="form-label" for="sortorder">Sortorder </label>
-            </div>
-            <div class="col-sm-10">
-                <?php getSortCombo("item_category",$sortorder,"add");?> 
             </div>
         </div>
   	</div>

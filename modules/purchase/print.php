@@ -2,7 +2,7 @@
 if(!defined("APP_START")) die("No Direct Access");
 if(isset($_GET["id"]) && !empty($_GET["id"])){
 	$id = $_GET["id"];
-	$rs=doquery("select b.*, c.supplier_code from purchase a left join purchase_items b on a.id = b.purchase_id left join supplier c on a.supplier_id = c.id where a.id='".slash($id)."' order by item_number",$dblink);
+	$rs=doquery("select b.*, c.supplier_code from purchase a left join purchase_items b on a.id = b.purchase_id left join supplier c on a.supplier_id = c.id where a.id='".slash($id)."' order by item_id",$dblink);
 	if(numrows($rs)>0){
 		?>
 		<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -63,7 +63,7 @@ if(isset($_GET["id"]) && !empty($_GET["id"])){
 				<div class="wrapper">
 					<span class="barcode"><img src="barcode.php?text=<?php echo $barcode?>&size=30" /></span>
 					<span class="number"><?php echo $barcode?></span>
-					<span class="item_name"><?php echo (!empty($r[ "supplier_code" ])?unslash($r[ "supplier_code" ]).'-':'').unslash( $r[ "item_number" ] )?></span>
+					<span class="item_name"><?php echo (!empty($r[ "supplier_code" ])?unslash($r[ "supplier_code" ]).'-':'').unslash( $r[ "item_id" ] )?></span>
 					<span class="item_name price">Price: <?php echo curr_format( $r[ "sale_price" ] )?></span>
 				</div>
 				<?php

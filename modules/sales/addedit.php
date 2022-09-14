@@ -60,33 +60,13 @@ else {
             </div>
             <div class="col-sm-10">
                 <select class="margin-btm-5" ng-model="sales.customer_id">
-                    <option value="0">Cash</option>
+                    <option value="0">Select Customer</option>
                    	<option ng-repeat="customer in customers" value="{{ customer.id }}">{{ customer.name }}</option>
                 </select>
             </div>
         </div>
     </div>
-    <div class="form-group">
-        <div class="row">
-            <div class="col-sm-2 control-label">
-                <label class="form-label" for="phone">Phone</label>
-            </div>
-            <div class="col-sm-10">
-                <input type="text" title="Enter Contact Number" name="phone" id="phone" class="form-control" ng-model="sales.customer.phone" >
-            </div>
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="row">
-            <div class="col-sm-2 control-label">
-                <label class="form-label" for="address">Address</label>
-            </div>
-            <div class="col-sm-10">
-                <input type="text" title="Enter Address" name="address" id="address" class="form-control" ng-model="sales.customer.address">
-            </div>
-        </div>
-    </div>
-    
+
     <div class="form-group">
         <div class="row">
             <div class="col-sm-2 control-label">
@@ -98,7 +78,8 @@ else {
                         <thead>
                             <tr>
                                 <th width="2%" class="text-center">S.no</th>
-                                <th width="25%">Items <input type="text" placeholder="Item ID" style="width: 100px; float:right" ng-model="item_id" ng-keypress="addItemM($event)" /></th>
+                                <th width="25%">Select Category </th>
+                                <th width="25%">Select Items </th>
                                 <th class="text-right" width="10%">Sale Price</th>
                                 <th class="text-right" width="10%">Quantity</th>
                                 <th class="text-right" width="10%">Discount</th>
@@ -110,13 +91,20 @@ else {
                             <tr ng-repeat="item in sales.items">
                                 <td class="text-center serial_number">{{ $index+1 }}</td>
                                 <td>
-                                    <select title="Choose Option" ng-model="sales.items[$index].purchase_item_id" ng-change='update_sale_item( $index )'>
-                                        	<option value="">Select Items</option>
-                                        	<option ng-repeat="purchase_item in purchase_items" ng-if="not_listed( purchase_item.id, $parent.$index )" value="{{ purchase_item.id }}">{{ purchase_item.item_name }} (ID# {{ purchase_item.id }})</option>
-                                        
-                                    </select>
+                                    <select title="Choose Option" ng-model="purchase.items[ $index ].item_category_id">
+                                        <option value="">Select Category</option>
+                                        <option ng-repeat="category in categories" value="{{ category.id }}">{{ category.title }}</option>
+                                    </select><br />
+                                   
                                 </td>
-                                <td class="text-right">{{ sales.items[$index].sale_price|currency:'Rs. ':0 }}</td>
+                                <td>
+                                    <select title="Choose Option" ng-model="purchase.items[ $index ].item_id">
+                                        <option value="">Select Items</option>
+                                        <option ng-repeat="item in items" value="{{ item.id }}">{{ item.title }}</option>
+                                    </select><br />
+                                </td>
+                               
+                                <td class="text-right"><input type="text" ng-model="sales.price[$index]" ng-change='' />
                                 <td class="text-right"><input type="text" ng-change="update_total( $index )" ng-model="sales.items[$index].quantity" /><br />Available: {{ get_available_quantity( $index ) }} </td>
                                 <td class="text-right"><input type="text" ng-model="sales.items[$index].discount" ng-change='update_total( $index )' /></td>
                                 <td class="text-right">{{ sales.items[$index].total|currency:'Rs. ':0 }}</td>                        

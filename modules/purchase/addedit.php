@@ -41,41 +41,10 @@ else {
                     <option value="">Select Supplier</option>
                    	<option ng-repeat="supplier in suppliers" value="{{ supplier.id }}">{{ supplier.name }}</option>
                 </select>
-                <input type="text" title="Enter Name" name="supplier_name" id="supplier_name" class="form-control" ng-model="purchase.supplier.name">
             </div>
         </div>
     </div>
-    <div class="form-group">
-        <div class="row">
-            <div class="col-sm-2 control-label">
-                <label class="form-label" for="supplier_code">Code <span class="manadatory">*</span></label>
-            </div>
-            <div class="col-sm-10">
-                <input type="text" title="Enter Code" name="supplier_code" id="supplier_code" class="form-control" ng-model="purchase.supplier.supplier_code" >
-            </div>
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="row">
-            <div class="col-sm-2 control-label">
-                <label class="form-label" for="phone">Phone <span class="manadatory">*</span></label>
-            </div>
-            <div class="col-sm-10">
-                <input type="text" title="Enter Contact Number" name="phone" id="phone" class="form-control" ng-model="purchase.supplier.phone" >
-            </div>
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="row">
-            <div class="col-sm-2 control-label">
-                <label class="form-label" for="address">Address <span class="manadatory">*</span></label>
-            </div>
-            <div class="col-sm-10">
-                <input type="text" title="Enter Address" name="address" id="address" class="form-control" ng-model="purchase.supplier.address">
-            </div>
-        </div>
-    </div>
-    
+
     <div class="form-group">
         <div class="row">
             <div class="col-sm-2 control-label">
@@ -88,7 +57,7 @@ else {
                             <tr>
                                 <th width="2%" class="text-center">S.no</th>
                                 <th width="25%">Item Category</th>
-                                <th width="10%">Item Number.</th>
+                                <th width="20%">Items.</th>
                                 <th class="text-right" width="13%">Purchase Price</th>
                                 <th class="text-right" width="10%">Sale Price</th>
                                 <th class="text-right" width="10%">Total Items</th>
@@ -104,26 +73,13 @@ else {
                                         <option value="">Select Category</option>
                                         <option ng-repeat="category in categories" value="{{ category.id }}">{{ category.title }}</option>
                                     </select><br />
-                                    <div style=" float:left;text-align:left">
-                                    	<label>Size</label>
-                                        <select title="Choose Option" ng-model="purchase.items[ $index ].size" style="display: inline-block;width: auto;">
-                                            <option value="0">Any Size</option>
-                                            <option ng-repeat="size in sizes" value="{{ size.id }}">{{ size.title }}</option>
-                                        </select>
-                                    </div>
-                                    <div style=" float:right;text-align:right">
-                                    	<label>Color</label>
-                                        <select title="Choose Option" ng-model="purchase.items[ $index ].color" style="display: inline-block;width: auto;">
-                                            <option value="0">Any Color</option>
-                                            <option ng-repeat="color in colors" value="{{ color.id }}">{{ color.title }}</option>
-                                        </select>
-                                    </div>
+                                   
                                 </td>
                                 <td>
-                                    <div class="input-group">
-								  		<span class="input-group-addon" id="basic-addon1" style="padding:0 5px;">{{purchase.supplier.supplier_code}}-</span>
-                                        <input type="text" placeholder="No." ng-model="purchase.items[ $index ].item_number" />
-                                   	</div>
+                                    <select title="Choose Option" ng-model="purchase.items[ $index ].item_id">
+                                        <option value="">Select Items</option>
+                                        <option ng-repeat="item in items" value="{{ item.id }}">{{ item.title }}</option>
+                                    </select><br />
                                 </td>
                                 <td class="text-right"><input type="text" ng-model="purchase.items[ $index ].purchase_price" ui-mask="{{numberMask}}" ng-change="update_total( $index )" /></td>
                                 <td class="text-right"><input type="text" ng-model="purchase.items[ $index ].sale_price" ui-mask="{{numberMask}}" /></td>

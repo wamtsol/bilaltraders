@@ -6,10 +6,9 @@ if(isset($_POST["item_category_add"])){
 	if(empty($title))
 		$err="Fields with (*) are Mandatory.<br />";
 	if($err==""){
-		$sql="INSERT INTO item_category (parent_id, title) VALUES ('".slash($parent_id)."', '".slash($title)."')";
+		$sql="INSERT INTO item_category (title) VALUES ( '".slash($title)."')";
 		doquery($sql,$dblink);
 		$id=inserted_id();
-		sorttable("item_category",$id,$sortorder,"add");
 		unset($_SESSION["item_category_manage"]["add"]);
 		header('Location: item_category_manage.php?tab=list&msg='.url_encode("Sucessfully Added"));
 		die;

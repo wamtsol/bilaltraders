@@ -4,6 +4,8 @@ angular.module('sales', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angularj
 		$scope.errors = [];
 		$scope.processing = false;
 		$scope.sales_id = 0;
+		$scope.categories=[];
+		$scope.items=[];
 		$scope.item_id = '';
 		$scope.customer = {
 			id: "",
@@ -38,6 +40,12 @@ angular.module('sales', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angularj
 		angular.element(document).ready(function () {
 			$scope.wctAJAX( {action: 'get_customers'}, function( response ){
 				$scope.customers = response;
+			});
+			$scope.wctAJAX( {action: 'get_items'}, function( response ){
+				$scope.items = response;
+			});
+			$scope.wctAJAX( {action: 'get_categories'}, function( response ){
+				$scope.categories = response;
 			});
 			$scope.wctAJAX( {action: 'get_purchase_items', id: $scope.sales_id}, function( response ){
 				$scope.purchase_items = response;

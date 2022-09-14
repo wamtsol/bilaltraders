@@ -35,6 +35,23 @@ if(!empty($q)){
     $is_search=true;
 
 }
+
+
+if(isset($_GET["item_category"])){
+    $item_category=slash($_GET["item_category"]);
+    $_SESSION["items"]["list"]["item_category"]=$item_category;
+}
+if(isset($_SESSION["items"]["list"]["item_category"]))
+    $item_category=$_SESSION["items"]["list"]["item_category"];
+else
+    $item_category="";
+
+if($item_category!=""){
+    $extra.=" and item_category_id='".$item_category."'";
+    $is_search=true;
+}
+
+
 ?>
 
     <div class="page-header">
@@ -70,14 +87,18 @@ if(!empty($q)){
                     <th class="text-center" width="5%"><div class="checkbox checkbox-primary">
                         <input type="checkbox" id="select_all" value="0" title="Select All Records">
                         <label for="select_all"></label></div></th>
-                        <th>Items Category </th>
+                        <th>Items Category Type</th>
+                    <th>Title</th>
+                    <th>Unit</th>
+                    <th>Unit Price</th>
+                    <th>Quaintity</th>
                     <th class="text-center">Status</th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
                 <?php 
-                $sql="select * from item_category where 1 $extra";
+                $sql="select * from items where 1 $extra";
                 $rs=show_page($rows, $pageNum, $sql);
                 if(numrows($rs)>0){
                     $sn=1;
@@ -89,8 +110,13 @@ if(!empty($q)){
                                 <input type="checkbox" name="id[]" id="<?php echo "rec_".$sn?>"  value="<?php echo $r["id"]?>" title="Select Record" />
                                 <label for="<?php echo "rec_".$sn?>"></label></div>
                             </td>
-							<td><?php echo unslash($r["title"]); ?></td>
-                            <td class="text-center"><a href="item_category_manage.php?id=<?php echo $r['id'];?>&tab=status&s=<?php echo ($r["status"]==0)?1:0;?>">
+                            
+                            <td><?php if($r["item_category_id"]==0) echo ""; else echo get_field($r["item_category_id"], "item_category");?></td>
+                            <td><?php echo unslash($r["title"]); ?></td>
+                            <td><?php echo unslash($r["unit"]); ?></td>
+                            <td><?php echo unslash($r["unit_price"]); ?></td>
+                            <td><?php echo unslash($r["quantity"]); ?></td>
+                            <td class="text-center"><a href="items_manage.php?id=<?php echo $r['id'];?>&tab=status&s=<?php echo ($r["status"]==0)?1:0;?>">
                                 <?php
                                 if($r["status"]==0){
                                     ?>
@@ -105,8 +131,8 @@ if(!empty($q)){
                                 ?>
                             </a></td>
                             <td>
-                                <a href="item_category_manage.php?tab=edit&id=<?php echo $r['id'];?>"><img title="Edit Record" alt="Edit" src="images/edit.png"></a>&nbsp;&nbsp;
-                                <a onclick="return confirm('Are you sure you want to delete')" href="item_category_manage.php?id=<?php echo $r['id'];?>&amp;tab=delete"><img title="Delete Record" alt="Delete" src="images/delete.png"></a>
+                                <a href="items_manage.php?tab=edit&id=<?php echo $r['id'];?>"><img title="Edit Record" alt="Edit" src="images/edit.png"></a>&nbsp;&nbsp;
+                                <a onclick="return confirm('Are you sure you want to delete')" href="items_manage.php?id=<?php echo $r['id'];?>&amp;tab=delete"><img title="Delete Record" alt="Delete" src="images/delete.png"></a>
                             </td>
                         </tr>
                         <?php 

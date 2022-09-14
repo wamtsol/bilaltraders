@@ -97,7 +97,7 @@ if($account_type!=""){
                             <label for="<?php echo "rec_".$sn?>"></label></div>
                         </td>
                         <td><?php echo unslash($r["title"]); ?></td>
-                        <td><?php echo getAccountType(unslash($r["account_type"])); ?></td>
+                        <td><?php echo getAccountType(unslash($r["type"])); ?></td>
                         <td><?php echo curr_format(get_account_balance($r["id"])); ?></td>
                         <td class="text-center">
                             <a href="account_manage.php?id=<?php echo $r['id'];?>&tab=status&s=<?php echo ($r["status"]==0)?1:0;?>">

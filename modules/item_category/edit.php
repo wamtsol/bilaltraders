@@ -12,38 +12,7 @@ if(!defined("APP_START")) die("No Direct Access");
 </div>
 <form action="item_category_manage.php?tab=edit" method="post" enctype="multipart/form-data" name="frmAdd"  class="form-horizontal form-horizontal-left">
 	<input type="hidden" name="id" value="<?php echo $id;?>">
-    <div class="form-group">
-    	<div class="row">
-        	<div class="col-sm-2 control-label">
-            	<label class="form-label" for="parent_id">Parent</label>
-            </div>
-            <div class="col-sm-10">
-                <select name="parent_id" title="Choose Option">
-                    <option value="0">NO Parent</option>
-                    	<?php
-                        $res=doquery("Select * from item_category where parent_id=0 order by sortorder",$dblink);
-                        if(numrows($res)>0){
-                            while($rec=dofetch($res)){
-                    			?>
-                            	<option value="<?php echo $rec["id"]?>"<?php echo($parent_id==$rec["id"])?"selected":"";?>><?php echo unslash($rec["title"]); ?></option>
-			                    <?php			
-								$res1=doquery("select * from item_category where parent_id='".$rec["id"]."' order by sortorder",$dblink);
-								if(numrows($res1)>0){
-									while($rec1=dofetch($res1)){
-										?>
-										<option value="<?php echo $rec1["id"]?>"<?php echo($parent_id==$rec1["id"])?"selected":"";?>><?php echo unslash($rec["title"])." &gt; ".unslash($rec1["title"]); ?></option>
-										<?php
-									}
-								}
-                            }
-                                    
-                        }
-                    ?>
-               </select>
-            </div>
-        </div>
-  	</div>
-  	<div class="form-group">
+   	<div class="form-group">
     	<div class="row">
             <div class="col-sm-2 control-label">
                 <label class="form-label" for="item_category_name">Title <span class="manadatory">*</span></label>
@@ -54,16 +23,6 @@ if(!defined("APP_START")) die("No Direct Access");
         </div>
   	</div>
     <div class="form-group">
-    	<div class="row">
-            <div class="col-sm-2 control-label">
-                <label class="form-label" for="sortorder">Sortorder </label>
-            </div>
-            <div class="col-sm-10">
-                <?php getSortCombo("item_category",$sortorder,"edit");?> 
-            </div>
-        </div>
-  	</div>
-  	<div class="form-group">
     	<div class="row">
             <div class="col-sm-2 control-label">
                 <label for="company" class="form-label"></label>

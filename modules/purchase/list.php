@@ -24,7 +24,7 @@ if(isset($_SESSION["purchase"]["list"]["date_to"]))
 else
 	$date_to="";
 if($date_to != ""){
-	$extra.=" and datetime_added<'".date_dbconvert($date_to)."'";
+	$extra.=" and datetime_added<='".date_dbconvert($date_to)."'";
 	$is_search=true;
 }
 if(isset($_GET["q"])){

@@ -7,7 +7,30 @@ if(isset($_POST["action"])){
 			$response = datetime_convert( date( "Y-m-d H:i:s" ) );
 		break;
 		case "get_categories":
-			$response = get_categories();
+			$rs = doquery( "select * from item_category where status=1 order by title", $dblink );
+			$categories = array();
+			if( numrows( $rs ) > 0 ) {
+				while( $r = dofetch( $rs ) ) {
+					$categories[] = array(
+						"id" => $r[ "id" ],
+						"title" => unslash($r[ "title" ]),
+					);
+				}
+			}
+			$response = $categories;
+		break;
+		case "get_items":
+			$rs = doquery( "select * from items where status=1 order by title", $dblink );
+			$categories = array();
+			if( numrows( $rs ) > 0 ) {
+				while( $r = dofetch( $rs ) ) {
+					$categories[] = array(
+						"id" => $r[ "id" ],
+						"title" => unslash($r[ "title" ]),
+					);
+				}
+			}
+			$response = $categories;
 		break;
 		case "get_suppliers":
 			$rs = doquery( "select * from supplier where status=1 order by supplier_name", $dblink );
@@ -25,32 +48,7 @@ if(isset($_POST["action"])){
 			}
 			$response = $suppliers;
 		break;
-		case "get_sizes":
-			$rs = doquery( "select * from size order by sortorder", $dblink );
-			$sizes = array();
-			if( numrows( $rs ) > 0 ) {
-				while( $r = dofetch( $rs ) ) {
-					$sizes[] = array(
-						"id" => $r[ "id" ],
-						"title" => unslash($r[ "title" ]),
-					);
-				}
-			}
-			$response = $sizes;
-		break;
-		case "get_colors":
-			$rs = doquery( "select * from color order by sortorder", $dblink );
-			$colors = array();
-			if( numrows( $rs ) > 0 ) {
-				while( $r = dofetch( $rs ) ) {
-					$colors[] = array(
-						"id" => $r[ "id" ],
-						"title" => unslash($r[ "title" ]),
-					);
-				}
-			}
-			$response = $colors;
-		break;
+		
 		case "get_purchase":
 			$id = slash( $_POST[ "id" ] );
 			$rs = doquery( "select a.*, b.supplier_code, b.supplier_name, b.phone, b.address from purchase a left join supplier b on a.supplier_id = b.id where a.id='".$id."'", $dblink );
@@ -95,7 +93,7 @@ if(isset($_POST["action"])){
 			else {
 				$i=1;
 				foreach( $purchase->items as $item ) {
-					if( empty( $item->item_category_id ) || empty( $item->item_number ) || empty( $item->purchase_price ) || empty( $item->sale_price ) || empty( $item->quantity ) ){
+					if( empty( $item->item_category_id ) || empty( $item->item_id ) || empty( $item->purchase_price ) || empty( $item->sale_price ) || empty( $item->quantity ) ){
 						$err[] = "Fill all the required fields on Row#".$i;
 					}
 					$i++;
@@ -121,11 +119,11 @@ if(isset($_POST["action"])){
 				$item_ids = array();
 				foreach( $purchase->items as $item ) {
 					if( empty( $item->id ) ) {
-						doquery( "insert into purchase_items( purchase_id, item_category_id, item_number, size, color, purchase_price, sale_price, quantity, total ) values( '".$purchase_id."', '".$item->item_category_id."', '".slash( $item->item_number )."', '".$item->size."', '".$item->color."', '".$item->purchase_price."', '".$item->sale_price."', '".$item->quantity."', '".$item->total."' )", $dblink );
+						doquery( "insert into purchase_items( purchase_id, item_category_id, item_id, purchase_price, sale_price, quantity, total ) values( '".$purchase_id."', '".$item->item_category_id."', '".slash( $item->item_id )."',  '".$item->purchase_price."', '".$item->sale_price."', '".$item->quantity."', '".$item->total."' )", $dblink );
 						$item_ids[] = inserted_id();
 					}
 					else {
-						doquery( "update purchase_items set `purchase_id`='".$purchase_id."', `item_category_id`='".$item->item_category_id."', `item_number`='".slash( $item->item_number )."', `size`='".$item->size."', `color`='".$item->color."', `purchase_price`='".$item->purchase_price."', `sale_price`='".$item->sale_price."', `quantity`='".$item->quantity."', `total`='".$item->total."' where id='".$item->id."'", $dblink );
+						doquery( "update purchase_items set `purchase_id`='".$purchase_id."', `item_category_id`='".$item->item_category_id."', `item_id`='".slash( $item->item_id )."',`purchase_price`='".$item->purchase_price."', `sale_price`='".$item->sale_price."', `quantity`='".$item->quantity."', `total`='".$item->total."' where id='".$item->id."'", $dblink );
 						$item_ids[] = $item->id;
 					}
 				}
@@ -147,31 +145,4 @@ if(isset($_POST["action"])){
 	}
 	echo json_encode( $response );
 	die;
-}
-
-function get_categories( $parent_id = 0 ){
-	global $dblink;
-	$categories = array();
-	$rs = doquery( "select * from item_category where status=1 and parent_id='".$parent_id."' order by sortorder", $dblink );
-	if( numrows( $rs ) ) {
-		while( $r = dofetch( $rs ) ) {
-			$cat = array(
-				"id" => $r[ "id" ],
-				"title" => $r[ "title" ],
-			);
-			$sub = get_categories( $r[ "id" ] );
-			if( count( $sub ) > 0 ) {
-				foreach( $sub as $category ){
-					$categories[] = array(
-						"id" => $category[ "id" ],
-						"title" => $cat[ "title" ].' > '.$category[ "title" ],
-					);
-				}
-			}
-			else {
-				$categories[] = $cat;
-			}
-		}
-	}
-	return $categories;
 }

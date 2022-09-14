@@ -2,8 +2,7 @@ angular.module('purchase', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angul
 	function ($scope, $http, $interval, $filter) {
 		$scope.categories = [];
 		$scope.suppliers = [];
-		$scope.sizes = [];
-		$scope.colors = [];
+		$scope.items=[];
 		$scope.errors = [];
 		$scope.processing = false;
 		$scope.item_number = "";
@@ -49,11 +48,9 @@ angular.module('purchase', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angul
 			$scope.wctAJAX( {action: 'get_suppliers'}, function( response ){
 				$scope.suppliers = response;
 			});
-			$scope.wctAJAX( {action: 'get_sizes'}, function( response ){
-				$scope.sizes = response;
-			});
-			$scope.wctAJAX( {action: 'get_colors'}, function( response ){
-				$scope.colors = response;
+			
+			$scope.wctAJAX( {action: 'get_items'}, function( response ){
+				$scope.items = response;
 			});
 			if( $scope.purchase_id > 0 ) {
 				$scope.wctAJAX( {action: 'get_purchase', id: $scope.purchase_id}, function( response ){
