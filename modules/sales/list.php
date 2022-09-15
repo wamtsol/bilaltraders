@@ -1,5 +1,75 @@
 <?php
 if(!defined("APP_START")) die("No Direct Access");
+
+$q="";
+$extra='';
+$is_search=false;
+if(isset($_GET["date_from"])){
+	$date_from=slash($_GET["date_from"]);
+	$_SESSION["sales_manage"]["date_from"]=$date_from;
+}
+if(isset($_SESSION["sales_manage"]["date_from"]))
+	$date_from=$_SESSION["sales_manage"]["date_from"];
+else
+	$date_from="";
+if($date_from != ""){
+	$extra.=" and datetime_added>='".datetime_dbconvert($date_from)."'";
+	$is_search=true;
+}
+if(isset($_GET["date_to"])){
+	$date_to=slash($_GET["date_to"]);
+	$_SESSION["sales_manage"]["date_to"]=$date_to;
+}
+if(isset($_SESSION["sales_manage"]["date_to"]))
+	$date_to=$_SESSION["sales_manage"]["date_to"];
+else
+	$date_to="";
+if($date_to != ""){
+	$extra.=" and datetime_added<'".datetime_dbconvert($date_to)."'";
+	$is_search=true;
+}
+if(isset($_GET["q"])){
+	$q=slash($_GET["q"]);
+	$_SESSION["sales_manage"]["q"]=$q;
+}
+if(isset($_SESSION["sales_manage"]["q"]))
+	$q=$_SESSION["sales_manage"]["q"];
+else
+	$q="";
+if(!empty($q)){
+	$extra.=" and (customer_name like '%".$q."%' or id='".$q."')";
+	$is_search=true;
+}
+$order_by = "datetime_added";
+$order = "desc";
+if( isset($_GET["order_by"]) ){
+	$_SESSION["sales_manage"]["order_by"]=slash($_GET["order_by"]);
+}
+if( isset( $_SESSION["sales_manage"]["order_by"] ) ){
+	$order_by = $_SESSION["sales_manage"]["order_by"];
+}
+if( isset($_GET["order"]) ){
+	$_SESSION["sales_manage"]["order"]=slash($_GET["order"]);
+}
+if( isset( $_SESSION["sales_manage"]["order"] ) ){
+	$order = $_SESSION["sales_manage"]["order"];
+}
+if(isset($_GET["customer_id"])){
+	$customer_id=slash($_GET["customer_id"]);
+	$_SESSION["sales_manage"]["customer_id"]=$customer_id;
+}
+if(isset($_SESSION["sales_manage"]["customer_id"]))
+	$customer_id=$_SESSION["sales_manage"]["customer_id"];
+else
+	$customer_id="";
+if($customer_id!=""){
+	$extra.=" and customer_id='".$customer_id."'";
+    $is_search=true;
+}
+
+$orderby = $order_by." ".$order;
+$sql="select * from sales where 1 $extra order by $orderby";
+
 ?>
 <div class="page-header">
 	<h1 class="title">Manage Sales</h1>
@@ -18,6 +88,23 @@ if(!defined("APP_START")) die("No Direct Access");
 	<li class="col-xs-12 col-lg-12 col-sm-12">
         <div>
         	<form class="form-horizontal" action="" method="get">
+            <div class="col-sm-2">
+                 <select name="customer_id" id="customer_id" class="form-control">
+                <option value=""<?php echo ($customer_id=="")? " selected":"";?>>
+                Select Customers</option>
+                <?php
+                    $res=doquery("select * from customer order by customer_name",$dblink);
+                    if(numrows($res)>=0){
+                        while($rec=dofetch($res)){
+                        ?>
+                        <option value="<?php echo $rec["id"]?>" <?php echo($customer_id==$rec["id"])?"selected":"";?>><?php echo unslash($rec["customer_name"])?></option>
+                        <?php
+                        }
+                    }	
+                ?>
+                </select>
+
+                </div>
                 <span class="col-sm-1 text-to">From</span>
                 <div class="col-sm-2">
                     <input type="text" title="Enter Date From" name="date_from" id="date_from" placeholder="" class="form-control date-timepicker"  value="<?php echo $date_from?>" >
@@ -26,7 +113,7 @@ if(!defined("APP_START")) die("No Direct Access");
                 <div class="col-sm-2">
                     <input type="text" title="Enter Date To" name="date_to" id="date_to" placeholder="" class="form-control date-timepicker" value="<?php echo $date_to?>" >
                 </div>
-                <div class="col-sm-4">
+                <div class="col-sm-2">
                   <input type="text" title="Enter String" value="<?php echo $q;?>" name="q" id="search" class="form-control" >  
                 </div>
                 <div class="col-sm-3 text-left">

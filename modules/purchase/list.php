@@ -53,6 +53,19 @@ if( isset($_GET["order"]) ){
 if( isset( $_SESSION["purchase"]["list"]["order"] ) ){
 	$order = $_SESSION["purchase"]["list"]["order"];
 }
+if(isset($_GET["supplier_id"])){
+	$supplier_id=slash($_GET["supplier_id"]);
+	$_SESSION["purchase"]["supplier_id"]=$supplier_id;
+}
+if(isset($_SESSION["purchase"]["supplier_id"]))
+	$supplier_id=$_SESSION["purchase"]["supplier_id"];
+else
+	$supplier_id="";
+if($supplier_id!=""){
+	$extra.=" and supplier_id='".$supplier_id."'";
+    $is_search=true;
+}
+
 $orderby = $order_by." ".$order;
 ?>
 <div class="page-header">
@@ -72,6 +85,23 @@ $orderby = $order_by." ".$order;
 	<li class="col-xs-12 col-lg-12 col-sm-12">
         <div>
         	<form class="form-horizontal" action="" method="get">
+            <div class="col-sm-2">
+                 <select name="supplier_id" id="supplier_id" class="form-control">
+                <option value=""<?php echo ($supplier_id=="")? " selected":"";?>>
+                Select Supplier</option>
+                <?php
+
+                    $res=doquery("select * from supplier order by supplier_name	",$dblink);
+                    if(numrows($res)>=0){
+                        while($rec=dofetch($res)){
+                        ?>
+                        <option value="<?php echo $rec["id"]?>" <?php echo($supplier_id==$rec["id"])?"selected":"";?>><?php echo unslash($rec["supplier_name"])?></option>
+                        <?php
+                        }
+                    }	
+                ?>
+                </select>
+                </div>
             	<span class="col-sm-1 text-to">From</span>
                 <div class="col-sm-2">
                     <input type="text" title="Enter Date From" name="date_from" id="date_from" placeholder="" class="form-control date-picker"  value="<?php echo $date_from?>" >
@@ -80,7 +110,7 @@ $orderby = $order_by." ".$order;
                 <div class="col-sm-2">
                     <input type="text" title="Enter Date To" name="date_to" id="date_to" placeholder="" class="form-control date-picker" value="<?php echo $date_to?>" >
                 </div>
-                <div class="col-sm-4">
+                <div class="col-sm-2">
                   <input type="text" title="Enter String" value="<?php echo $q;?>" name="q" id="search" class="form-control" >  
                 </div>
                 <div class="col-sm-3 text-left">

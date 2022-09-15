@@ -18,7 +18,7 @@ angular.module('sales', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angularj
 			discount: 0,
 			net_total: 0,
 			payment_details: '',
-			payment_account_id: 0,
+			payment_account_id: "",
 			payment_amount: 0
 		};
 		$scope.item = {
@@ -86,8 +86,8 @@ angular.module('sales', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angularj
 		}
 				
 		$scope.update_total = function( position ) {
-			var discount = parseFloat( $scope.sales.items[ position ].discount?$scope.sales.items[ position ].discount:0 ) / 100;
-			$scope.sales.items[ position ].total = ( parseFloat( $scope.sales.items[ position ].sale_price ) - ( parseFloat( $scope.sales.items[ position ].sale_price) * discount ));
+			var quantity = parseFloat( $scope.sales.items[ position ].quantity?$scope.sales.items[ position ].quantity:0 );
+			$scope.sales.items[ position ].total = ( parseFloat( $scope.sales.items[ position ].sale_price )* quantity - parseFloat( $scope.sales.items[ position ].discount?$scope.sales.items[ position ].discount:0 ) ) ;
 			$scope.update_grand_total();
 		}
         $scope.update_grand_total = function(){

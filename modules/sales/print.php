@@ -356,16 +356,10 @@ footer {
             if(numrows($items)>0){
                 $sn=1;
                 while($item=dofetch($items)){
-					$item1 = dofetch( doquery( "SELECT a.*, c.supplier_code, c.supplier_name, d.title as size_title, e.title as color_title, f.title as category_title FROM `purchase_items` a left join purchase b on a.purchase_id = b.id left join supplier c on b.supplier_id = c.id left join size d on a.size = d.id left join color e on a.color = e.id left join item_category f on a.item_category_id = f.id where a.id = '".$item[ "purchase_item_id" ]."'", $dblink ) );
-					$item_name = (!empty($item1[ "supplier_code" ])?unslash($item1[ "supplier_code" ])."-":'').unslash($item1[ "item_number" ]);
+					$item1 = dofetch( doquery( "SELECT a.*, c.supplier_code, c.supplier_name as color_title, f.title as category_title FROM `purchase_items` a left join purchase b on a.purchase_id = b.id left join supplier c on b.supplier_id = c.id  left join item_category f on a.item_category_id = f.id where a.id = '".$item[ "item_id" ]."'", $dblink ) );
+					$item_name = (!empty($item1[ "supplier_code" ])?unslash($item1[ "supplier_code" ])."-":'');
 					if( !empty( $item1[ "size" ] ) || !empty( $item1[ "color" ] ) ) {
-						$attributes = array();
-						if( !empty( $item1[ "size" ] ) ) {
-							$attributes[] = 'Size: '.unslash( $item1[ "size_title" ] );
-						}
-						if( !empty( $item1[ "color" ] ) ) {
-							$attributes[] = 'Color: '.unslash( $item1[ "color_title" ] );
-						}
+						
 						if( !empty( $item1[ "item_category_id" ] ) ) {
 							$attributes[] = '<br> '.unslash( $item1[ "category_title" ] );
 						}

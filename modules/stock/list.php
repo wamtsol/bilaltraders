@@ -18,11 +18,11 @@ if(!defined("APP_START")) die("No Direct Access");
 	<li class="col-xs-12 col-lg-12 col-sm-12">
         <div>
         	<form class="form-horizontal" action="" method="get">
-            	<span class="col-sm-2 text-to">Date From</span>
+            	<span class="col-sm-2 text-to">From</span>
                 <div class="col-sm-2">
                     <input type="text" title="Enter Date From" name="date_from" id="date_from" placeholder="" class="form-control date-picker"  value="<?php echo $date_from?>" >
                 </div>
-                <span class="col-sm-2 text-to">Date To</span>
+                <span class="col-sm-2 text-to">To</span>
                 <div class="col-sm-2">
                     <input type="text" title="Enter Date To" name="date_to" id="date_to" placeholder="" class="form-control date-picker"  value="<?php echo $date_to?>" >
                 </div>

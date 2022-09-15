@@ -119,7 +119,8 @@ if($id){
                     <td class="text-right"><?php echo curr_format($balance); ?></td>
                 </tr>
 				<?php
-				$sql="select concat( 'Purchase #', id) as transaction, datetime_added, net_price as amount from purchase where supplier_id = '".$supplier[ "id" ]."' and datetime_added >='".datetime_dbconvert( $date_from )."' and datetime_added <='".datetime_dbconvert( $date_to )."' union select concat( 'Purchase Return #', id) as transaction, datetime_added, -net_price as amount from purchase_return where supplier_id = '".$supplier["id"]."' and datetime_added >='".datetime_dbconvert( $date_from )."' and datetime_added <='".datetime_dbconvert( $date_to )."' union select 'Payment', datetime_added as datetime_added, -amount from supplier_payment where supplier_id = '".$supplier[ "id" ]."' and datetime_added >='".datetime_dbconvert( $date_from )."' and datetime_added <='".datetime_dbconvert( $date_to )."' order by datetime_added desc";
+				$sql="select concat( 'Purchase #', id) as transaction, 
+				datetime_added, net_price as amount from purchase where supplier_id = '".$supplier[ "id" ]."' and datetime_added >='".datetime_dbconvert( $date_from )."' and datetime_added <='".datetime_dbconvert( $date_to )."' union select 'Payment', datetime_added as datetime_added, amount from supplier_payment where supplier_id = '".$supplier[ "id" ]."' and datetime_added >='".datetime_dbconvert( $date_from )."' and datetime_added <='".datetime_dbconvert( $date_to )."' order by datetime_added desc";
 				$rs=doquery($sql,$dblink);
 				if(numrows($rs)>0){
 					while($r=dofetch($rs)){

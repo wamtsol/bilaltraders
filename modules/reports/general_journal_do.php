@@ -9,7 +9,7 @@ if(isset($_GET["date_from"])){
 if(isset($_SESSION["reports"]["general_journal"]["date_from"]))
 	$date_from=$_SESSION["reports"]["general_journal"]["date_from"];
 else
-	$date_from=date("d/m/Y");
+	$date_from=date("1/m/Y");
 if(isset($_GET["date_to"])){
 	$date_to=slash($_GET["date_to"]);
 	$_SESSION["reports"]["general_journal"]["date_to"]=$date_to;

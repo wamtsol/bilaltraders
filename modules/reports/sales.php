@@ -10,7 +10,7 @@ if(isset($_GET["date_from"])){
 if(isset($_SESSION["reports"]["sales"]["date_from"]))
 	$date_from=$_SESSION["reports"]["sales"]["date_from"];
 else
-	$date_from='';
+	$date_from=date("01/m/Y");
 
 if($date_from != ""){
 	$extra.=" and datetime_added>='".date('Y-m-d',strtotime(date_dbconvert($date_from)))." 00:00:00'";
@@ -23,7 +23,7 @@ if(isset($_GET["date_to"])){
 if(isset($_SESSION["reports"]["sales"]["date_to"]))
 	$date_to=$_SESSION["reports"]["sales"]["date_to"];
 else
-	$date_to='';
+	$date_to=date("d/m/Y");
 
 if($date_to != ""){
 	$extra.=" and datetime_added<='".date('Y-m-d',strtotime(date_dbconvert($date_to)))." 23:59:59'";
@@ -52,13 +52,13 @@ $orderby = $order_by." ".$order;
         <div>
         	<form class="form-horizontal" action="" method="get">
                 <input type="hidden" name="tab" value="sales" />
-                <span class="col-sm-2 text-to">Date From</span>
+                <span class="col-sm-2 text-to">From</span>
                 <div class="col-sm-3">
-                    <input type="text" title="Enter Date From" name="date_from" id="date_from" placeholder="" class="form-control date-picker"  value="<?php echo $date_from?>" >
+                    <input type="text" title="Enter Date From" name="date_from" id="date_from" placeholder="" class="form-control date-picker"  value="<?php echo $date_from?>" autocomplete="off">
                 </div>
-                <span class="col-sm-2 text-to">Date To</span>
+                <span class="col-sm-2 text-to">To</span>
                 <div class="col-sm-3">
-                    <input type="text" title="Enter Date To" name="date_to" id="date_to" placeholder="" class="form-control date-picker"  value="<?php echo $date_to?>" >
+                    <input type="text" title="Enter Date To" name="date_to" id="date_to" placeholder="" class="form-control date-picker"  value="<?php echo $date_to?>" autocomplete="off">
                 </div>
                 
                 <div class="col-sm-2 text-left">

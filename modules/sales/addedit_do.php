@@ -122,20 +122,22 @@ if(isset($_POST["action"])){
 					}
 					$i++;
 					$quantity=$item->quantity;
-					$rqq=doquery("select title, quantity from item where id='".$item->item_id."'", $dblink);
-					$rq = dofetch( $rqq );
-					 if($rq['quantity']<$quantity){
-					 	$err[]=unslash($rq["title"]). "is out of stock. Quantity available:" .$rq['quantity']."<br />";
+					$rqq=doquery("select title, quantity from items where id='".$item->item_id."'", $dblink);
+					if(numrows($rqq)>0){
+						$rq = dofetch( $rqq );
+						if($rq['quantity']<$quantity){
+							$err[]=unslash($rq["title"]). "is out of stock. Quantity available:" .$rq['quantity']."<br />";
+						}
 					}
 				}
 			}
 			if( count( $err ) == 0 ) {
 				if( !empty( $sales->id ) ) {
-					doquery( "update sales set `datetime_added`='".slash(datetime_dbconvert(unslash($sales->datetime_added)))."', `customer_id`='".slash($sales->customer_id)."', `total_items`='".slash($sales->quantity)."', `total_price`='".slash($sales->total)."', `discount`='".slash($sales->discount)."', `net_price`='".slash($sales->net_total)."', `payment_account_id`='".slash($sales->payment_account_id)."' , `payment_amount`='".slash($sales->payment_amount)."' where id='".$sales->id."'", $dblink );
+					doquery( "update sales set `datetime_added`='".slash(datetime_dbconvert(unslash($sales->datetime_added)))."', `customer_id`='".slash($sales->customer_id)."', `total_items`='".slash($sales->quantity)."', `total_price`='".slash($sales->total)."', `discount`='".slash($sales->discount)."', `net_price`='".slash($sales->net_total)."' where id='".$sales->id."'", $dblink );
 					$sales_id = $sales->id;
 				}
 				else {
-					doquery( "insert into sales (datetime_added, customer_id, total_items, total_price, discount, net_price, added_by, payment_account_id, payment_amount) VALUES ('".slash(datetime_dbconvert($sales->datetime_added))."', '".slash($sales->customer_id)."', '".slash($sales->quantity)."', '".slash($sales->total)."', '".slash($sales->discount)."', '".slash($sales->net_total)."', '".$_SESSION[ "logged_in_admin" ][ "id" ]."', '".slash( $sales->payment_account_id )."', '".slash( $sales->payment_amount )."')", $dblink );
+					doquery( "insert into sales (datetime_added, customer_id, total_items, total_price, discount, net_price, added_by) VALUES ('".slash(datetime_dbconvert($sales->datetime_added))."', '".slash($sales->customer_id)."', '".slash($sales->quantity)."', '".slash($sales->total)."', '".slash($sales->discount)."', '".slash($sales->net_total)."', '".$_SESSION[ "logged_in_admin" ][ "id" ]."')", $dblink );
 					$sales_id = inserted_id();
 				}
 				if( !empty( $sales->payment_account_id ) ) {
@@ -169,7 +171,7 @@ if(isset($_POST["action"])){
 						$item_ids[] = $item->id;
 						$quantity = $item->quantity;
 					}
-					doquery( "update item set quantity = quantity-".$quantity." where id = '".$item->item_id."'", $dblink );
+					doquery( "update items set quantity = quantity-".$quantity." where id = '".$item->item_id."'", $dblink );
 				}
 				if( !empty( $sales_id ) && count( $item_ids ) > 0 ) {
 					$rs = doquery( "select * from sales_items where sales_id='".$sales_id."' and id not in( ".implode( ",", $item_ids )." )", $dblink );
@@ -177,7 +179,7 @@ if(isset($_POST["action"])){
 					if( numrows( $deleted_items ) > 0 ) {
 						while( $deleted_item = dofetch( $deleted_items ) ){
 							
-							doquery( "update item set quantity = quantity+".$deleted_item[ "quantity" ]." where id = '".$deleted_item[ "item_id" ]."'", $dblink );
+							doquery( "update items set quantity = quantity+".$deleted_item[ "quantity" ]." where id = '".$deleted_item[ "item_id" ]."'", $dblink );
 							
 						}
 					}

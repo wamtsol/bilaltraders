@@ -93,9 +93,9 @@ else {
                                    
                                 </td>
                                 <td>
-                                    <select title="Choose Option" ng-model="purchase.items[ $index ].item_id" chosen convert-to-number>
+                                    <select title="Choose Option" ng-model="sales.items[ $index ].item_id" data-ng-options="item.id as item.title for item in items|filter:{item_category_id: sales.items[ $index ].item_category_id}:1" chosen convert-to-number>
                                         <option value="">Select Items</option>
-                                        <option ng-repeat="item in items|filter:{item_category_id: sales.items[ $index ].item_category_id}:1" value="{{ item.id }}">{{ item.title }}</option>
+                                        <!-- <option ng-repeat="item in items|filter:{item_category_id: sales.items[ $index ].item_category_id}:1" value="{{ item.id }}">{{ item.title }}</option> -->
                                     </select><br />
                                 </td>
                                 <td class="text-right"><input type="text" ng-change="update_total( $index )" ng-model="sales.items[$index].sale_price" /></td>

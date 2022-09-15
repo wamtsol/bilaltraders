@@ -37,7 +37,7 @@ else{
 					if( numrows( $rs ) > 0 ) {
 						while( $r = dofetch( $rs ) ) {
 							?>
-							<option value="<?php echo $r[ "id" ]?>" data-supplier_name="<?php echo htmlspecialchars(unslash($r[ "supplier_name" ]))?>" data-phone="<?php echo htmlspecialchars(unslash($r[ "phone" ]))?>" data-address="<?php echo htmlspecialchars(unslash($r[ "address" ]))?>"><?php echo unslash($r[ "supplier_name" ])?> ( <?php echo unslash($r[ "id" ])?> )</option>
+							<option value="<?php echo $r[ "id" ]?>" data-supplier_name="<?php echo htmlspecialchars(unslash($r[ "supplier_name" ]))?>" data-phone="<?php echo htmlspecialchars(unslash($r[ "phone" ]))?>" data-address="<?php echo htmlspecialchars(unslash($r[ "address" ]))?>"><?php echo unslash($r[ "supplier_name" ])?> </option>
 							<?php
 						}
 					}

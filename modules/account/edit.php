@@ -44,6 +44,32 @@ if(!defined("APP_START")) die("No Direct Access");
     <div class="form-group">
         <div class="row">
         	<div class="col-sm-2 control-label">
+            	<label class="form-label" for="is_petty_cash">Petty Cash </label>
+            </div>
+            <div class="col-sm-10">
+                <select name="is_petty_cash" id="is_petty_cash" title="Choose Option">
+                    <option value="">Select Petty Cash</option>
+
+                    <option value="1"<?=$is_petty_cash == '1' ? ' selected="selected"' : '';?>" >Yes</option>
+                    <option value="0"<?=$is_petty_cash == '0' ? ' selected="selected"' : '';?>" >No</option>
+                    
+                    </select>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+        	<div class="col-sm-2 control-label">
+            	<label class="form-label" for="balance">Balance </label>
+            </div>
+            <div class="col-sm-10">
+                <input type="text" title="Enter Balance" value="<?php echo $balance; ?>" name="balance" id="balance" class="form-control" />
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+        	<div class="col-sm-2 control-label">
             	<label class="form-label" for="description">Description </label>
             </div>
             <div class="col-sm-10">

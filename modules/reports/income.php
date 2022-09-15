@@ -74,9 +74,8 @@ $orderby = $order_by." ".$order;
     	<?php
 		$sql="select sum(net_price) as total, sum(discount) as discount from sales where status = 1 $extra";
 		$sale_total=dofetch(doquery($sql, $dblink));
-		$sql="select sum(net_price) as total from sales_return where status = 1 $extra";
 		$sale_return_total=dofetch(doquery($sql, $dblink));
-		$sql="select sum(b.total) as sale_price, sum(c.purchase_price) as purchase_price from sales a left join sales_items b on a.id = b.sales_id left join purchase_items c on b.purchase_item_id = c.id where status = 1 $extra";
+		$sql="select sum(b.total) as sale_price, sum(c.purchase_price) as purchase_price from sales a left join sales_items b on a.id = b.sales_id left join purchase_items c on b.item_id = c.id where status = 1 $extra";
 		$revenue=dofetch(doquery($sql, $dblink));
 		?>
         <tr class="head">

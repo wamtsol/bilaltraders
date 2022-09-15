@@ -18,10 +18,10 @@ $extra='';
 $is_search=false;
 if(isset($_GET["date_from"])){
 	$date_from=slash($_GET["date_from"]);
-	$_SESSION["sales"]["list"]["date_from"]=$date_from;
+	$_SESSION["sales"]["date_from"]=$date_from;
 }
-if(isset($_SESSION["sales"]["list"]["date_from"]))
-	$date_from=$_SESSION["sales"]["list"]["date_from"];
+if(isset($_SESSION["sales"]["date_from"]))
+	$date_from=$_SESSION["sales"]["date_from"];
 else
 	$date_from="";
 if($date_from != ""){
@@ -30,10 +30,10 @@ if($date_from != ""){
 }
 if(isset($_GET["date_to"])){
 	$date_to=slash($_GET["date_to"]);
-	$_SESSION["sales"]["list"]["date_to"]=$date_to;
+	$_SESSION["sales"]["date_to"]=$date_to;
 }
-if(isset($_SESSION["sales"]["list"]["date_to"]))
-	$date_to=$_SESSION["sales"]["list"]["date_to"];
+if(isset($_SESSION["sales"]["date_to"]))
+	$date_to=$_SESSION["sales"]["date_to"];
 else
 	$date_to="";
 if($date_to != ""){
@@ -42,10 +42,10 @@ if($date_to != ""){
 }
 if(isset($_GET["q"])){
 	$q=slash($_GET["q"]);
-	$_SESSION["sales"]["list"]["q"]=$q;
+	$_SESSION["sales"]["q"]=$q;
 }
-if(isset($_SESSION["sales"]["list"]["q"]))
-	$q=$_SESSION["sales"]["list"]["q"];
+if(isset($_SESSION["sales"]["q"]))
+	$q=$_SESSION["sales"]["q"];
 else
 	$q="";
 if(!empty($q)){
@@ -55,16 +55,16 @@ if(!empty($q)){
 $order_by = "datetime_added";
 $order = "desc";
 if( isset($_GET["order_by"]) ){
-	$_SESSION["sales"]["list"]["order_by"]=slash($_GET["order_by"]);
+	$_SESSION["sales"]["order_by"]=slash($_GET["order_by"]);
 }
-if( isset( $_SESSION["sales"]["list"]["order_by"] ) ){
-	$order_by = $_SESSION["sales"]["list"]["order_by"];
+if( isset( $_SESSION["sales"]["order_by"] ) ){
+	$order_by = $_SESSION["sales"]["order_by"];
 }
 if( isset($_GET["order"]) ){
-	$_SESSION["sales"]["list"]["order"]=slash($_GET["order"]);
+	$_SESSION["sales"]["order"]=slash($_GET["order"]);
 }
-if( isset( $_SESSION["sales"]["list"]["order"] ) ){
-	$order = $_SESSION["sales"]["list"]["order"];
+if( isset( $_SESSION["sales"]["order"] ) ){
+	$order = $_SESSION["sales"]["order"];
 }
 $orderby = $order_by." ".$order;
 $sql="select * from sales where 1 $extra order by $orderby";

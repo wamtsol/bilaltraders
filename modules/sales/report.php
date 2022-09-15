@@ -82,7 +82,7 @@ table {
                         	<?php 
 								$items=doquery("select * from sales_items where sales_id='".$r["id"]."'",$dblink);
 								while($item=dofetch($items)){
-									echo unslash($item["quantity"])." x ".get_field($item["purchase_item_id"], "purchase_items","item_number")."<br>";
+									echo unslash($item["quantity"])." x ".get_field($item["item_id"], "purchase_items","item_id	")."<br>";
 								}
 							?>
                         </td>

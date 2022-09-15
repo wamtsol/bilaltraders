@@ -37,6 +37,19 @@ if(!empty($q)){
 	$extra.=" and amount like '%".$q."%'";
 	$is_search=true;
 }
+if(isset($_GET["expense_category_id"])){
+	$expense_category_id=slash($_GET["expense_category_id"]);
+	$_SESSION["expense_manage"]["expense_category_id"]=$expense_category_id;
+}
+if(isset($_SESSION["expense_manage"]["expense_category_id"]))
+	$expense_category_id=$_SESSION["expense_manage"]["expense_category_id"];
+else
+	$expense_category_id="";
+if($expense_category_id!=""){
+	$extra.=" and expense_category_id='".$expense_category_id."'";
+    $is_search=true;
+}
+
 ?>
 <div class="page-header">
 	<h1 class="title">Manage Expense</h1>
@@ -54,6 +67,22 @@ if(!empty($q)){
     <li class="col-xs-12 col-lg-12 col-sm-12">
     	<div>
         	<form class="form-horizontal" action="" method="get">
+            <div class="col-sm-3">
+                 <select name="expense_category_id" id="expense_category_id" class="form-control">
+                <option value=""<?php echo ($expense_category_id=="")? " selected":"";?>>
+                Select Expense Category</option>
+                <?php
+                    $res=doquery("select * from expense_category order by title",$dblink);
+                    if(numrows($res)>=0){
+                        while($rec=dofetch($res)){
+                        ?>
+                        <option value="<?php echo $rec["id"]?>" <?php echo($expense_category_id==$rec["id"])?"selected":"";?>><?php echo unslash($rec["title"])?></option>
+                        <?php
+                        }
+                    }	
+                ?>
+                </select>
+                </div>
                 <div class="col-sm-3 col-xs-8">
                   <input type="text" placeholder="Date From" title="Enter String" value="<?php echo $date_from;?>" name="date_from" id="date_from" class="form-control date-picker" >  
                 </div>
