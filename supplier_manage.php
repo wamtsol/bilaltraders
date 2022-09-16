@@ -28,8 +28,11 @@ switch($tab){
 	case 'bulk_action':
 		include("modules/supplier/bulkactions.php");
 	break;
+	case 'report':
+		include("modules/supplier/report_do.php");
+	break;
 	case 'print':
-		include("modules/supplier/print_do.php");
+		include("modules/supplier/print.php");
 	break;
 }
 ?>

@@ -115,7 +115,7 @@ if(!defined("APP_START")) die("No Direct Access");
                             ?>
  					</a></th>
                 <th class="text-right" width="10%">Stock Price</th>
-                <th class="text-right" width="10%">Stock Return</th>
+                <!-- <th class="text-right" width="10%">Stock Return</th> -->
             </tr>
     	</thead>
     	<tbody>
@@ -136,7 +136,7 @@ if(!defined("APP_START")) die("No Direct Access");
                         <td class="text-right"><?php $sale_price = dofetch(doquery( "select sum(total) from sales_items where item_id='".$r[ "item_id" ]."'", $dblink ));echo  $sale_price[ "sum(total)" ] ?></td>
                         <td class="text-right"><?php echo $r["remaining_stock"]; ?></td>
                         <td class="text-right"><?php echo curr_format( $r[ "remaining_stock" ]*$r[ "purchase_price" ] )?></td>
-                        <td class="text-right"></td>
+                        <!-- <td class="text-right"></td> -->
                     </tr>
                     <?php 
                     $sn++;

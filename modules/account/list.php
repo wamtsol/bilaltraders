@@ -24,7 +24,7 @@ if(isset($_SESSION["account"]["list"]["account_type"]))
 else
 	$account_type="";
 if($account_type!=""){
-	$extra.=" and account_type='".$account_type."'";
+	$extra.=" and type='".$account_type."'";
 	$is_search=true;
 }
 ?>
@@ -53,7 +53,7 @@ if($account_type!=""){
                         <?php
 						foreach ($account_types as $key=>$value) {
                             ?>
-                            <option value="<?php echo $key?>"<?php echo ($account_type!="" && $key==$type)?' selected="selected"':""?>><?php echo $value ?></option>
+                            <option value="<?php echo $key?>"<?php echo ($account_type!="" && $key==$account_type)?' selected="selected"':""?>><?php echo $value ?></option>
                             <?php
                         }
                         ?>
@@ -97,7 +97,7 @@ if($account_type!=""){
                             <label for="<?php echo "rec_".$sn?>"></label></div>
                         </td>
                         <td><?php echo unslash($r["title"]); ?></td>
-                        <td><?php echo getAccountType(unslash($r["account_type"])); ?></td>
+                        <td><?php echo getAccountType(unslash($r["type"])); ?></td>
                         <td><?php echo curr_format(get_account_balance($r["id"])); ?></td>
                         <td class="text-center">
                             <a href="account_manage.php?id=<?php echo $r['id'];?>&tab=status&s=<?php echo ($r["status"]==0)?1:0;?>">

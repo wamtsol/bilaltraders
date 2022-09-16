@@ -28,12 +28,12 @@ if(!defined("APP_START")) die("No Direct Access");
                 <label for="account_type" class="form-label">Account Type </label>
             </div>
             <div class="col-sm-10">
-                <select name="account_type" id="account_type" title="Choose Option">
+                <select name="type" id="type" title="Choose Option">
                     <option value="">Select Account Type</option>
                     <?php
                     foreach ($account_types as $key=>$value) {
                         ?>
-                        <option value="<?php echo $key?>"<?php echo $key==$account_type?' selected="selected"':""?>><?php echo $value ?></option>
+                        <option value="<?php echo $key?>"<?php echo $key==$type?' selected="selected"':""?>><?php echo $value ?></option>
                         <?php
                     }
                     ?>

@@ -24,7 +24,7 @@ if(isset($_GET["date_from"])){
 if(isset($_SESSION["reports"]["sales"]["date_from"]))
 	$date_from=$_SESSION["reports"]["sales"]["date_from"];
 else
-	$date_from='';
+	$date_from=date('01/m/Y');
 
 if($date_from != ""){
 	$extra.=" and datetime_added>='".date('Y-m-d',strtotime(date_dbconvert($date_from)))." 00:00:00'";
@@ -37,7 +37,7 @@ if(isset($_GET["date_to"])){
 if(isset($_SESSION["reports"]["sales"]["date_to"]))
 	$date_to=$_SESSION["reports"]["sales"]["date_to"];
 else
-	$date_to='';
+	$date_to=date('d/m/Y');
 
 if($date_to != ""){
 	$extra.=" and datetime_added<='".date('Y-m-d',strtotime(date_dbconvert($date_to)))." 23:59:59'";
