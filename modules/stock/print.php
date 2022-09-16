@@ -61,8 +61,6 @@ table {
     <th width="10%" align="right">Purchased Total</th>
     <th width="10%" align="right"> Item Sold </th>
     <th width="10%" align="right">Sold Total</th>
-    <th align="right" width="10%">Stock Return</th>
-    <th align="right" width="10%">Stock Return Total</th>
     <th width="10%" align="right">Remaining Stock</th>
     <th width="10%" align="right">Stock Total</th>
     
@@ -74,9 +72,7 @@ if( numrows( $rs ) > 0 ) {
 	while( $r = dofetch( $rs ) ) {
 		$quantity += $r["quantity"];
 		$quantity_sold += $r["quantity_sold"];
-		$remaining_stock += $r["remaining_stock"]-$r["stock_return"];
-		$stock_return_total += $r["stock_return"];
-		$stock_return_total_price += $r["stock_return_total"];
+		$remaining_stock += $r["remaining_stock"];
 		?>
 		<tr>
         	<td align="center"><?php echo $sn++;?></td>
@@ -86,11 +82,9 @@ if( numrows( $rs ) > 0 ) {
             <td align="right"><?php echo $r["quantity"]; ?></td>
             <td align="right"><?php $purchase_rice_total += $r[ "quantity" ]*$r[ "purchase_price" ]; echo curr_format( $r[ "quantity" ]*$r[ "purchase_price" ] )?></td>
             <td align="right"><?php echo $r["quantity_sold"]; ?></td>
-            <td align="right"><?php $sale_price = dofetch(doquery( "select sum(total) from sales_items where purchase_item_id='".$r[ "item_id" ]."'", $dblink ));$sale_total += $sale_price[ "sum(total)" ];echo curr_format( $sale_price[ "sum(total)" ] )?></td>
-            <td align="right"><?php echo $r["stock_return"]; ?></td>
-            <td align="right"><?php echo $r["stock_return_total"]; ?></td>
-            <td align="right"><?php echo $r["remaining_stock"]-$r["stock_return"]; ?></td>
-            <td align="right"><?php $remaining_stock_total += ($r[ "remaining_stock" ]-$r["stock_return"])*$r[ "purchase_price" ];echo curr_format(($r[ "remaining_stock" ]-$r["stock_return"])*$r[ "purchase_price" ] )?></td>
+            <td align="right"><?php $sale_price = dofetch(doquery( "select sum(total) from sales_items where item_id='".$r[ "item_id" ]."'", $dblink ));$sale_total += $sale_price[ "sum(total)" ];echo curr_format( $sale_price[ "sum(total)" ] )?></td>
+            <td align="right"><?php echo $r["remaining_stock"]; ?></td>
+            <td align="right"><?php $remaining_stock_total += ($r[ "remaining_stock" ])*$r[ "purchase_price" ];echo curr_format(($r[ "remaining_stock" ])*$r[ "purchase_price" ] )?></td>
             
         </tr>
         
@@ -103,8 +97,6 @@ if( numrows( $rs ) > 0 ) {
         <th align="right"><?php echo curr_format( $purchase_rice_total );?></th>
         <th align="right"><?php echo curr_format( $quantity_sold );?></th>
         <th align="right"><?php echo curr_format( $sale_total );?></th>
-          <th align="right"><?php echo curr_format( $stock_return_total );?></th>
-          <th align="right"><?php echo curr_format( $stock_return_total_price );?></th>
         <th align="right"><?php echo curr_format( $remaining_stock );?></th>
         <th align="right"><?php echo curr_format( $remaining_stock_total );?></th>
       
