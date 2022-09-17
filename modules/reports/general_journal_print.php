@@ -67,6 +67,15 @@ table {
 				</tr>
 				<?php
 			}
+            ?>
+            <tr>
+                	<td colspan="2"></td>
+                    <td><?php echo $order != 'desc'?'Closing':'Opening'?> Balance</td>
+                    <td></td>
+                    <td></td>
+                    <td align="right"><?php echo curr_format( $balance )?></td>
+                </tr>
+            <?php
 		}
         ?>
     </tbody>

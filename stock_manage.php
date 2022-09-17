@@ -53,20 +53,20 @@ else
 if(!empty($supplier_id)){
 	$extra.=" and supplier_id = '".$supplier_id."'";
 }
-if(isset($_GET["stock_status"])){
-	$stock_status=slash($_GET["stock_status"]);
-	$_SESSION["stock"]["list"]["stock_status"]=$stock_status;
-}
-if(isset($_SESSION["stock"]["list"]["stock_status"]))
-	$stock_status=$_SESSION["stock"]["list"]["stock_status"];
-else
-	$stock_status="";
-if( $stock_status == "1" ){
-	$extra.=" having remaining_stock > 0";
-}
-if( $stock_status == "-1" ){
-	$extra.=" having remaining_stock <= 0";
-}
+// if(isset($_GET["stock_status"])){
+// 	$stock_status=slash($_GET["stock_status"]);
+// 	$_SESSION["stock"]["list"]["stock_status"]=$stock_status;
+// }
+// if(isset($_SESSION["stock"]["list"]["stock_status"]))
+// 	$stock_status=$_SESSION["stock"]["list"]["stock_status"];
+// else
+// 	$stock_status="";
+// if( $stock_status == "1" ){
+// 	$extra.=" having remaining_stock > 0";
+// }
+// if( $stock_status == "-1" ){
+// 	$extra.=" having remaining_stock <= 0";
+// }
 $order_by = "item_id";
 $order = "asc";
 if( isset($_GET["order_by"]) ){

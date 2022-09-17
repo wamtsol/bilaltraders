@@ -41,13 +41,13 @@ if(!defined("APP_START")) die("No Direct Access");
 					?>
                   </select>
                 </div>
-                <div class="col-sm-2">
+                <!-- <div class="col-sm-2">
                   <select name="stock_status">
                   	<option value="1"<?php echo $stock_status=="1"?" selected":""?>>Available Stock</option>
                     <option value="-1"<?php echo $stock_status=="-1"?" selected":""?>>Unavailable Stock</option>
                     <option value=""<?php echo $stock_status==""?" selected":""?>>All Stock</option>                    
                   </select>
-                </div>
+                </div> -->
                 <div class="col-sm-2 text-left">
                     <input type="button" class="btn btn-danger btn-l reset_search" value="Reset" alt="Reset Record" title="Reset Record" />
                     <input type="submit" class="btn btn-default btn-l" value="Search" alt="Search Record" title="Search Record" />

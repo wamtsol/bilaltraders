@@ -343,6 +343,7 @@ footer {
 	?>
     <div class="contentbox">
         <p>Date/Time: <strong style="float:right"><?php echo datetime_convert($sale["datetime_added"]); ?></strong></p>
+		<p>Customer: <strong style="float:right"><?php echo get_field($sale["customer_id"], "customer", "customer_name"); ?></strong></p>
         <table cellpadding="0" cellspacing="0" align="center" width="800" border="0" class="items">
             <tr>
                 <th width="5%">S#</th>
@@ -356,15 +357,8 @@ footer {
             if(numrows($items)>0){
                 $sn=1;
                 while($item=dofetch($items)){
-					$item1 = dofetch( doquery( "SELECT a.*, c.supplier_code, c.supplier_name as color_title, f.title as category_title FROM `purchase_items` a left join purchase b on a.purchase_id = b.id left join supplier c on b.supplier_id = c.id  left join item_category f on a.item_category_id = f.id where a.id = '".$item[ "item_id" ]."'", $dblink ) );
-					$item_name = (!empty($item1[ "supplier_code" ])?unslash($item1[ "supplier_code" ])."-":'');
-					if( !empty( $item1[ "size" ] ) || !empty( $item1[ "color" ] ) ) {
-						
-						if( !empty( $item1[ "item_category_id" ] ) ) {
-							$attributes[] = '<br> '.unslash( $item1[ "category_title" ] );
-						}
-						$item_name .= ' ('.implode( ", ", $attributes ).")";
-					}
+					$item_name = get_field($item[ "item_id" ], "items", "title");
+					
                     ?>
                     <tr>
                     	<td style="text-align:center"><?php echo $sn++?></td>

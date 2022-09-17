@@ -26,17 +26,40 @@ if($supplier_id!=""){
 	$extra.=" and supplier_id='".$supplier_id."'";
 	$is_search=true;
 }
-if( isset($_GET["date"]) ){
-	$_SESSION["supplier_payment"]["list"]["date"] = $_GET["date"];
+if(isset($_GET["account_id"])){
+	$account_id=slash($_GET["account_id"]);
+	$_SESSION["supplier_payment"]["list"]["account_id"]=$account_id;
 }
-if(isset($_SESSION["supplier_payment"]["list"]["date"]) && !empty($_SESSION["supplier_payment"]["list"]["date"])){
-	$date = $_SESSION["supplier_payment"]["list"]["date"];
+if(isset($_SESSION["supplier_payment"]["list"]["account_id"]))
+	$account_id=$_SESSION["supplier_payment"]["list"]["account_id"];
+else
+	$account_id="";
+if($account_id!=""){
+	$extra.=" and account_id='".$account_id."'";
+	$is_search=true;
 }
-else{
-	$date = "";
+if(isset($_GET["date_from"])){
+	$date_from=slash($_GET["date_from"]);
+	$_SESSION["supplier_payment"]["list"]["date_from"]=$date_from;
 }
-if( !empty($date) ){
-	$extra=" and datetime_added>='".date("Y/m/d H:i:s", strtotime(date_dbconvert($date)))."' and datetime_added<'".date("Y/m/d H:i:s", strtotime(date_dbconvert($date))+3600*24)."'";
+if(isset($_SESSION["supplier_payment"]["list"]["date_from"]))
+	$date_from=$_SESSION["supplier_payment"]["list"]["date_from"];
+else
+	$date_from="";
+if($date_from != ""){
+	$extra.=" and datetime_added>='".date("Y/m/d H:i:s", strtotime(date_dbconvert($date_from)))."'";
+	$is_search=true;
+}
+if(isset($_GET["date_to"])){
+	$date_to=slash($_GET["date_to"]);
+	$_SESSION["supplier_payment"]["list"]["date_to"]=$date_to;
+}
+if(isset($_SESSION["supplier_payment"]["list"]["date_to"]))
+	$date_to=$_SESSION["supplier_payment"]["list"]["date_to"];
+else
+	$date_to="";
+if($date_to != ""){
+	$extra.=" and datetime_added<'".date("Y/m/d", strtotime(date_dbconvert($date_to))+3600*24)."'";
 	$is_search=true;
 }
 $sql="select a.*, b.supplier_name from supplier_payment a inner join supplier b on a.supplier_id = b.id where 1 ".$extra." order by datetime_added desc";

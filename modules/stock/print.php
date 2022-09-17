@@ -68,11 +68,18 @@ table {
 <?php
 if( numrows( $rs ) > 0 ) {
 	$sn = 1;
-	$purchase_rice_total = $sale_total = $remaining_stock_total = 0;
+    $sold = $total_sale = $remaining_stock = 0;
+	$purchase_rice_total = $sale_total = $remaining_stock_total = $remaining_stockt = 0;
 	while( $r = dofetch( $rs ) ) {
+        $sale = dofetch(doquery( "select sum(quantity) as sold_qty, sum(total) as total_sale from sales_items where item_id='".$r[ "item_id" ]."'", $dblink ));
+        $sold = $sale[ "sold_qty" ];
+        $total_sale = $sale[ "total_sale" ];
+        $remaining_stock = $r[ "quantity" ]-$sold;
 		$quantity += $r["quantity"];
-		$quantity_sold += $r["quantity_sold"];
-		$remaining_stock += $r["remaining_stock"];
+		$quantity_sold += $sold;
+		$remaining_stockt += $remaining_stock;
+        $sale_total += $total_sale;
+        $remaining_stock_total += $remaining_stock*$r[ "purchase_price" ];
 		?>
 		<tr>
         	<td align="center"><?php echo $sn++;?></td>
@@ -81,10 +88,19 @@ if( numrows( $rs ) > 0 ) {
             <td><?php echo unslash($r["title"]); ?></td>
             <td align="right"><?php echo $r["quantity"]; ?></td>
             <td align="right"><?php $purchase_rice_total += $r[ "quantity" ]*$r[ "purchase_price" ]; echo curr_format( $r[ "quantity" ]*$r[ "purchase_price" ] )?></td>
-            <td align="right"><?php echo $r["quantity_sold"]; ?></td>
-            <td align="right"><?php $sale_price = dofetch(doquery( "select sum(total) from sales_items where item_id='".$r[ "item_id" ]."'", $dblink ));$sale_total += $sale_price[ "sum(total)" ];echo curr_format( $sale_price[ "sum(total)" ] )?></td>
-            <td align="right"><?php echo $r["remaining_stock"]; ?></td>
-            <td align="right"><?php $remaining_stock_total += ($r[ "remaining_stock" ])*$r[ "purchase_price" ];echo curr_format(($r[ "remaining_stock" ])*$r[ "purchase_price" ] )?></td>
+            <td align="right"><?php echo $sold; ?></td>
+            <td align="right"><?php echo curr_format($total_sale); ?></td>
+            <td align="right"><?php echo $r[ "quantity" ]-$sold; ?></td>
+            <td align="right">
+            <?php 
+                if($remaining_stock>0){
+                    echo $remaining_stock*$r[ "purchase_price" ];
+                }
+                else{
+                    echo $remaining_stock;
+                }
+                ?>
+            </td>
             
         </tr>
         
@@ -97,7 +113,7 @@ if( numrows( $rs ) > 0 ) {
         <th align="right"><?php echo curr_format( $purchase_rice_total );?></th>
         <th align="right"><?php echo curr_format( $quantity_sold );?></th>
         <th align="right"><?php echo curr_format( $sale_total );?></th>
-        <th align="right"><?php echo curr_format( $remaining_stock );?></th>
+        <th align="right"><?php echo curr_format( $remaining_stockt );?></th>
         <th align="right"><?php echo curr_format( $remaining_stock_total );?></th>
       
     </tr>

@@ -1,75 +1,5 @@
 <?php
 if(!defined("APP_START")) die("No Direct Access");
-
-$q="";
-$extra='';
-$is_search=false;
-if(isset($_GET["date_from"])){
-	$date_from=slash($_GET["date_from"]);
-	$_SESSION["sales_manage"]["date_from"]=$date_from;
-}
-if(isset($_SESSION["sales_manage"]["date_from"]))
-	$date_from=$_SESSION["sales_manage"]["date_from"];
-else
-	$date_from="";
-if($date_from != ""){
-	$extra.=" and datetime_added>='".datetime_dbconvert($date_from)."'";
-	$is_search=true;
-}
-if(isset($_GET["date_to"])){
-	$date_to=slash($_GET["date_to"]);
-	$_SESSION["sales_manage"]["date_to"]=$date_to;
-}
-if(isset($_SESSION["sales_manage"]["date_to"]))
-	$date_to=$_SESSION["sales_manage"]["date_to"];
-else
-	$date_to="";
-if($date_to != ""){
-	$extra.=" and datetime_added<'".datetime_dbconvert($date_to)."'";
-	$is_search=true;
-}
-if(isset($_GET["q"])){
-	$q=slash($_GET["q"]);
-	$_SESSION["sales_manage"]["q"]=$q;
-}
-if(isset($_SESSION["sales_manage"]["q"]))
-	$q=$_SESSION["sales_manage"]["q"];
-else
-	$q="";
-if(!empty($q)){
-	$extra.=" and (customer_name like '%".$q."%' or id='".$q."')";
-	$is_search=true;
-}
-$order_by = "datetime_added";
-$order = "desc";
-if( isset($_GET["order_by"]) ){
-	$_SESSION["sales_manage"]["order_by"]=slash($_GET["order_by"]);
-}
-if( isset( $_SESSION["sales_manage"]["order_by"] ) ){
-	$order_by = $_SESSION["sales_manage"]["order_by"];
-}
-if( isset($_GET["order"]) ){
-	$_SESSION["sales_manage"]["order"]=slash($_GET["order"]);
-}
-if( isset( $_SESSION["sales_manage"]["order"] ) ){
-	$order = $_SESSION["sales_manage"]["order"];
-}
-if(isset($_GET["customer_id"])){
-	$customer_id=slash($_GET["customer_id"]);
-	$_SESSION["sales_manage"]["customer_id"]=$customer_id;
-}
-if(isset($_SESSION["sales_manage"]["customer_id"]))
-	$customer_id=$_SESSION["sales_manage"]["customer_id"];
-else
-	$customer_id="";
-if($customer_id!=""){
-	$extra.=" and customer_id='".$customer_id."'";
-    $is_search=true;
-}
-
-$orderby = $order_by." ".$order;
-$sql="select * from sales where 1 $extra order by $orderby";
-
 ?>
 <div class="page-header">
 	<h1 class="title">Manage Sales</h1>
@@ -105,13 +35,11 @@ $sql="select * from sales where 1 $extra order by $orderby";
                 </select>
 
                 </div>
-                <span class="col-sm-1 text-to">From</span>
                 <div class="col-sm-2">
-                    <input type="text" title="Enter Date From" name="date_from" id="date_from" placeholder="" class="form-control date-timepicker"  value="<?php echo $date_from?>" >
+                    <input type="text" title="Enter Date From" name="date_from" id="date_from" placeholder="From" class="form-control date-picker"  value="<?php echo $date_from?>" >
                 </div>
-                <span class="col-sm-1 text-to">To</span>
                 <div class="col-sm-2">
-                    <input type="text" title="Enter Date To" name="date_to" id="date_to" placeholder="" class="form-control date-timepicker" value="<?php echo $date_to?>" >
+                    <input type="text" title="Enter Date To" name="date_to" id="date_to" placeholder="To" class="form-control date-picker" value="<?php echo $date_to?>" >
                 </div>
                 <div class="col-sm-2">
                   <input type="text" title="Enter String" value="<?php echo $q;?>" name="q" id="search" class="form-control" >  
@@ -128,11 +56,12 @@ $sql="select * from sales where 1 $extra order by $orderby";
 	<table class="table table-hover list">
     	<thead>
             <tr>
-                <th width="5%" class="text-center">S.no</th>
-                <th class="text-center" width="5%"><div class="checkbox checkbox-primary">
+                <th width="2%" class="text-center">S.no</th>
+                <th class="text-center" width="3%"><div class="checkbox checkbox-primary">
                     <input type="checkbox" id="select_all" value="0" title="Select All Records">
                     <label for="select_all"></label></div></th>
-                <th>
+                <th class="text-center" width="5%">ID</th>
+                <th width="12%">
                 	<a href="sales_manage.php?order_by=datetime_added&order=<?php echo $order=="asc"?"desc":"asc"?>" class="sorting">
                         Date
                         <?php
@@ -146,10 +75,10 @@ $sql="select * from sales where 1 $extra order by $orderby";
                             ?>
  					</a>
                 </th>
-                <th>Customer Name</th>
-                 <th>Items</th>
-                <th class="text-right">Total Items</th>
-                <th class="text-right">
+                <th width="15%">Customer Name</th>
+                <th width="18%">Items</th>
+                <th class="text-right" width="8%">Total Items</th>
+                <th class="text-right" width="10%">
                 	<a href="sales_manage.php?order_by=total_price&order=<?php echo $order=="asc"?"desc":"asc"?>" class="sorting">
                 		Total Price
                         <?php
@@ -163,13 +92,14 @@ $sql="select * from sales where 1 $extra order by $orderby";
                             ?>
                     </a>
                 </th>
-                <th class="text-center">Status</th>
-                <th class="text-center">Actions</th>
+                <th width="8%" style="text-align:right;">Discount</th>
+                <th width="8%" style="text-align:right;">Net Price</th>
+                <th class="text-center" width="3%">Status</th>
+                <th class="text-center" width="12%">Actions</th>
             </tr>
     	</thead>
     	<tbody>
-			<?php 
-            $sql="select * from sales where 1 $extra order by $orderby";
+			<?php
             $rs=show_page($rows, $pageNum, $sql);
             if(numrows($rs)>0){
                 $sn=1;
@@ -181,8 +111,9 @@ $sql="select * from sales where 1 $extra order by $orderby";
                             <input type="checkbox" name="id[]" id="<?php echo "rec_".$sn?>"  value="<?php echo $r["id"]?>" title="Select Record" />
                             <label for="<?php echo "rec_".$sn?>"></label></div>
                         </td>
+                        <td class="text-center"><?php echo $r["id"]?></td>
                         <td><?php echo datetime_convert($r["datetime_added"]); ?></td>
-                        <td><?php if($r["customer_id"]==0) echo ""; else echo get_field($r["customer_id"], "customer","customer_name");?></td>
+                        <td><?php echo get_field($r["customer_id"], "customer","customer_name");?></td>
                         <td>
                         	<?php 
 								$items=doquery("select * from sales_items where sales_id='".$r["id"]."'",$dblink);
@@ -192,7 +123,9 @@ $sql="select * from sales where 1 $extra order by $orderby";
 							?>
                         </td>
                         <td class="text-right"><?php echo unslash($r["total_items"]); ?></td>
-                        <td class="text-right"><?php echo curr_format(unslash($r["net_price"])); ?></td>                        
+                        <td class="text-right"><?php echo curr_format(unslash($r["total_price"])); ?></td> 
+                        <td style="text-align:right;"><?php echo curr_format(unslash($r["discount"])); ?></td>
+                        <td style="text-align:right;"><?php echo curr_format(unslash($r["net_price"])); ?></td>                       
                         <td class="text-center"><a href="sales_manage.php?id=<?php echo $r['id'];?>&tab=status&s=<?php echo ($r["status"]==0)?1:0;?>">
                             <?php
                             if($r["status"]==0){
@@ -218,7 +151,7 @@ $sql="select * from sales where 1 $extra order by $orderby";
                 }
                 ?>
                 <tr>
-                    <td colspan="5" class="actions">
+                    <td colspan="6" class="actions">
                         <select name="bulk_action" id="bulk_action" title="Choose Action">
                             <option value="null">Bulk Action</option>
                             <option value="delete">Delete</option>
@@ -227,14 +160,14 @@ $sql="select * from sales where 1 $extra order by $orderby";
                         </select>
                         <input type="button" name="apply" value="Apply" id="apply_bulk_action" class="btn btn-light" title="Apply Action"  />
                     </td>
-                    <td colspan="3" class="paging" title="Paging" align="right"><?php echo pages_list($rows, "sales", $sql, $pageNum)?></td>
+                    <td colspan="6" class="paging" title="Paging" align="right"><?php echo pages_list($rows, "sales", $sql, $pageNum)?></td>
                 </tr>
                 <?php	
             }
             else{	
                 ?>
                 <tr>
-                    <td colspan="8"  class="no-record">No Result Found</td>
+                    <td colspan="12"  class="no-record">No Result Found</td>
                 </tr>
                 <?php
             }

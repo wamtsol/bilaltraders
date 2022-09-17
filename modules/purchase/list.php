@@ -1,72 +1,6 @@
 <?php
 if(!defined("APP_START")) die("No Direct Access");
-$q="";
-$extra='';
-$is_search=false;
-if(isset($_GET["date_from"])){
-	$date_from=slash($_GET["date_from"]);
-	$_SESSION["purchase"]["list"]["date_from"]=$date_from;
-}
-if(isset($_SESSION["purchase"]["list"]["date_from"]))
-	$date_from=$_SESSION["purchase"]["list"]["date_from"];
-else
-	$date_from="";
-if($date_from != ""){
-	$extra.=" and datetime_added>='".date_dbconvert($date_from)."'";
-	$is_search=true;
-}
-if(isset($_GET["date_to"])){
-	$date_to=slash($_GET["date_to"]);
-	$_SESSION["purchase"]["list"]["date_to"]=$date_to;
-}
-if(isset($_SESSION["purchase"]["list"]["date_to"]))
-	$date_to=$_SESSION["purchase"]["list"]["date_to"];
-else
-	$date_to="";
-if($date_to != ""){
-	$extra.=" and datetime_added<='".date_dbconvert($date_to)."'";
-	$is_search=true;
-}
-if(isset($_GET["q"])){
-	$q=slash($_GET["q"]);
-	$_SESSION["purchase"]["list"]["q"]=$q;
-}
-if(isset($_SESSION["purchase"]["list"]["q"]))
-	$q=$_SESSION["purchase"]["list"]["q"];
-else
-	$q="";
-if(!empty($q)){
-	$extra.=" and (supplier_name like '%".$q."%' or supplier_code like '%".$q."%')";
-	$is_search=true;
-}
-$order_by = "datetime_added";
-$order = "desc";
-if( isset($_GET["order_by"]) ){
-	$_SESSION["purchase"]["list"]["order_by"]=slash($_GET["order_by"]);
-}
-if( isset( $_SESSION["purchase"]["list"]["order_by"] ) ){
-	$order_by = $_SESSION["purchase"]["list"]["order_by"];
-}
-if( isset($_GET["order"]) ){
-	$_SESSION["purchase"]["list"]["order"]=slash($_GET["order"]);
-}
-if( isset( $_SESSION["purchase"]["list"]["order"] ) ){
-	$order = $_SESSION["purchase"]["list"]["order"];
-}
-if(isset($_GET["supplier_id"])){
-	$supplier_id=slash($_GET["supplier_id"]);
-	$_SESSION["purchase"]["supplier_id"]=$supplier_id;
-}
-if(isset($_SESSION["purchase"]["supplier_id"]))
-	$supplier_id=$_SESSION["purchase"]["supplier_id"];
-else
-	$supplier_id="";
-if($supplier_id!=""){
-	$extra.=" and supplier_id='".$supplier_id."'";
-    $is_search=true;
-}
 
-$orderby = $order_by." ".$order;
 ?>
 <div class="page-header">
 	<h1 class="title">Manage Purchase</h1>
@@ -87,10 +21,8 @@ $orderby = $order_by." ".$order;
         	<form class="form-horizontal" action="" method="get">
             <div class="col-sm-2">
                  <select name="supplier_id" id="supplier_id" class="form-control">
-                <option value=""<?php echo ($supplier_id=="")? " selected":"";?>>
-                Select Supplier</option>
+                <option value=""<?php echo ($supplier_id=="")? " selected":"";?>>Select Supplier</option>
                 <?php
-
                     $res=doquery("select * from supplier order by supplier_name	",$dblink);
                     if(numrows($res)>=0){
                         while($rec=dofetch($res)){
@@ -104,11 +36,11 @@ $orderby = $order_by." ".$order;
                 </div>
             	<span class="col-sm-1 text-to">From</span>
                 <div class="col-sm-2">
-                    <input type="text" title="Enter Date From" name="date_from" id="date_from" placeholder="" class="form-control date-picker"  value="<?php echo $date_from?>" >
+                    <input type="text" title="Enter Date From" name="date_from" id="date_from" placeholder="" class="form-control date-picker"  value="<?php echo $date_from?>" autocomplete="off">
                 </div>
                 <span class="col-sm-1 text-to">To</span>
                 <div class="col-sm-2">
-                    <input type="text" title="Enter Date To" name="date_to" id="date_to" placeholder="" class="form-control date-picker" value="<?php echo $date_to?>" >
+                    <input type="text" title="Enter Date To" name="date_to" id="date_to" placeholder="" class="form-control date-picker" value="<?php echo $date_to?>" autocomplete="off">
                 </div>
                 <div class="col-sm-2">
                   <input type="text" title="Enter String" value="<?php echo $q;?>" name="q" id="search" class="form-control" >  
@@ -130,7 +62,7 @@ $orderby = $order_by." ".$order;
                     <input type="checkbox" id="select_all" value="0" title="Select All Records">
                     <label for="select_all"></label></div></th>
                 <th class="text-center" width="5%">ID</th>
-                <th width="15%"><a href="purchase_manage.php?order_by=datetime_added&order=<?php echo $order=="asc"?"desc":"asc"?>" class="sorting">
+                <th width="12%"><a href="purchase_manage.php?order_by=datetime_added&order=<?php echo $order=="asc"?"desc":"asc"?>" class="sorting">
                         Date
                         <?php
                             if( $order_by == "datetime_added" ) {
@@ -142,20 +74,9 @@ $orderby = $order_by." ".$order;
                             }
                             ?>
  					</a></th>
-                <th width="20%">Supplier</th>
-                <th class="text-right" width="10%"><a href="purchase_manage.php?order_by=net_price&order=<?php echo $order=="asc"?"desc":"asc"?>" class="sorting">
-                        Total Amount
-                        <?php
-                            if( $order_by == "net_price" ) {
-                                ?>
-                                <span class="sort-icon">
-                                    <i class="fa fa-angle-<?php echo $order=="asc"?"up":"down"?>" data-hover_in="<?php echo $order=="asc"?"down":"up"?>" data-hover_out="<?php echo $order=="desc"?"down":"up"?>" aria-hidden="true"></i>
-                                </span>
-                                <?php
-                            }
-                            ?>
- 					</a></th>
-                <th class="text-right" width="10%"><a href="purchase_manage.php?order_by=total_items&order=<?php echo $order=="asc"?"desc":"asc"?>" class="sorting">
+                <th width="15%">Supplier</th>
+                <th width="18%">Items</th>
+                <th class="text-right" width="8%"><a href="purchase_manage.php?order_by=total_items&order=<?php echo $order=="asc"?"desc":"asc"?>" class="sorting">
                         Total Items
                         <?php
                             if( $order_by == "total_items" ) {
@@ -167,7 +88,19 @@ $orderby = $order_by." ".$order;
                             }
                             ?>
  					</a></th>
-                <th class="text-right" width="10%"><a href="purchase_manage.php?order_by=quantity_sold&order=<?php echo $order=="asc"?"desc":"asc"?>" class="sorting">
+                <th class="text-right" width="10%"><a href="purchase_manage.php?order_by=net_price&order=<?php echo $order=="asc"?"desc":"asc"?>" class="sorting">
+                        Total Price
+                        <?php
+                            if( $order_by == "net_price" ) {
+                                ?>
+                                <span class="sort-icon">
+                                    <i class="fa fa-angle-<?php echo $order=="asc"?"up":"down"?>" data-hover_in="<?php echo $order=="asc"?"down":"up"?>" data-hover_out="<?php echo $order=="desc"?"down":"up"?>" aria-hidden="true"></i>
+                                </span>
+                                <?php
+                            }
+                            ?>
+ 					</a></th>
+                <!-- <th class="text-right" width="10%"><a href="purchase_manage.php?order_by=quantity_sold&order=<?php echo $order=="asc"?"desc":"asc"?>" class="sorting">
                         Items Sold
                         <?php
                             if( $order_by == "quantity_sold" ) {
@@ -190,14 +123,16 @@ $orderby = $order_by." ".$order;
                                 <?php
                             }
                             ?>
- 					</a></th>
-                <th class="text-center" width="5%">Status</th>
-                <th class="text-center" width="15%">Actions</th>
+ 					</a></th> -->
+                <th width="8%" style="text-align:right;">Discount</th>
+                <th width="8%" style="text-align:right;">Net Price</th>
+                <th class="text-center" width="3%">Status</th>
+                <th class="text-center" width="12%">Actions</th>
             </tr>
     	</thead>
     	<tbody>
 			<?php 
-            $sql="select a.*, b.supplier_name, b.supplier_code, phone, address, sum(quantity_sold) as quantity_sold, total_items-sum(quantity_sold) as remaining_stock from purchase a left join supplier b on a.supplier_id = b.id left join purchase_items c on a.id = c.purchase_id where 1 $extra group by id order by $orderby";
+            
             $rs=show_page($rows, $pageNum, $sql);
             if(numrows($rs)>0){
                 $sn=1;
@@ -212,10 +147,20 @@ $orderby = $order_by." ".$order;
                         <td class="text-center"><?php echo $r["id"]?></td>
                         <td><?php echo datetime_convert($r["datetime_added"]); ?></td>
                         <td><?php echo unslash($r["supplier_name"])." (".unslash($r["supplier_code"]).")<br />".unslash($r["phone"]); ?></td>
-                        <td class="text-right"><?php echo curr_format(unslash($r["net_price"])); ?></td>
+                        <td>
+                        	<?php 
+								$items=doquery("select * from purchase_items where purchase_id='".$r["id"]."'",$dblink);
+								while($item=dofetch($items)){
+									echo unslash($item["quantity"])." x ".get_field($item["item_id"], "items", "title")."<br>";
+								}
+							?>
+                        </td>
                         <td class="text-right"><?php echo $r["total_items"]; ?></td>
-                        <td class="text-right"><?php echo $r["quantity_sold"]; ?></td>
-                        <td class="text-right"><?php echo $r["remaining_stock"]; ?></td>
+                        <td class="text-right"><?php echo curr_format(unslash($r["total_price"])); ?></td>
+                        <!-- <td class="text-right"><?php echo $r["quantity_sold"]; ?></td>
+                        <td class="text-right"><?php echo $r["remaining_stock"]; ?></td> -->
+                        <td style="text-align:right;"><?php echo curr_format(unslash($r["discount"])); ?></td>
+                        <td style="text-align:right;"><?php echo curr_format(unslash($r["net_price"])); ?></td>
                         <td class="text-center"><a href="purchase_manage.php?id=<?php echo $r['id'];?>&tab=status&s=<?php echo ($r["status"]==0)?1:0;?>">
                             <?php
                             if($r["status"]==0){
@@ -241,7 +186,7 @@ $orderby = $order_by." ".$order;
                 }
                 ?>
                 <tr>
-                    <td colspan="5" class="actions">
+                    <td colspan="6" class="actions">
                         <select name="bulk_action" id="bulk_action" title="Choose Action">
                             <option value="null">Bulk Action</option>
                             <option value="delete">Delete</option>
@@ -257,7 +202,7 @@ $orderby = $order_by." ".$order;
             else{	
                 ?>
                 <tr>
-                    <td colspan="11"  class="no-record">No Result Found</td>
+                    <td colspan="12"  class="no-record">No Result Found</td>
                 </tr>
                 <?php
             }

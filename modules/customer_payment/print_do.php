@@ -33,7 +33,7 @@ table {
 <tr class="head">
 	<th colspan="7">
     	<h1><?php echo get_config( 'site_title' )?></h1>
-    	<h2>Supplier Payment List</h2>
+    	<h2>Customer Payment List</h2>
         <p>
         	<?php
 			echo "List of";
@@ -46,8 +46,8 @@ table {
 			if( !empty( $date_to ) ){
 				echo " to ".$date_to."<br>";
 			}
-			if( !empty( $supplier_id ) ){
-				echo " Supplier: ".get_field($supplier_id, "supplier","supplier_name");
+			if( !empty( $customer_id ) ){
+				echo " Customer: ".get_field($customer_id, "customer","customer_name")."<br>";
 			}
 			if( !empty( $account_id ) ){
 				echo " Paid By: ".get_field($account_id, "account","title");
@@ -59,11 +59,11 @@ table {
 <tr>
     <th width="5%" align="center">S.no</th>
     <th width="5%" align="center">ID</th>
-    <th>Supplier Name</th>
-    <th>Datetime</th>
-    <th align="right">Amount</th>
-    <th>Account</th>
-    <th>Details</th>
+    <th width="20%">Customer Name</th>
+    <th width="30%">Address</th>
+    <th width="15%">Datetime</th>
+    <th align="right" width="10%">Amount</th>
+    <th width="15%">Paid By</th>
 </tr>
 <?php
 if( numrows( $rs ) > 0 ) {
@@ -74,21 +74,20 @@ if( numrows( $rs ) > 0 ) {
 		<tr>
         	<td align="center"><?php echo $sn++?></td>
            	<td align="center"><?php echo $r["id"]?></td>
-            <td><?php echo unslash( $r[ "supplier_name" ] );?></td>
+            <td><?php echo unslash( $r[ "customer_name" ] );?></td>
+            <td><?php echo unslash( $r[ "address" ] );?></td>
             <td><?php echo datetime_convert($r["datetime_added"]); ?></td>
             <td align="right"><?php echo curr_format(unslash($r["amount"])); ?></td>
             <td><?php echo get_field( unslash($r["account_id"]), "account", "title" ); ?></td>
-            <td class="text-right"><?php echo unslash($r["details"]); ?></td>
         </tr>
 		<?php
 	}
 }
 ?>
 <tr>
-    <th colspan="4" style="text-align:right;">Total</th>
+    <th colspan="5" style="text-align:right;">Total</th>
     <th style="text-align:right;"><?php echo curr_format($amount);?></th>
-    <th></th>
-    <th></th>
+    <td></td>
 </tr>
 </table>
 <?php

@@ -4989,3 +4989,9 @@ html, body, #wrapper{
 #total-sale #cart{
 	max-height:290px;
 }
+.topstats  .chosen-container-single .chosen-single span{
+	text-align:left;
+}
+.topstats .chosen-container .chosen-results li{
+	text-align:left;
+}

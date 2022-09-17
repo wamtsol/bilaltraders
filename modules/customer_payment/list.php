@@ -1,32 +1,6 @@
 <?php
 if(!defined("APP_START")) die("No Direct Access");
-$q="";
-$extra='';
-$is_search=false;
-if(isset($_GET["customer_id"])){
-	$customer_id=slash($_GET["customer_id"]);
-	$_SESSION["customer_payment"]["list"]["customer_id"]=$customer_id;
-}
-if(isset($_SESSION["customer_payment"]["list"]["customer_id"]))
-	$customer_id=$_SESSION["customer_payment"]["list"]["customer_id"];
-else
-	$customer_id="";
-if($customer_id!=""){
-	$extra.=" and customer_id='".$customer_id."'";
-	$is_search=true;
-}
-if(isset($_GET["q"])){
-	$q=slash($_GET["q"]);
-	$_SESSION["customer_payment"]["list"]["q"]=$q;
-}
-if(isset($_SESSION["customer_payment"]["list"]["q"]))
-	$q=$_SESSION["customer_payment"]["list"]["q"];
-else
-	$q="";
-if(!empty($q)){
-	$extra.=" and b.customer_name like '%".$q."%'";
-	$is_search=true;
-}
+
 ?>
 <div class="page-header">
 	<h1 class="title">Manage Customer Payment</h1>
@@ -36,6 +10,7 @@ if(!empty($q)){
   	<div class="right">
     	<div class="btn-group" role="group" aria-label="..."> 
         	<a href="customer_payment_manage.php?tab=add" class="btn btn-light editproject">Add New Record</a> <a id="topstats" class="btn btn-light" href="#"><i class="fa fa-search"></i></a>
+            <a class="btn print-btn" href="customer_payment_manage.php?tab=print"><i class="fa fa-print" aria-hidden="true"></i></a>
         </div>
   	</div>
 </div>
@@ -43,9 +18,9 @@ if(!empty($q)){
 	<li class="col-xs-12 col-lg-12 col-sm-12">
         <div>
         	<form class="form-horizontal" action="" method="get">
-            	<div class="col-sm-4 ">
-                	<select name="customer_id" id="customer_id" class="custom_select">
-                        <option value=""<?php echo ($customer_id=="")? " selected":"";?>>Select Particular Customer</option>
+            	<div class="col-sm-3">
+                	<select name="customer_id" id="customer_id" class="custom_select select_multiple">
+                        <option value=""<?php echo ($customer_id=="")? " selected":"";?>>Select Customer</option>
                         <?php
                             $res=doquery("select * from customer order by customer_name ",$dblink);
                             if(numrows($res)>=0){
@@ -58,10 +33,28 @@ if(!empty($q)){
                         ?>
                     </select>
                 </div>
-                <div class="col-sm-4">
-                  <input type="text" title="Enter String" value="<?php echo $q;?>" name="q" id="search" class="form-control" >
+                 <div class="col-sm-3">
+                  <select name="account_id" id="account_id" class="custom_select">
+                        <option value=""<?php echo ($account_id=="")? " selected":"";?>>Select Account</option>
+                        <?php
+                            $res=doquery("select * from account order by id",$dblink);
+                            if(numrows($res)>=0){
+                                while($rec=dofetch($res)){
+                                ?>
+                                <option value="<?php echo $rec["id"]?>" <?php echo($account_id==$rec["id"])?"selected":"";?>><?php echo unslash($rec["title"])?></option>
+                            <?php
+                                }
+                            }	
+                        ?>
+                    </select>
                 </div>
-                <div class="col-sm-4 text-left">
+                 <div class="col-sm-2">
+                    <input type="text" title="Enter Date From" name="date_from" id="date_from" placeholder="Date From" class="form-control date-picker"  value="<?php echo $date_from?>" autocomplete="off">
+                </div>
+                <div class="col-sm-2">
+                    <input type="text" title="Enter Date To" name="date_to" id="date_to" placeholder="Date To" class="form-control date-picker" value="<?php echo $date_to?>" autocomplete="off">
+                </div>
+                <div class="col-sm-2 text-left">
                 	<input type="button" class="btn btn-danger btn-l reset_search" value="Reset" alt="Reset Record" title="Reset Record" />
                     <input type="submit" class="btn btn-default btn-l" value="Search" alt="Search Record" title="Search Record" />
                 </div>
@@ -82,7 +75,7 @@ if(!empty($q)){
                 <th>Customer Name</th>
                 <th>Datetime</th>
                 <th class="text-right">Amount</th>
-                <th>Paid By</th>
+                <th>Account</th>
                 <th class="text-center">Status</th>
                 <th class="text-center">Actions</th>
             </tr>
