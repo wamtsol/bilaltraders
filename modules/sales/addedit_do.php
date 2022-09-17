@@ -163,6 +163,7 @@ if(isset($_POST["action"])){
 						$prev_item = dofetch( doquery( "select quantity from sales_items where id = '".$item->id."'", $dblink ) );
 						$quantity = $item->quantity-$prev_item[ "quantity" ]; 
 						doquery( "update sales_items set `item_category_id`='".slash( $item->item_category_id )."', `item_id`='".slash( $item->item_id )."', `sale_price`='".$item->sale_price."', `quantity`='".$item->quantity."', `discount`='".$item->discount."', `total`='".$item->total."' where id='".$item->id."'", $dblink );
+						//doquery( "update purchase_items set quantity_sold = quantity_sold+".$quantity." where item_id = '".$item->item_id."'", $dblink );
 						$item_ids[] = $item->id;
 					}
 					else {						
@@ -170,6 +171,7 @@ if(isset($_POST["action"])){
 						$item->id = inserted_id();
 						$item_ids[] = $item->id;
 						$quantity = $item->quantity;
+						//doquery( "update purchase_items set quantity_sold = quantity_sold+".$item->quantity." where item_id = '".$item->item_id."'", $dblink );
 					}
 					doquery( "update items set quantity = quantity-".$quantity." where id = '".$item->item_id."'", $dblink );
 				}
@@ -178,7 +180,7 @@ if(isset($_POST["action"])){
 					$deleted_items = doquery( "select * from sales_items where sales_id='".$sales_id."' and id not in( ".implode( ",", $item_ids )." )", $dblink );
 					if( numrows( $deleted_items ) > 0 ) {
 						while( $deleted_item = dofetch( $deleted_items ) ){
-							
+							//doquery( "update purchase_items set quantity_sold = quantity_sold-".$deleted_item[ "quantity" ]." where item_id = '".$deleted_item[ "item_id" ]."'", $dblink );
 							doquery( "update items set quantity = quantity+".$deleted_item[ "quantity" ]." where id = '".$deleted_item[ "item_id" ]."'", $dblink );
 							
 						}

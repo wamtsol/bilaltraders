@@ -123,28 +123,42 @@ if(!defined("APP_START")) die("No Direct Access");
             $rs=doquery($sql, $dblink);
             if(numrows($rs)>0){
                 $sn=1;
-                while($r=dofetch($rs)){             
+                $sold = $total_sale = $remaining_stock = 0;
+                while($r=dofetch($rs)){        
+                    $sale = dofetch(doquery( "select sum(quantity) as sold_qty, sum(total) as total_sale from sales_items where item_id='".$r[ "item_id" ]."'", $dblink ));
+                    $sold = $sale[ "sold_qty" ];
+                    $total_sale = $sale[ "total_sale" ];
+                    $remaining_stock = $r[ "quantity" ]-$sold;
                     ?>
                     <tr>
                         <td class="text-center"><?php echo $sn;?></td>
                         <td class="text-center"><?php echo $r["item_id"]?></td>
                         <td><?php echo unslash( $r["supplier_name"] )?></td>
                         <td><?php echo unslash($r["title"]); ?></td>
-                        <td class="text-right"><input type="text" name="item[<?php echo $r[ "item_id" ]?>][quantity]" value="<?php echo $r["quantity"]; ?>" /></td>
+                        <td class="text-right"><?php echo $r["quantity"]; ?></td>
                         <td class="text-right"><?php echo curr_format( $r[ "quantity" ]*$r[ "purchase_price" ] )?></td>
-                        <td class="text-right"><input type="text" name="item[<?php echo $r[ "item_id" ]?>][quantity_sold]" value="<?php echo $r["quantity_sold"]; ?>" /></td>
-                        <td class="text-right"><?php $sale_price = dofetch(doquery( "select sum(total) from sales_items where item_id='".$r[ "item_id" ]."'", $dblink ));echo  $sale_price[ "sum(total)" ] ?></td>
-                        <td class="text-right"><?php echo $r["remaining_stock"]; ?></td>
-                        <td class="text-right"><?php echo curr_format( $r[ "remaining_stock" ]*$r[ "purchase_price" ] )?></td>
+                        <td class="text-right"><?php echo $sold; ?></td>
+                        <td class="text-right"><?php echo curr_format($total_sale); ?></td>
+                        <td class="text-right"><?php echo $r[ "quantity" ]-$sold; ?></td>
+                        <td class="text-right">
+                            <?php 
+                            if($remaining_stock>0){
+                                echo $remaining_stock*$r[ "purchase_price" ];
+                            }
+                            else{
+                                echo $remaining_stock;
+                            }
+                            ?>
+                        </td>
                         <!-- <td class="text-right"></td> -->
                     </tr>
                     <?php 
                     $sn++;
                 }
 				?>
-				<tr>
+				<!-- <tr>
                     <td colspan="11"  class="no-record"><input type="submit" name="stock_save" value="Save Values" /></td>
-                </tr>
+                </tr> -->
 				<?php
             }
             else{	
