@@ -28,7 +28,8 @@ angular.module('sales', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angularj
 			"sale_price": 0,
 			"quantity": 0,
 			"discount":0,
-			"total": 0
+			"total": 0,
+			"return": 0
 		};
 		$scope.updateDate = function(){
 			$scope.sales.datetime_added = $(".angular-datetimepicker").val();
@@ -103,6 +104,18 @@ angular.module('sales', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angularj
 		}
 		$scope.update_net_total = function(){
 			$scope.sales.net_total = parseFloat( $scope.sales.total ) - parseFloat( $scope.sales.discount );
+		}
+		// $scope.is_return = false;
+		$scope.sale_return = function( position ) {
+			// console.log($scope.sales.items[ position ].return);
+			// $scope.is_return[position] = true;
+			if($scope.sales.items[ position ].return == true){
+				$scope.sales.items[ position ].quantity = (0-$scope.sales.items[ position ].quantity)
+			}
+			else{
+				$scope.sales.items[ position ].quantity = (0-$scope.sales.items[ position ].quantity)
+			}
+			$scope.update_total(position);
 		}
 		$scope.wctAJAX = function( wctData, wctCallback ) {
 			wctData.tab = 'addedit';

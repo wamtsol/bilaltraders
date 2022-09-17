@@ -75,6 +75,7 @@ else {
                                 <th width="2%" class="text-center">S.no</th>
                                 <th width="25%">Item Category </th>
                                 <th width="25%">Items </th>
+                                <th width="5%">Return</th>
                                 <th class="text-right" width="10%">Sale Price</th>
                                 <th class="text-right" width="10%">Quantity</th>
                                 <th class="text-right" width="10%">Discount</th>
@@ -98,6 +99,7 @@ else {
                                         <!-- <option ng-repeat="item in items|filter:{item_category_id: sales.items[ $index ].item_category_id}:1" value="{{ item.id }}">{{ item.title }}</option> -->
                                     </select><br />
                                 </td>
+                                <td><input type="checkbox" ng-model="sales.items[ $index ].return" ng-click="sale_return($index)" /></td>
                                 <td class="text-right"><input type="text" ng-change="update_total( $index )" ng-model="sales.items[$index].sale_price" /></td>
                                 <td class="text-right"><input type="text" ng-change="update_total( $index )" ng-model="sales.items[$index].quantity" /></td>
                                 <td class="text-right"><input type="text" ng-change="update_total( $index )" ng-model="sales.items[$index].discount" /></td>
@@ -105,22 +107,22 @@ else {
                                 <td class="text-center"><a href="" ng-click="add( $index )">Add</a> - <a href="" ng-click="remove( $index )">Delete</a></td>
                             </tr>
                             <tr>
-                                <th colspan="5" class="text-right">Total Items</th>
+                                <th colspan="6" class="text-right">Total Items</th>
                                 <th class="text-right">{{ sales.quantity }}</th>
                                 <th class="text-right">&nbsp;</th>
                             </tr>
                             <tr>
-                                <th colspan="5" class="text-right">Total</th>
+                                <th colspan="6" class="text-right">Total</th>
                                 <th class="text-right"><input type="text" style="text-align:right" ng-model="sales.total" ng-change='update_net_total()' /></th>
                                 <th class="text-right">&nbsp;</th>
                             </tr>
                             <tr>
-                                <th colspan="5" class="text-right">Discount</th>
+                                <th colspan="6" class="text-right">Discount</th>
                                 <th class="text-right"><input type="text" id="discount" style="text-align:right" ng-model="sales.discount" ng-change='update_net_total()' /></th>
                                 <th class="text-right">&nbsp;</th>
                             </tr>
                             <tr>
-                                <th colspan="5" class="text-right">Net Total</th>
+                                <th colspan="6" class="text-right">Net Total</th>
                                 <th class="text-right"><input type="text" id="total" style="text-align:right" ng-model="sales.net_total" /></th>
                                 <th class="text-right">&nbsp;</th>
                             </tr>
