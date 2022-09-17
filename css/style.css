@@ -4995,3 +4995,10 @@ html, body, #wrapper{
 .topstats .chosen-container .chosen-results li{
 	text-align:left;
 }
+.table input[type="checkbox"] {
+    line-height: normal;
+    margin: 0px 0 0;
+    height: 20px;
+    width: 20px;
+    box-shadow: none;
+}
