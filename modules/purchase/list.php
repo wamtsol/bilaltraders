@@ -197,7 +197,7 @@ $orderby = $order_by." ".$order;
     	</thead>
     	<tbody>
 			<?php 
-            $sql="select a.*, b.supplier_name, b.supplier_code, phone, address, sum(quantity_sold) as quantity_sold, total_items-sum(quantity_sold) as remaining_stock from purchase a left join supplier b on a.supplier_id = b.id left join purchase_items c on a.id = c.purchase_id where 1 $extra group by purchase_id order by $orderby";
+            $sql="select a.*, b.supplier_name, b.supplier_code, phone, address, sum(quantity_sold) as quantity_sold, total_items-sum(quantity_sold) as remaining_stock from purchase a left join supplier b on a.supplier_id = b.id left join purchase_items c on a.id = c.purchase_id where 1 $extra group by id order by $orderby";
             $rs=show_page($rows, $pageNum, $sql);
             if(numrows($rs)>0){
                 $sn=1;
