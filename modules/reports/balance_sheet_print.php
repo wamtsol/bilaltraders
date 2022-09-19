@@ -1,29 +1,46 @@
 <?php
 if(!defined("APP_START")) die("No Direct Access");
+
 ?>
-<div class="page-header">
-	<h1 class="title">Balance Sheet</h1>
-  	<ol class="breadcrumb">
-    	<li class="active">Balance Sheet</li>
-  	</ol>
-  	<div class="right">
-    	<div class="btn-group" role="group" aria-label="..."> 
-            <a class="btn print-btn" href="report_manage.php?tab=balance_sheet_print"><i class="fa fa-print" aria-hidden="true"></i></a>
-        </div>
-  	</div>
-</div>
-<div class="panel-body table-responsive">
-	<table class="table table-hover list">
-    	<thead>
-            <tr>
-                <th width="50%">Assets</th>
-                <th>Liabilities</th>
-            </tr>
-    	</thead>
-    	<tbody>
+<style>
+h1, h2, h3, p {
+    margin: 0 0 10px;
+}
+
+body {
+    margin:  0;
+    font-family:  Arial;
+    font-size:  11px;
+}
+.head th, .head td{ border:0;}
+th, td {
+    border: solid 1px #000;
+    padding: 5px 5px;
+    font-size: 11px;
+	vertical-align:top;
+}
+table table th, table table td{
+	padding:3px;
+}
+table {
+    border-collapse:  collapse;
+	max-width:1200px;
+	margin:0 auto;
+}
+</style>
+	<table width="100%" cellspacing="0" cellpadding="0">
+		<tr class="head">
+			<th colspan="2">
+				<h2>Balance Sheet</h2>
+			</th>
+		</tr>
+		<tr>
+			<th width="50%">Assets</th>
+			<th>Liabilities</th>
+		</tr>
         	<tr>
 				<td>
-					<table  class="table table-hover list">
+					<table width="100%" cellspacing="0" cellpadding="0">
 						<thead>
                             <tr>
                                 <th colspan="2">Current Assets</th>
@@ -131,7 +148,7 @@ if(!defined("APP_START")) die("No Direct Access");
                   	</table>
               	</td>
                 <td>
-					<table class="table table-hover list">
+					<table width="100%" cellspacing="0" cellpadding="0">
 						<?php 
 						if( count($account_payable) > 0){
 							?>
@@ -201,6 +218,6 @@ if(!defined("APP_START")) die("No Direct Access");
                   	</table>
               	</td>
            	</tr>
-    	</tbody>
   	</table>
-</div>
+<?php
+die;

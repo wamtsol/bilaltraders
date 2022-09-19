@@ -6,7 +6,7 @@ include("include/paging.php");
 define("APP_START", 1);
 $filename = 'sales_manage.php';
 include("include/admin_type_access.php");
-$tab_array=array("daily", "sales","income", "income_print", "general_journal", "general_journal_print");
+$tab_array=array("balance_sheet", "sales","income", "income_print", "general_journal", "general_journal_print", "balance_sheet_print");
 if(isset($_REQUEST["tab"]) && in_array($_REQUEST["tab"], $tab_array)){
 	$tab=$_REQUEST["tab"];
 }
@@ -24,6 +24,9 @@ switch($tab){
 	case 'income_print':
 		include("modules/reports/income_print.php");
 	break;
+	case 'balance_sheet_print':
+		include("modules/reports/balance_sheet_print.php");
+	break;
 }
 ?>
 <?php include("include/header.php");?>
@@ -31,8 +34,8 @@ switch($tab){
     <div class="col-md-12">
       <?php
 		switch($tab){
-			case 'daily':
-				include("modules/reports/daily.php");
+			case 'balance_sheet':
+				include("modules/reports/balance_sheet.php");
 			break;
 			case 'sales':
 				include("modules/reports/sales.php");

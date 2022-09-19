@@ -32,7 +32,6 @@ table {
 <table width="100%" cellspacing="0" cellpadding="0">
     <tr class="head">
         <th colspan="9">
-            <?php echo get_config( 'fees_chalan_header' )?>
             <h2>General Journal List</h2>
         </th>
     </tr>
