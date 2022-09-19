@@ -76,6 +76,8 @@ if(!defined("APP_START")) die("No Direct Access");
                             }
                             ?>
  					</a></th>
+                <th class="text-right" width="10%">Purchase Value</th>
+                <th class="text-right" width="10%">Sale Value</th>
                 <th class="text-right" width="10%">Opening Stock</th>
                 <th class="text-right" width="10%"><a href="stock_manage.php?order_by=quantity&order=<?php echo $order=="asc"?"desc":"asc"?>" class="sorting">
                         Item Purchased
@@ -136,6 +138,8 @@ if(!defined("APP_START")) die("No Direct Access");
                         <td class="text-center"><?php echo $r["item_id"]?></td>
                         <td><?php echo unslash( $r["supplier_name"] )?></td>
                         <td><?php echo unslash($r["title"]); ?></td>
+                        <td class="text-right"><?php echo unslash($r["purchase_price"]); ?></td>
+                        <td class="text-right"><?php echo unslash($r["sale_price"]); ?></td>
                         <td class="text-right"><?php echo $r["opening_stock"]; ?></td>
                         <td class="text-right"><?php echo $r["quantity"]; ?></td>
                         <td class="text-right"><?php echo curr_format( $r[ "quantity" ]*$r[ "purchase_price" ] )?></td>
