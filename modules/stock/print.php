@@ -75,7 +75,7 @@ if( numrows( $rs ) > 0 ) {
         $sale = dofetch(doquery( "select sum(quantity) as sold_qty, sum(total) as total_sale from sales_items where item_id='".$r[ "item_id" ]."'", $dblink ));
         $sold = $sale[ "sold_qty" ];
         $total_sale = $sale[ "total_sale" ];
-        $remaining_stock = $r[ "quantity" ]-$sold;
+        $remaining_stock = $r["opening_stock"]+$r[ "quantity" ]-$sold;
 		$quantity += $r["quantity"];
         $opening_stock += $r["opening_stock"];
 		$quantity_sold += $sold;
@@ -93,7 +93,7 @@ if( numrows( $rs ) > 0 ) {
             <td align="right"><?php $purchase_rice_total += $r[ "quantity" ]*$r[ "purchase_price" ]; echo curr_format( $r[ "quantity" ]*$r[ "purchase_price" ] )?></td>
             <td align="right"><?php echo $sold; ?></td>
             <td align="right"><?php echo curr_format($total_sale); ?></td>
-            <td align="right"><?php echo $r["opening_stock"]+$r[ "quantity" ]-$sold; ?></td>
+            <td align="right"><?php echo $remaining_stock; ?></td>
             <td align="right">
             <?php 
                 if($remaining_stock>0){

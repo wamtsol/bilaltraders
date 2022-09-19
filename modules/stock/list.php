@@ -129,7 +129,7 @@ if(!defined("APP_START")) die("No Direct Access");
                     $sale = dofetch(doquery( "select sum(quantity) as sold_qty, sum(total) as total_sale from sales_items where item_id='".$r[ "item_id" ]."'", $dblink ));
                     $sold = $sale[ "sold_qty" ];
                     $total_sale = $sale[ "total_sale" ];
-                    $remaining_stock = $r[ "quantity" ]-$sold;
+                    $remaining_stock = $r["opening_stock"]+$r[ "quantity" ]-$sold;
                     ?>
                     <tr>
                         <td class="text-center"><?php echo $sn;?></td>
@@ -141,7 +141,7 @@ if(!defined("APP_START")) die("No Direct Access");
                         <td class="text-right"><?php echo curr_format( $r[ "quantity" ]*$r[ "purchase_price" ] )?></td>
                         <td class="text-right"><?php echo $sold; ?></td>
                         <td class="text-right"><?php echo curr_format($total_sale); ?></td>
-                        <td class="text-right"><?php echo $r["opening_stock"]+$r[ "quantity" ]-$sold; ?></td>
+                        <td class="text-right"><?php echo $remaining_stock; ?></td>
                         <td class="text-right">
                             <?php 
                             if($remaining_stock>0){
