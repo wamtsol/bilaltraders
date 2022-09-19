@@ -82,7 +82,7 @@ if( isset( $_SESSION["stock"]["list"]["order"] ) ){
 	$order = $_SESSION["stock"]["list"]["order"];
 }
 $orderby = $order_by." ".$order;
-$sql="select c.item_id as item_id, c.quantity, c.purchase_price, c.sale_price, supplier_name, concat( b.supplier_code, '-', d.title) as title, quantity_sold, c.quantity-quantity_sold as remaining_stock from purchase a left join supplier b on a.supplier_id = b.id left join purchase_items c on a.id = c.purchase_id left join items d on c.item_id = d.id where 1 $extra order by $orderby";
+$sql="select c.item_id as item_id, c.quantity, c.purchase_price, c.sale_price, supplier_name, concat( b.supplier_code, '-', d.title) as title, quantity_sold, c.quantity-quantity_sold as remaining_stock, d.quantity as opening_stock from purchase a left join supplier b on a.supplier_id = b.id left join purchase_items c on a.id = c.purchase_id left join items d on c.item_id = d.id where 1 $extra order by $orderby";
 switch($tab){
 	case 'list':
 		include("modules/stock/list_do.php");

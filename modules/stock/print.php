@@ -1,7 +1,7 @@
 <?php
 if(!defined("APP_START")) die("No Direct Access");
 $rs = doquery( $sql, $dblink );
-$quantity = $quantity_sold = $remaining_stock = $stock_return_total = $stock_return_total_price = 0;
+$opening_stock = $quantity = $quantity_sold = $remaining_stock = $stock_return_total = $stock_return_total_price = 0;
 ?>
 <style>
 h1, h2, h3, p {
@@ -57,6 +57,7 @@ table {
     <th width="5%" align="center">ID</th>
     <th width="15%">Supplier</th>
     <th width="15%">Item</th>
+    <th align="right" width="10%">Opening Stock</th>
     <th width="10%" align="right">Item Purchased </th>
     <th width="10%" align="right">Purchased Total</th>
     <th width="10%" align="right"> Item Sold </th>
@@ -76,6 +77,7 @@ if( numrows( $rs ) > 0 ) {
         $total_sale = $sale[ "total_sale" ];
         $remaining_stock = $r[ "quantity" ]-$sold;
 		$quantity += $r["quantity"];
+        $opening_stock += $r["opening_stock"];
 		$quantity_sold += $sold;
 		$remaining_stockt += $remaining_stock;
         $sale_total += $total_sale;
@@ -86,11 +88,12 @@ if( numrows( $rs ) > 0 ) {
             <td align="center"><?php echo $r["item_id"]?></td>
             <td><?php echo unslash( $r["supplier_name"] )?></td>
             <td><?php echo unslash($r["title"]); ?></td>
+            <td align="right"><?php echo $r["opening_stock"]; ?></td>
             <td align="right"><?php echo $r["quantity"]; ?></td>
             <td align="right"><?php $purchase_rice_total += $r[ "quantity" ]*$r[ "purchase_price" ]; echo curr_format( $r[ "quantity" ]*$r[ "purchase_price" ] )?></td>
             <td align="right"><?php echo $sold; ?></td>
             <td align="right"><?php echo curr_format($total_sale); ?></td>
-            <td align="right"><?php echo $r[ "quantity" ]-$sold; ?></td>
+            <td align="right"><?php echo $r["opening_stock"]+$r[ "quantity" ]-$sold; ?></td>
             <td align="right">
             <?php 
                 if($remaining_stock>0){
@@ -109,6 +112,7 @@ if( numrows( $rs ) > 0 ) {
 	?>
 	<tr>
     	<th colspan="4" align="right">Total</th>
+        <th align="right"><?php echo curr_format( $opening_stock );?></th>
         <th align="right"><?php echo curr_format( $quantity );?></th>
         <th align="right"><?php echo curr_format( $purchase_rice_total );?></th>
         <th align="right"><?php echo curr_format( $quantity_sold );?></th>
