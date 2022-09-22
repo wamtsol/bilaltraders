@@ -52,6 +52,18 @@ if(!empty($q)){
 	$extra.=" and (customer_name like '%".$q."%' or id='".$q."')";
 	$is_search=true;
 }
+if(isset($_GET["item_id"])){
+	$item_id=slash($_GET["item_id"]);
+	$_SESSION["sales_manage"]["item_id"]=$item_id;
+}
+if(isset($_SESSION["sales_manage"]["item_id"]))
+	$item_id=$_SESSION["sales_manage"]["item_id"];
+else
+	$item_id="";
+if($item_id!=""){
+	$extra.=" and id in (select sales_id from sales_items where item_id = '".$item_id."')";
+	$is_search=true;
+}
 $order_by = "datetime_added";
 $order = "desc";
 if( isset($_GET["order_by"]) ){

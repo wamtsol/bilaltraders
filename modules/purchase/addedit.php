@@ -57,7 +57,8 @@ else {
                             <tr>
                                 <th width="2%" class="text-center">S.no</th>
                                 <th width="25%">Item Category</th>
-                                <th width="20%">Items.</th>
+                                <th width="25%">Items</th>
+                                <th width="5%">Return</th>
                                 <th class="text-right" width="13%">Purchase Price</th>
                                 <th class="text-right" width="10%">Sale Price</th>
                                 <th class="text-right" width="10%">Total Items</th>
@@ -69,18 +70,18 @@ else {
                             <tr ng-repeat="item in purchase.items">
                                 <td class="text-center serial_number">{{ $index+1 }}</td>
                                 <td>
-                                    <select title="Choose Option" ng-model="purchase.items[ $index ].item_category_id">
+                                    <select title="Choose Option" ng-model="purchase.items[ $index ].item_category_id" data-ng-options="category.id as category.title for category in categories" chosen convert-to-number>
                                         <option value="">Select Category</option>
-                                        <option ng-repeat="category in categories" value="{{ category.id }}">{{ category.title }}</option>
-                                    </select><br />
-                                   
+                                        <!-- <option ng-repeat="category in categories" value="{{ category.id }}">{{ category.title }}</option> -->
+                                    </select>
                                 </td>
                                 <td>
-                                    <select title="Choose Option" ng-model="purchase.items[ $index ].item_id">
+                                    <select title="Choose Option" ng-model="purchase.items[ $index ].item_id" data-ng-options="item.id as item.title for item in items|filter:{item_category_id: purchase.items[ $index ].item_category_id}:1" chosen convert-to-number>
                                         <option value="">Select Items</option>
-                                        <option ng-repeat="item in items" value="{{ item.id }}">{{ item.title }}</option>
-                                    </select><br />
+                                        <!-- <option ng-repeat="item in items|filter:{item_category_id: sales.items[ $index ].item_category_id}:1" value="{{ item.id }}">{{ item.title }}</option> -->
+                                    </select>
                                 </td>
+                                <td><input type="checkbox" ng-model="purchase.items[ $index ].return" ng-click="purchase_return($index)" /></td>
                                 <td class="text-right"><input type="text" ng-model="purchase.items[ $index ].purchase_price" ui-mask="{{numberMask}}" ng-change="update_total( $index )" /></td>
                                 <td class="text-right"><input type="text" ng-model="purchase.items[ $index ].sale_price" ui-mask="{{numberMask}}" /></td>
                                 <td class="text-right"><input type="text" ng-change="update_total( $index )" ng-model="purchase.items[ $index ].quantity" /></td>

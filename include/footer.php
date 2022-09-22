@@ -36,6 +36,7 @@ $(document).ready(function(){
 		angular.element($("#"+dp.data( 'controllerid' ))).scope().updateDate();
 	});
 	$( ".tabs" ).tabs();
+	$("select.item_select").chosen({width: "100%"});
 	
 });
 </script>

@@ -52,6 +52,18 @@ if(!empty($q)){
 	$extra.=" and (supplier_name like '%".$q."%' or supplier_code like '%".$q."%')";
 	$is_search=true;
 }
+if(isset($_GET["item_id"])){
+	$item_id=slash($_GET["item_id"]);
+	$_SESSION["purchase"]["list"]["item_id"]=$item_id;
+}
+if(isset($_SESSION["purchase"]["list"]["item_id"]))
+	$item_id=$_SESSION["purchase"]["list"]["item_id"];
+else
+	$item_id="";
+if($item_id!=""){
+	$extra.=" and a.id in (select purchase_id from purchase_items where item_id = '".$item_id."')";
+	$is_search=true;
+}
 $order_by = "datetime_added";
 $order = "desc";
 if( isset($_GET["order_by"]) ){

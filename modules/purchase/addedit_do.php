@@ -6,6 +6,19 @@ if(isset($_POST["action"])){
 		case 'get_datetime':
 			$response = datetime_convert( date( "Y-m-d H:i:s" ) );
 		break;
+		case "get_accounts":
+			$rs = doquery( "select * from account where status=1 order by id", $dblink );
+			$accounts = array();
+			if( numrows( $rs ) > 0 ) {
+				while( $r = dofetch( $rs ) ) {
+					$accounts[] = array(
+						"id" => $r[ "id" ],
+						"title" => unslash($r[ "title" ])
+					);
+				}
+			}
+			$response = $accounts;
+		break;
 		case "get_categories":
 			$rs = doquery( "select * from item_category where status=1 order by title", $dblink );
 			$categories = array();
@@ -20,17 +33,19 @@ if(isset($_POST["action"])){
 			$response = $categories;
 		break;
 		case "get_items":
-			$rs = doquery( "select * from items where status=1 order by title", $dblink );
-			$categories = array();
+			$rs = doquery( "select a.*, b.title as category from items a inner join item_category b on a.item_category_id = b.id where a.item_category_id=b.id and a.status=1 order by a.title", $dblink );
+			$items = array();
 			if( numrows( $rs ) > 0 ) {
 				while( $r = dofetch( $rs ) ) {
-					$categories[] = array(
+					$items[] = array(
 						"id" => $r[ "id" ],
+						"category" => $r[ "category" ],
+						"item_category_id" => (int)$r[ "item_category_id" ],
 						"title" => unslash($r[ "title" ]),
 					);
 				}
 			}
-			$response = $categories;
+			$response = $items;
 		break;
 		case "get_suppliers":
 			$rs = doquery( "select * from supplier where status=1 order by supplier_name", $dblink );
@@ -120,12 +135,12 @@ if(isset($_POST["action"])){
 				$item_ids = array();
 				foreach( $purchase->items as $item ) {
 					if( empty( $item->id ) ) {
-						doquery( "insert into purchase_items( purchase_id, item_category_id, item_id, purchase_price, sale_price, quantity, total ) values( '".$purchase_id."', '".$item->item_category_id."', '".slash( $item->item_id )."',  '".$item->purchase_price."', '".$item->sale_price."', '".$item->quantity."', '".$item->total."' )", $dblink );
+						doquery( "insert into purchase_items( purchase_id, item_category_id, item_id, purchase_price, sale_price, quantity, total, is_return ) values( '".$purchase_id."', '".$item->item_category_id."', '".slash( $item->item_id )."',  '".$item->purchase_price."', '".$item->sale_price."', '".$item->quantity."', '".$item->total."', '".$item->return."' )", $dblink );
 						$item_ids[] = inserted_id();
 						$quantity = $item->quantity;
 					}
 					else {
-						doquery( "update purchase_items set `purchase_id`='".$purchase_id."', `item_category_id`='".$item->item_category_id."', `item_id`='".slash( $item->item_id )."',`purchase_price`='".$item->purchase_price."', `sale_price`='".$item->sale_price."', `quantity`='".$item->quantity."', `total`='".$item->total."' where id='".$item->id."'", $dblink );
+						doquery( "update purchase_items set `purchase_id`='".$purchase_id."', `item_category_id`='".$item->item_category_id."', `item_id`='".slash( $item->item_id )."',`purchase_price`='".$item->purchase_price."', `sale_price`='".$item->sale_price."', `quantity`='".$item->quantity."', `total`='".$item->total."', `is_return`='".$item->return."' where id='".$item->id."'", $dblink );
 						$item_ids[] = $item->id;
 					}
 					

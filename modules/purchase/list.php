@@ -20,32 +20,45 @@ if(!defined("APP_START")) die("No Direct Access");
         <div>
         	<form class="form-horizontal" action="" method="get">
             <div class="col-sm-2">
-                 <select name="supplier_id" id="supplier_id" class="form-control">
-                <option value=""<?php echo ($supplier_id=="")? " selected":"";?>>Select Supplier</option>
-                <?php
-                    $res=doquery("select * from supplier order by supplier_name	",$dblink);
-                    if(numrows($res)>=0){
-                        while($rec=dofetch($res)){
-                        ?>
-                        <option value="<?php echo $rec["id"]?>" <?php echo($supplier_id==$rec["id"])?"selected":"";?>><?php echo unslash($rec["supplier_name"])?></option>
-                        <?php
-                        }
-                    }	
-                ?>
+                <select name="supplier_id" id="supplier_id" class="form-control">
+                    <option value=""<?php echo ($supplier_id=="")? " selected":"";?>>Select Supplier</option>
+                    <?php
+                        $res=doquery("select * from supplier order by supplier_name	",$dblink);
+                        if(numrows($res)>=0){
+                            while($rec=dofetch($res)){
+                            ?>
+                            <option value="<?php echo $rec["id"]?>" <?php echo($supplier_id==$rec["id"])?"selected":"";?>><?php echo unslash($rec["supplier_name"])?></option>
+                            <?php
+                            }
+                        }	
+                    ?>
                 </select>
                 </div>
-            	<span class="col-sm-1 text-to">From</span>
                 <div class="col-sm-2">
-                    <input type="text" title="Enter Date From" name="date_from" id="date_from" placeholder="" class="form-control date-picker"  value="<?php echo $date_from?>" autocomplete="off">
+                    <input type="text" title="Enter Date From" name="date_from" id="date_from" placeholder="From" class="form-control date-picker"  value="<?php echo $date_from?>" autocomplete="off">
                 </div>
-                <span class="col-sm-1 text-to">To</span>
                 <div class="col-sm-2">
-                    <input type="text" title="Enter Date To" name="date_to" id="date_to" placeholder="" class="form-control date-picker" value="<?php echo $date_to?>" autocomplete="off">
+                    <input type="text" title="Enter Date To" name="date_to" id="date_to" placeholder="To" class="form-control date-picker" value="<?php echo $date_to?>" autocomplete="off">
                 </div>
                 <div class="col-sm-2">
                   <input type="text" title="Enter String" value="<?php echo $q;?>" name="q" id="search" class="form-control" >  
                 </div>
-                <div class="col-sm-3 text-left">
+                <div class="col-sm-2">
+                  <select name="item_id" class="item_select">
+                        <option value="">Select Item</option>
+                        <?php
+                            $res=doquery("select * from items where status = 1 order by title",$dblink);
+                            if(numrows($res)>=0){
+                                while($rec=dofetch($res)){
+                                ?>
+                                <option value="<?php echo $rec["id"]?>"<?php echo($item_id==$rec["id"])?"selected":"";?>><?php echo unslash($rec["title"])?></option>
+                            	<?php
+                                }
+                            }	
+                        ?>
+                    </select>
+                </div>
+                <div class="col-sm-2 text-left">
                     <input type="button" class="btn btn-danger btn-l reset_search" value="Reset" alt="Reset Record" title="Reset Record" />
                     <input type="submit" class="btn btn-default btn-l" value="Search" alt="Search Record" title="Search Record" />
                 </div>

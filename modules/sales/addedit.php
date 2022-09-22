@@ -90,14 +90,13 @@ else {
                                     <select title="Choose Option" ng-model="sales.items[ $index ].item_category_id" data-ng-options="category.id as category.title for category in categories" chosen convert-to-number>
                                         <option value="">Select Category</option>
                                         <!-- <option ng-repeat="category in categories" value="{{ category.id }}">{{ category.title }}</option> -->
-                                    </select><br />
-                                   
+                                    </select>
                                 </td>
                                 <td>
                                     <select title="Choose Option" ng-model="sales.items[ $index ].item_id" data-ng-options="item.id as item.title for item in items|filter:{item_category_id: sales.items[ $index ].item_category_id}:1" chosen convert-to-number>
                                         <option value="">Select Items</option>
                                         <!-- <option ng-repeat="item in items|filter:{item_category_id: sales.items[ $index ].item_category_id}:1" value="{{ item.id }}">{{ item.title }}</option> -->
-                                    </select><br />
+                                    </select>
                                 </td>
                                 <td><input type="checkbox" ng-model="sales.items[ $index ].return" ng-click="sale_return($index)" /></td>
                                 <td class="text-right"><input type="text" ng-change="update_total( $index )" ng-model="sales.items[$index].sale_price" /></td>

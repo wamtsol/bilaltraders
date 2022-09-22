@@ -31,6 +31,7 @@ angular.module('sales', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angularj
 			"total": 0,
 			"return": 0
 		};
+		$scope.units = ['pieces', 'pair', 'bag', 'dozen', 'grus', 'packet']
 		$scope.updateDate = function(){
 			$scope.sales.datetime_added = $(".angular-datetimepicker").val();
 			$scope.$apply();

@@ -1,4 +1,4 @@
-angular.module('purchase', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angularjs-datetime-picker', 'ui.mask']).controller('purchaseController', 
+angular.module('purchase', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angularjs-datetime-picker', 'localytics.directives']).controller('purchaseController', 
 	function ($scope, $http, $interval, $filter) {
 		$scope.categories = [];
 		$scope.suppliers = [];
@@ -6,6 +6,7 @@ angular.module('purchase', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angul
 		$scope.errors = [];
 		$scope.processing = false;
 		$scope.item_number = "";
+		$scope.accounts = [];
 		$scope.purchase_id = 0;
 		$scope.numberMask= "";
 		$scope.supplier = {
@@ -27,14 +28,12 @@ angular.module('purchase', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angul
 		};
 		$scope.item = {
 			"id": 0,
-			"item_category_id": "",
-			"item_number": "",
-			"size": "0",
-			"color": "0",
-			"purchase_price": "",
-			"sale_price": "",
+			"item_category_id": 0,
+			"purchase_price": 0,
+			"sale_price": 0,
 			"quantity": 0,
-			"total": 0
+			"total": 0,
+			"return": 0
 		};
 		$scope.item_name_mask = "99";
 		$scope.updateDate = function(){
@@ -42,6 +41,9 @@ angular.module('purchase', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angul
 			$scope.$apply();
 		}
 		angular.element(document).ready(function () {
+			$scope.wctAJAX( {action: 'get_accounts'}, function( response ){
+				$scope.accounts = response;
+			});
 			$scope.wctAJAX( {action: 'get_categories'}, function( response ){
 				$scope.categories = response;
 			});
@@ -107,10 +109,14 @@ angular.module('purchase', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angul
 		$scope.update_net_total = function(){
 			$scope.purchase.net_total = parseFloat( $scope.purchase.total ) - parseFloat( $scope.purchase.discount );
 		}
-		$scope.save_purchase = function(){
-			if( $scope.processing == false ) {
-				
+		$scope.purchase_return = function( position ) {
+			if($scope.purchase.items[ position ].return == true){
+				$scope.purchase.items[ position ].quantity = (0-$scope.purchase.items[ position ].quantity)
 			}
+			else{
+				$scope.purchase.items[ position ].quantity = (0-$scope.purchase.items[ position ].quantity)
+			}
+			$scope.update_total(position);
 		}
 		$scope.wctAJAX = function( wctData, wctCallback ) {
 			wctData.tab = 'addedit';
@@ -176,4 +182,16 @@ angular.module('purchase', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angul
 			}
 		})
 	}
-);
+).directive('convertToNumber', function() {
+	return {
+		require: 'ngModel',
+		link: function(scope, element, attrs, ngModel) {
+			ngModel.$parsers.push(function(val) {
+				return val != null ? parseInt(val, 10) : null;
+			});
+			ngModel.$formatters.push(function(val) {
+				return val != null ? '' + val : null;
+			});
+		}
+	};
+});

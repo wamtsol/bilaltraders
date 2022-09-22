@@ -97,7 +97,9 @@ if(isset($_POST["action"])){
                         "quantity" => $r[ "quantity" ],
                         "discount" => $r[ "discount" ],
 				        "total" => $r[ "total" ],
-				        "sale_price" => $r[ "sale_price" ]);
+				        "sale_price" => $r[ "sale_price" ],
+						"return" => (int)$r[ "is_return" ],
+						);
 					}
 				}
 				$sales[ "items" ] = $items;
@@ -162,12 +164,12 @@ if(isset($_POST["action"])){
 					if( !empty( $item->id ) ) {  
 						$prev_item = dofetch( doquery( "select quantity from sales_items where id = '".$item->id."'", $dblink ) );
 						$quantity = $item->quantity-$prev_item[ "quantity" ]; 
-						doquery( "update sales_items set `item_category_id`='".slash( $item->item_category_id )."', `item_id`='".slash( $item->item_id )."', `sale_price`='".$item->sale_price."', `quantity`='".$item->quantity."', `discount`='".$item->discount."', `total`='".$item->total."' where id='".$item->id."'", $dblink );
+						doquery( "update sales_items set `item_category_id`='".slash( $item->item_category_id )."', `item_id`='".slash( $item->item_id )."', `sale_price`='".$item->sale_price."', `quantity`='".$item->quantity."', `discount`='".$item->discount."', `total`='".$item->total."', `is_return`='".$item->return."' where id='".$item->id."'", $dblink );
 						//doquery( "update purchase_items set quantity_sold = quantity_sold+".$quantity." where item_id = '".$item->item_id."'", $dblink );
 						$item_ids[] = $item->id;
 					}
 					else {						
-						doquery( "insert into sales_items ( sales_id, item_category_id, item_id, sale_price, quantity, discount, total ) values( '".$sales_id."', '".$item->item_category_id."', '".$item->item_id."', '".$item->sale_price."', '".$item->quantity."', '".$item->discount."','".$item->total."' )", $dblink );
+						doquery( "insert into sales_items ( sales_id, item_category_id, item_id, sale_price, quantity, discount, total, is_return ) values( '".$sales_id."', '".$item->item_category_id."', '".$item->item_id."', '".$item->sale_price."', '".$item->quantity."', '".$item->discount."','".$item->total."', '".$item->return."' )", $dblink );
 						$item->id = inserted_id();
 						$item_ids[] = $item->id;
 						$quantity = $item->quantity;
