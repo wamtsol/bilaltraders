@@ -46,16 +46,17 @@ if(!empty($q)){
 	<table class="table table-hover list">
     	<thead>
             <tr>
-                <th width="5%" class="text-center">S.no</th>
-                <th class="text-center" width="5%"><div class="checkbox checkbox-primary">
+                <th width="2%" class="text-center">S.no</th>
+                <th class="text-center" width="3%"><div class="checkbox checkbox-primary">
                     <input type="checkbox" id="select_all" value="0" title="Select All Records">
                     <label for="select_all"></label></div></th>
+                <th width="15%">Business Name</th>
                 <th>Customer Name</th>
-                <th>Phone</th>
-                <th>Address</th>
-                <th>Balance</th>
-                <th class="text-center">Status</th>
-                <th class="text-center">Actions</th>
+                <th width="10%">Phone</th>
+                <th width="10%">Address</th>
+                <th width="10%" class="text-right">Balance</th>
+                <th width="5%" class="text-center">Status</th>
+                <th width="10%" class="text-center">Actions</th>
             </tr>
     	</thead>
     	<tbody>
@@ -72,6 +73,7 @@ if(!empty($q)){
                             <input type="checkbox" name="id[]" id="<?php echo "rec_".$sn?>"  value="<?php echo $r["id"]?>" title="Select Record" />
                             <label for="<?php echo "rec_".$sn?>"></label></div>
                         </td>
+                        <td><?php echo unslash($r["business_name"]); ?></td>
                         <td><?php echo unslash($r["customer_name"]); ?></td>
                         <td><?php echo unslash($r["phone"]); ?></td>
                         <td><?php echo unslash($r["address"]); ?></td>

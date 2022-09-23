@@ -6,10 +6,10 @@ if(isset($_POST["customer_add"])){
 	if(empty($customer_name))
 		$err="Fields with (*) are Mandatory.<br />";
 	if($err==""){
-		$sql="INSERT INTO customer (customer_name, phone, address, balance) VALUES ('".slash($customer_name)."','".slash($phone)."','".slash($address)."','".slash($balance)."')";
+		$sql="INSERT INTO customer (business_name, customer_name, city, state, country, address, phone, balance) VALUES ('".slash($business_name)."','".slash($customer_name)."','".slash($city)."','".slash($state)."','".slash($country)."','".slash($address)."','".slash($phone)."','".slash($balance)."')";
 		doquery($sql,$dblink);
 		unset($_SESSION["customer_manage"]["add"]);
-		header('Location: customer_manage.php?tab=list&msg='.url_encode("Sucessfully Added"));
+		header('Location: customer_manage.php?tab=list&msg='.url_encode("Successfully Added"));
 		die;
 	}
 	else{

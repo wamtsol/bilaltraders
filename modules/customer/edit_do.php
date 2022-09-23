@@ -6,10 +6,10 @@ if(isset($_POST["customer_edit"])){
 	if(empty($customer_name))
 		$err="Fields with (*) are Mandatory.<br />";
 	if($err==""){
-		$sql="Update customer set `customer_name`='".slash($customer_name)."',`phone`='".slash($phone)."', `address`='".slash($address)."',`balance`='".slash($balance)."'"." where id='".$id."'";
+		$sql="Update customer set `business_name`='".slash($business_name)."',`customer_name`='".slash($customer_name)."', `city`='".slash($city)."',`state`='".slash($state)."',`country`='".slash($country)."',`address`='".slash($address)."',`phone`='".slash($phone)."',`balance`='".slash($balance)."'"." where id='".$id."'";
 		doquery($sql,$dblink);
 		unset($_SESSION["customer_manage"]["edit"]);
-		header('Location: customer_manage.php?tab=list&msg='.url_encode("Sucessfully Updated"));
+		header('Location: customer_manage.php?tab=list&msg='.url_encode("Successfully Updated"));
 		die;
 	}
 	else{

@@ -28,8 +28,6 @@ if($item_category_id!=""){
 	$extra.=" and item_category_id='".$item_category_id."'";
     $is_search=true;
 }
-
-
 ?>
 
     <div class="page-header">
@@ -47,23 +45,22 @@ if($item_category_id!=""){
 	<li class="col-xs-12 col-lg-12 col-sm-12">
         <div>
         	<form class="form-horizontal" action="" method="GET">
-                <span  class="col-sm-10 text-to"></span>
                 <div class="col-sm-3">
-                 <select name="item_category_id" id="item_category_id" class="form-control">
-                <option value=""<?php echo ($item_category_id=="")? " selected":"";?>>
-                Select Items Category</option>
-                <?php
-
-                    $res=doquery("select * from item_category order by title",$dblink);
-                    if(numrows($res)>=0){
-                        while($rec=dofetch($res)){
-                        ?>
-                        <option value="<?php echo $rec["id"]?>" <?php echo($item_category_id==$rec["id"])?"selected":"";?>><?php echo unslash($rec["title"])?></option>
+                    <select name="item_category_id" id="item_category_id" class="item_select">
+                        <option value=""<?php echo ($item_category_id=="")? " selected":"";?>>
+                        Select Items Category</option>
                         <?php
-                        }
-                    }	
-                ?>
-                </select>
+
+                            $res=doquery("select * from item_category order by title",$dblink);
+                            if(numrows($res)>=0){
+                                while($rec=dofetch($res)){
+                                ?>
+                                <option value="<?php echo $rec["id"]?>" <?php echo($item_category_id==$rec["id"])?"selected":"";?>><?php echo unslash($rec["title"])?></option>
+                                <?php
+                                }
+                            }	
+                        ?>
+                    </select>
                 </div>
                 <div class="col-sm-4">
                   <input type="text" title="Enter String" value="<?php echo $q;?>" name="q" id="search" class="form-control" >  
@@ -81,17 +78,18 @@ if($item_category_id!=""){
         <table class="table table-hover list">
             <thead>
                 <tr>
-                    <th width="5%" class="text-center">S.no</th>
-                    <th class="text-center" width="5%"><div class="checkbox checkbox-primary">
+                    <th width="2%" class="text-center">S.no</th>
+                    <th class="text-center" width="3%"><div class="checkbox checkbox-primary">
                         <input type="checkbox" id="select_all" value="0" title="Select All Records">
                         <label for="select_all"></label></div></th>
-                        <th>Items Category Type</th>
+                    <th width="15%">Items Category</th>
                     <th>Title</th>
-                    <th>Unit</th>
-                    <th>Unit Price</th>
-                    <th>Quaintity</th>
-                    <th class="text-center">Status</th>
-                    <th>Actions</th>
+                    <th width="10%">Unit</th>
+                    <th width="10%">Unit Price</th>
+                    <th width="10%">Quaintity</th>
+                    <th width="10%">Alert Quaintity</th>
+                    <th class="text-center" width="5%">Status</th>
+                    <th class="text-center" width="5%">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -111,9 +109,10 @@ if($item_category_id!=""){
                             
                             <td><?php if($r["item_category_id"]==0) echo ""; else echo get_field($r["item_category_id"], "item_category");?></td>
                             <td><?php echo unslash($r["title"]); ?></td>
-                            <td><?php echo unslash($r["unit"]); ?></td>
+                            <td><?php echo get_field($r["unit_id"], "units"); ?></td>
                             <td><?php echo unslash($r["unit_price"]); ?></td>
                             <td><?php echo unslash($r["quantity"]); ?></td>
+                            <td><?php echo unslash($r["alert_quantity"]); ?></td>
                             <td class="text-center"><a href="items_manage.php?id=<?php echo $r['id'];?>&tab=status&s=<?php echo ($r["status"]==0)?1:0;?>">
                                 <?php
                                 if($r["status"]==0){
@@ -128,7 +127,7 @@ if($item_category_id!=""){
                                 }
                                 ?>
                             </a></td>
-                            <td>
+                            <td class="text-center">
                                 <a href="items_manage.php?tab=edit&id=<?php echo $r['id'];?>"><img title="Edit Record" alt="Edit" src="images/edit.png"></a>&nbsp;&nbsp;
                                 <a onclick="return confirm('Are you sure you want to delete')" href="items_manage.php?id=<?php echo $r['id'];?>&amp;tab=delete"><img title="Delete Record" alt="Delete" src="images/delete.png"></a>
                             </td>
@@ -147,14 +146,14 @@ if($item_category_id!=""){
                             </select>
                             <input type="button" name="apply" value="Apply" id="apply_bulk_action" class="btn btn-light" title="Apply Action"  />
                         </td>
-                        <td colspan="3" class="paging" title="Paging" align="right"><?php echo pages_list($rows, "admin", $sql, $pageNum)?></td>
+                        <td colspan="5" class="paging" title="Paging" align="right"><?php echo pages_list($rows, "admin", $sql, $pageNum)?></td>
                     </tr>
                     <?php	
                 }
                 else{	
                     ?>
                     <tr>
-                        <td colspan="8"  class="no-record">No Result Found</td>
+                        <td colspan="10"  class="no-record">No Result Found</td>
                     </tr>
                     <?php
                 }

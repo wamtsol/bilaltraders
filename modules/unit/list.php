@@ -5,10 +5,10 @@ $extra='';
 $is_search=false;
 if(isset($_GET["q"])){
     $q=slash($_GET["q"]);
-    $_SESSION["item_manage"]["q"]=$q;
+    $_SESSION["unit_manage"]["q"]=$q;
 }
-if(isset($_SESSION["item_manage"]["q"]))
-    $q=$_SESSION["item_manage"]["q"];
+if(isset($_SESSION["unit_manage"]["q"]))
+    $q=$_SESSION["unit_manage"]["q"];
 else
     $q="";
 if(!empty($q)){
@@ -17,13 +17,13 @@ if(!empty($q)){
 }
 ?>
     <div class="page-header">
-        <h1 class="title">Manage Items Category</h1>
+        <h1 class="title">Manage Units</h1>
         <ol class="breadcrumb">
-            <li class="active">All Categories</li>
+            <li class="active">All Units</li>
         </ol>
         <div class="right">
             <div class="btn-group" role="group" aria-label="..."> 
-                <a href="item_category_manage.php?tab=add" class="btn btn-light editproject">Add New Record</a> <a id="topstats" class="btn btn-light" href="#"><i class="fa fa-search"></i></a>
+                <a href="unit_manage.php?tab=add" class="btn btn-light editproject">Add New Record</a> <a id="topstats" class="btn btn-light" href="#"><i class="fa fa-search"></i></a>
             </div>
         </div>
     </div>
@@ -49,14 +49,15 @@ if(!empty($q)){
                     <th class="text-center" width="5%"><div class="checkbox checkbox-primary">
                         <input type="checkbox" id="select_all" value="0" title="Select All Records">
                         <label for="select_all"></label></div></th>
-                        <th>Title </th>
+                    <th>Title </th>
+                    <th>Short Title </th>
                     <th class="text-center" width="10%">Status</th>
                     <th class="text-center" width="10%">Actions</th>
                 </tr>
             </thead>
             <tbody>
                 <?php 
-                $sql="select * from item_category where 1 $extra";
+                $sql="select * from units where 1 $extra";
                 $rs=show_page($rows, $pageNum, $sql);
                 if(numrows($rs)>0){
                     $sn=1;
@@ -69,7 +70,8 @@ if(!empty($q)){
                                 <label for="<?php echo "rec_".$sn?>"></label></div>
                             </td>
 							<td><?php echo unslash($r["title"]); ?></td>
-                            <td class="text-center"><a href="item_category_manage.php?id=<?php echo $r['id'];?>&tab=status&s=<?php echo ($r["status"]==0)?1:0;?>">
+                            <td><?php echo unslash($r["short_title"]); ?></td>
+                            <td class="text-center"><a href="unit_manage.php?id=<?php echo $r['id'];?>&tab=status&s=<?php echo ($r["status"]==0)?1:0;?>">
                                 <?php
                                 if($r["status"]==0){
                                     ?>
@@ -84,8 +86,8 @@ if(!empty($q)){
                                 ?>
                             </a></td>
                             <td class="text-center">
-                                <a href="item_category_manage.php?tab=edit&id=<?php echo $r['id'];?>"><img title="Edit Record" alt="Edit" src="images/edit.png"></a>&nbsp;&nbsp;
-                                <a onclick="return confirm('Are you sure you want to delete')" href="item_category_manage.php?id=<?php echo $r['id'];?>&amp;tab=delete"><img title="Delete Record" alt="Delete" src="images/delete.png"></a>
+                                <a href="unit_manage.php?tab=edit&id=<?php echo $r['id'];?>"><img title="Edit Record" alt="Edit" src="images/edit.png"></a>&nbsp;&nbsp;
+                                <a onclick="return confirm('Are you sure you want to delete')" href="unit_manage.php?id=<?php echo $r['id'];?>&amp;tab=delete"><img title="Delete Record" alt="Delete" src="images/delete.png"></a>
                             </td>
                         </tr>
                         <?php 
@@ -102,14 +104,14 @@ if(!empty($q)){
                             </select>
                             <input type="button" name="apply" value="Apply" id="apply_bulk_action" class="btn btn-light" title="Apply Action"  />
                         </td>
-                        <td colspan="2" class="paging" title="Paging" align="right"><?php echo pages_list($rows, "admin", $sql, $pageNum)?></td>
+                        <td colspan="3" class="paging" title="Paging" align="right"><?php echo pages_list($rows, "admin", $sql, $pageNum)?></td>
                     </tr>
                     <?php	
                 }
                 else{	
                     ?>
                     <tr>
-                        <td colspan="5"  class="no-record">No Result Found</td>
+                        <td colspan="6"  class="no-record">No Result Found</td>
                     </tr>
                     <?php
                 }
