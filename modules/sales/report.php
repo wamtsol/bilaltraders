@@ -49,7 +49,7 @@ table {
                     echo " to ".$date_to;
                 }
                 if( !empty( $customer_id ) ){
-                    echo " Supplier: ".get_field($customer_id, "customer","customer_name")."<br>";
+                    echo " Customer: ".get_field($customer_id, "customer","business_name")."<br>";
                 }
                 ?>
             </p>
@@ -59,7 +59,7 @@ table {
         <th width="5%" style="text-align:center">S#</th>
         <th style="text-align:center" width="5%">ID</th>
         <th width="12%">Date</th>
-        <th width="15%">Customer Name</th>
+        <th width="15%">Customer</th>
         <th width="18%">Items</th>
         <th width="8%" style="text-align:right;">Total Items</th>
         <th width="10%" style="text-align:right;">Total Price</th>
@@ -80,7 +80,7 @@ table {
                 <td style="text-align:center"><?php echo $sn++?></td>
                 <td style="text-align:center"><?php echo $r["id"]?></td>
                 <td style="text-align:left;"><?php echo datetime_convert($r["datetime_added"]); ?></td>
-                <td style="text-align:left;"><?php echo get_field($r["customer_id"], "customer","customer_name");?></td>
+                <td style="text-align:left;"><?php echo get_field($r["customer_id"], "customer","business_name");?></td>
                 <td>
                     <?php 
                     $items = doquery("select * from sales_items where sales_id = '".$r["id"]."'", $dblink);

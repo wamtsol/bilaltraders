@@ -343,7 +343,7 @@ footer {
 	?>
     <div class="contentbox">
         <p>Date/Time: <strong style="float:right"><?php echo datetime_convert($sale["datetime_added"]); ?></strong></p>
-		<p>Customer: <strong style="float:right"><?php echo get_field($sale["customer_id"], "customer", "customer_name"); ?></strong></p>
+		<p>Customer: <strong style="float:right"><?php echo get_field($sale["customer_id"], "customer", "business_name"); ?></strong></p>
         <table cellpadding="0" cellspacing="0" align="center" width="800" border="0" class="items">
             <tr>
                 <th width="5%">S#</th>

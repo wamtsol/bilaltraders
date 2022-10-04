@@ -56,9 +56,29 @@ else {
                 <label class="form-label" for="customer_id">Customer Name <span class="manadatory">*</span></label>
             </div>
             <div class="col-sm-10">
-                <select class="margin-btm-5" ng-model="sales.customer_id" data-ng-options="customer.id as customer.name for customer in customers" chosen convert-to-number>
+                <select class="margin-btm-5" ng-model="sales.customer_id" data-ng-options="customer.id as customer.business_name for customer in customers" chosen convert-to-number>
                     <option value="">Select Customer</option>
                 </select>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-sm-2 control-label">
+                <label class="form-label" for="notes">Notes</label>
+            </div>
+            <div class="col-sm-10">
+            	<textarea ng-model="sales.notes" class="form-control">{{sales.notes}}</textarea>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-sm-2 control-label">
+                <label class="form-label" for="shipping_charges">Shipping Charges</label>
+            </div>
+            <div class="col-sm-10">
+            	<input ng-model="sales.shipping_charges" class="form-control" />
             </div>
         </div>
     </div>
@@ -73,7 +93,7 @@ else {
                         <thead>
                             <tr>
                                 <th width="2%" class="text-center">S.no</th>
-                                <th width="25%">Item Category </th>
+                                <!-- <th width="25%">Item Category </th> -->
                                 <th width="25%">Items </th>
                                 <th width="5%">Return</th>
                                 <th class="text-right" width="10%">Sale Price</th>
@@ -86,14 +106,14 @@ else {
                         <tbody>
                             <tr ng-repeat="item in sales.items">
                                 <td class="text-center serial_number">{{ $index+1 }}</td>
-                                <td>
+                                <!-- <td>
                                     <select title="Choose Option" ng-model="sales.items[ $index ].item_category_id" data-ng-options="category.id as category.title for category in categories" chosen convert-to-number>
                                         <option value="">Select Category</option>
-                                        <!-- <option ng-repeat="category in categories" value="{{ category.id }}">{{ category.title }}</option> -->
+                                        <option ng-repeat="category in categories" value="{{ category.id }}">{{ category.title }}</option>
                                     </select>
-                                </td>
+                                </td> -->
                                 <td>
-                                    <select title="Choose Option" ng-model="sales.items[ $index ].item_id" data-ng-options="item.id as item.title for item in items|filter:{item_category_id: sales.items[ $index ].item_category_id}:1" chosen convert-to-number>
+                                    <select title="Choose Option" ng-model="sales.items[ $index ].item_id" data-ng-options="item.id as item.title for item in items" chosen convert-to-number>
                                         <option value="">Select Items</option>
                                         <!-- <option ng-repeat="item in items|filter:{item_category_id: sales.items[ $index ].item_category_id}:1" value="{{ item.id }}">{{ item.title }}</option> -->
                                     </select>
@@ -106,27 +126,27 @@ else {
                                 <td class="text-center"><a href="" ng-click="add( $index )">Add</a> - <a href="" ng-click="remove( $index )">Delete</a></td>
                             </tr>
                             <tr>
-                                <th colspan="6" class="text-right">Total Items</th>
+                                <th colspan="5" class="text-right">Total Items</th>
                                 <th class="text-right">{{ sales.quantity }}</th>
                                 <th class="text-right">&nbsp;</th>
                             </tr>
                             <tr>
-                                <th colspan="6" class="text-right">Total</th>
+                                <th colspan="5" class="text-right">Total</th>
                                 <th class="text-right"><input type="text" style="text-align:right" ng-model="sales.total" ng-change='update_net_total()' /></th>
                                 <th class="text-right">&nbsp;</th>
                             </tr>
                             <tr>
-                                <th colspan="6" class="text-right">Discount</th>
+                                <th colspan="5" class="text-right">Discount</th>
                                 <th class="text-right"><input type="text" id="discount" style="text-align:right" ng-model="sales.discount" ng-change='update_net_total()' /></th>
                                 <th class="text-right">&nbsp;</th>
                             </tr>
                             <tr>
-                                <th colspan="6" class="text-right">Net Total</th>
+                                <th colspan="5" class="text-right">Net Total</th>
                                 <th class="text-right"><input type="text" id="total" style="text-align:right" ng-model="sales.net_total" /></th>
                                 <th class="text-right">&nbsp;</th>
                             </tr>
                             <tr>
-                                <th class="text-right" colspan="6"><label>Payment Account </label></th>
+                                <th class="text-right" colspan="5"><label>Payment Account </label></th>
                                 <th class="text-right" colspan="2">
                                     <select class="margin-btm-5" ng-model="sales.payment_account_id" convert-to-number>
                                         <option value="">Select Account</option>
@@ -135,7 +155,7 @@ else {
                                 </th>
                             </tr>
                             <tr>
-                                <th class="text-right" colspan="6">Payment Amount</th>
+                                <th class="text-right" colspan="5">Payment Amount</th>
                                 <th class="text-right" colspan="2"><input type="text" style="text-align:right" ng-model="sales.payment_amount" /></th>
                             </tr>
                         </tbody>

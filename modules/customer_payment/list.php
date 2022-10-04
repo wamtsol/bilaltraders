@@ -22,11 +22,11 @@ if(!defined("APP_START")) die("No Direct Access");
                 	<select name="customer_id" id="customer_id" class="custom_select select_multiple">
                         <option value=""<?php echo ($customer_id=="")? " selected":"";?>>Select Customer</option>
                         <?php
-                            $res=doquery("select * from customer order by customer_name ",$dblink);
+                            $res=doquery("select * from customer order by business_name ",$dblink);
                             if(numrows($res)>=0){
                                 while($rec=dofetch($res)){
                                 ?>
-                                <option value="<?php echo $rec["id"]?>" <?php echo($customer_id==$rec["id"])?"selected":"";?>><?php echo unslash($rec["customer_name"])?></option>
+                                <option value="<?php echo $rec["id"]?>" <?php echo($customer_id==$rec["id"])?"selected":"";?>><?php echo unslash($rec["business_name"])?></option>
                             <?php
                                 }
                             }	
@@ -72,6 +72,7 @@ if(!defined("APP_START")) die("No Direct Access");
                     <label for="select_all"></label></div></th>
                     
                 <th width="5%" class="text-center">ID</th>
+                <th>Business Name</th>
                 <th>Customer Name</th>
                 <th>Datetime</th>
                 <th class="text-right">Amount</th>
@@ -82,11 +83,13 @@ if(!defined("APP_START")) die("No Direct Access");
     	</thead>
     	<tbody>
 			<?php 
-            $sql="select a.*, b.customer_name from customer_payment a inner join customer b on a.customer_id = b.id where 1 ".$extra." order by datetime_added desc";
+            $total = 0;
+            $sql="select a.*, b.customer_name, b.business_name from customer_payment a inner join customer b on a.customer_id = b.id where 1 ".$extra." order by datetime_added desc";
             $rs=show_page($rows, $pageNum, $sql);
             if(numrows($rs)>0){
                 $sn=1;
-                while($r=dofetch($rs)){             
+                while($r=dofetch($rs)){       
+                    $total += $r["amount"];      
                     ?>
                     <tr>
                         <td class="text-center"><?php echo $sn;?></td>
@@ -95,6 +98,7 @@ if(!defined("APP_START")) die("No Direct Access");
                             <label for="<?php echo "rec_".$sn?>"></label></div>
                         </td>
                         <td class="text-center"><?php echo $r["id"]?></td>
+                        <td><?php echo unslash( $r[ "business_name" ] );?></td>
                         <td><?php echo unslash( $r[ "customer_name" ] );?></td>
                         <td><?php echo datetime_convert($r["datetime_added"]); ?></td>
                         <td class="text-right"><?php echo curr_format(unslash($r["amount"])); ?></td>
@@ -123,6 +127,13 @@ if(!defined("APP_START")) die("No Direct Access");
                 }
                 ?>
                 <tr>
+                    <th colspan="6" class="text-right">Total</th>
+                    <th class="text-right"><?php echo curr_format($total);?></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                <tr>
                     <td colspan="5" class="actions">
                         <select name="bulk_action" id="bulk_action" title="Choose Action">
                             <option value="null">Bulk Action</option>
@@ -132,14 +143,14 @@ if(!defined("APP_START")) die("No Direct Access");
                         </select>
                         <input type="button" name="apply" value="Apply" id="apply_bulk_action" class="btn btn-light" title="Apply Action"  />
                     </td>
-                    <td colspan="4" class="paging" title="Paging" align="right"><?php echo pages_list($rows, "customer_payment", $sql, $pageNum)?></td>
+                    <td colspan="5" class="paging" title="Paging" align="right"><?php echo pages_list($rows, "customer_payment", $sql, $pageNum)?></td>
                 </tr>
                 <?php	
             }
             else{	
                 ?>
                 <tr>
-                    <td colspan="9"  class="no-record">No Result Found</td>
+                    <td colspan="10"  class="no-record">No Result Found</td>
                 </tr>
                 <?php
             }

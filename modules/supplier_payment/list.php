@@ -18,7 +18,7 @@ if(!defined("APP_START")) die("No Direct Access");
         <div>
         	<form class="form-horizontal" action="" method="get">
             	<div class="col-sm-2">
-                	<select name="supplier_id" id="supplier_id" class="custom_select">
+                	<select name="supplier_id" id="supplier_id" class="select_multiple">
                         <option value=""<?php echo ($supplier_id=="")? " selected":"";?>>Select Supplier</option>
                         <?php
                             $res=doquery("select * from supplier order by supplier_name ",$dblink);
@@ -82,10 +82,12 @@ if(!defined("APP_START")) die("No Direct Access");
     	</thead>
     	<tbody>
 			<?php 
+            $total = 0;
             $rs=show_page($rows, $pageNum, $sql);
             if(numrows($rs)>0){
                 $sn=1;
-                while($r=dofetch($rs)){             
+                while($r=dofetch($rs)){       
+                    $total += $r["amount"];     
                     ?>
                     <tr>
                         <td class="text-center"><?php echo $sn;?></td>
@@ -122,6 +124,14 @@ if(!defined("APP_START")) die("No Direct Access");
                     $sn++;
                 }
                 ?>
+                <tr>
+                    <th colspan="5" class="text-right">Total</th>
+                    <th class="text-right"><?php echo curr_format($total);?></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
                 <tr>
                     <td colspan="6" class="actions">
                         <select name="bulk_action" id="bulk_action" title="Choose Action">

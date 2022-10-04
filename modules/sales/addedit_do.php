@@ -20,13 +20,14 @@ if(isset($_POST["action"])){
 			$response = $accounts;
 		break;
 		case "get_customers":
-			$rs = doquery( "select * from customer where status=1 order by customer_name", $dblink );
+			$rs = doquery( "select * from customer where status=1 order by business_name", $dblink );
 			$customers = array();
 			if( numrows( $rs ) > 0 ) {
 				while( $r = dofetch( $rs ) ) {
 					$customers[] = array(
 						"id" => $r[ "id" ],
 						"name" => unslash($r[ "customer_name" ]),
+						"business_name" => unslash($r[ "business_name" ]),
 					);
 				}
 			}
@@ -73,6 +74,8 @@ if(isset($_POST["action"])){
 					"total" => $r[ "total_price" ],
 					"discount" => $r[ "discount" ],
 					"net_total" => $r[ "net_price" ],
+					"notes" => unslash($r[ "notes" ]),
+					"shipping_charges" => $r[ "shipping_charges" ],
 					"customer_payment_id" => 0,
 					"payment_account_id" => "",
 					"payment_amount" => 0,
@@ -135,11 +138,11 @@ if(isset($_POST["action"])){
 			}
 			if( count( $err ) == 0 ) {
 				if( !empty( $sales->id ) ) {
-					doquery( "update sales set `datetime_added`='".slash(datetime_dbconvert(unslash($sales->datetime_added)))."', `customer_id`='".slash($sales->customer_id)."', `total_items`='".slash($sales->quantity)."', `total_price`='".slash($sales->total)."', `discount`='".slash($sales->discount)."', `net_price`='".slash($sales->net_total)."' where id='".$sales->id."'", $dblink );
+					doquery( "update sales set `datetime_added`='".slash(datetime_dbconvert(unslash($sales->datetime_added)))."', `customer_id`='".slash($sales->customer_id)."', `total_items`='".slash($sales->quantity)."', `total_price`='".slash($sales->total)."', `discount`='".slash($sales->discount)."', `net_price`='".slash($sales->net_total)."', `notes`='".slash($sales->notes)."', `shipping_charges`='".slash($sales->shipping_charges)."' where id='".$sales->id."'", $dblink );
 					$sales_id = $sales->id;
 				}
 				else {
-					doquery( "insert into sales (datetime_added, customer_id, total_items, total_price, discount, net_price, added_by) VALUES ('".slash(datetime_dbconvert($sales->datetime_added))."', '".slash($sales->customer_id)."', '".slash($sales->quantity)."', '".slash($sales->total)."', '".slash($sales->discount)."', '".slash($sales->net_total)."', '".$_SESSION[ "logged_in_admin" ][ "id" ]."')", $dblink );
+					doquery( "insert into sales (datetime_added, customer_id, total_items, total_price, discount, net_price, notes, shipping_charges, added_by) VALUES ('".slash(datetime_dbconvert($sales->datetime_added))."', '".slash($sales->customer_id)."', '".slash($sales->quantity)."', '".slash($sales->total)."', '".slash($sales->discount)."', '".slash($sales->net_total)."', '".slash($sales->notes)."', '".slash($sales->shipping_charges)."', '".$_SESSION[ "logged_in_admin" ][ "id" ]."')", $dblink );
 					$sales_id = inserted_id();
 				}
 				if( !empty( $sales->payment_account_id ) ) {
@@ -164,12 +167,12 @@ if(isset($_POST["action"])){
 					if( !empty( $item->id ) ) {  
 						$prev_item = dofetch( doquery( "select quantity from sales_items where id = '".$item->id."'", $dblink ) );
 						$quantity = $item->quantity-$prev_item[ "quantity" ]; 
-						doquery( "update sales_items set `item_category_id`='".slash( $item->item_category_id )."', `item_id`='".slash( $item->item_id )."', `sale_price`='".$item->sale_price."', `quantity`='".$item->quantity."', `discount`='".$item->discount."', `total`='".$item->total."', `is_return`='".$item->return."' where id='".$item->id."'", $dblink );
+						doquery( "update sales_items set `item_id`='".slash( $item->item_id )."', `sale_price`='".$item->sale_price."', `quantity`='".$item->quantity."', `discount`='".$item->discount."', `total`='".$item->total."', `is_return`='".$item->return."' where id='".$item->id."'", $dblink );
 						//doquery( "update purchase_items set quantity_sold = quantity_sold+".$quantity." where item_id = '".$item->item_id."'", $dblink );
 						$item_ids[] = $item->id;
 					}
 					else {						
-						doquery( "insert into sales_items ( sales_id, item_category_id, item_id, sale_price, quantity, discount, total, is_return ) values( '".$sales_id."', '".$item->item_category_id."', '".$item->item_id."', '".$item->sale_price."', '".$item->quantity."', '".$item->discount."','".$item->total."', '".$item->return."' )", $dblink );
+						doquery( "insert into sales_items ( sales_id, item_id, sale_price, quantity, discount, total, is_return ) values( '".$sales_id."', '".$item->item_id."', '".$item->sale_price."', '".$item->quantity."', '".$item->discount."','".$item->total."', '".$item->return."' )", $dblink );
 						$item->id = inserted_id();
 						$item_ids[] = $item->id;
 						$quantity = $item->quantity;

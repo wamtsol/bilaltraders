@@ -19,19 +19,19 @@ if(!defined("APP_START")) die("No Direct Access");
         <div>
         	<form class="form-horizontal" action="" method="get">
             <div class="col-sm-2">
-                 <select name="customer_id" id="customer_id" class="form-control">
-                <option value=""<?php echo ($customer_id=="")? " selected":"";?>>
-                Select Customers</option>
-                <?php
-                    $res=doquery("select * from customer order by customer_name",$dblink);
-                    if(numrows($res)>=0){
-                        while($rec=dofetch($res)){
-                        ?>
-                        <option value="<?php echo $rec["id"]?>" <?php echo($customer_id==$rec["id"])?"selected":"";?>><?php echo unslash($rec["customer_name"])?></option>
-                        <?php
-                        }
-                    }	
-                ?>
+                <select name="customer_id" id="customer_id" class="select_multiple">
+                    <option value=""<?php echo ($customer_id=="")? " selected":"";?>>
+                    Select Customers</option>
+                    <?php
+                        $res=doquery("select * from customer order by business_name",$dblink);
+                        if(numrows($res)>=0){
+                            while($rec=dofetch($res)){
+                            ?>
+                            <option value="<?php echo $rec["id"]?>" <?php echo($customer_id==$rec["id"])?"selected":"";?>><?php echo unslash($rec["business_name"])?></option>
+                            <?php
+                            }
+                        }	
+                    ?>
                 </select>
 
                 </div>
@@ -128,7 +128,7 @@ if(!defined("APP_START")) die("No Direct Access");
                         </td>
                         <td class="text-center"><?php echo $r["id"]?></td>
                         <td><?php echo datetime_convert($r["datetime_added"]); ?></td>
-                        <td><?php echo get_field($r["customer_id"], "customer","customer_name");?></td>
+                        <td><?php echo get_field($r["customer_id"], "customer","business_name");?></td>
                         <td>
                         	<?php 
 								$items=doquery("select * from sales_items where sales_id='".$r["id"]."'",$dblink);

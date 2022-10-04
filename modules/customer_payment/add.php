@@ -30,14 +30,14 @@ else{
                 <label class="form-label" for="customer_id">Customer Name <span class="manadatory">*</span></label>
             </div>
             <div class="col-sm-10">
-                <select name="customer_id" title="Choose Option">
+                <select name="customer_id" title="Choose Option" class="select_multiple">
                     <option value="0">Select Customer</option>
                     <?php
-                    $res=doquery("select * from customer where status=1 order by id", $dblink);
+                    $res=doquery("select * from customer where status=1 order by business_name", $dblink);
                     if(numrows($res)>0){
                         while($rec=dofetch($res)){
                         ?>
-                        <option value="<?php echo $rec["id"]?>"<?php echo($customer_id==$rec["id"])?"selected":"";?>><?php echo unslash($rec["customer_name"]); ?></option>
+                        <option value="<?php echo $rec["id"]?>"<?php echo($customer_id==$rec["id"])?"selected":"";?>><?php echo unslash($rec["business_name"]); ?></option>
                      <?php			
                         }			
                     }

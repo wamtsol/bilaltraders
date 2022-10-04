@@ -17,6 +17,8 @@ angular.module('sales', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angularj
 			total: 0,
 			discount: 0,
 			net_total: 0,
+			shipping_charges: 0,
+			notes: '',
 			payment_details: '',
 			payment_account_id: "",
 			payment_amount: 0

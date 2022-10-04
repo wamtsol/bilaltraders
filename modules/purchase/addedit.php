@@ -44,7 +44,16 @@ else {
             </div>
         </div>
     </div>
-
+    <div class="form-group">
+        <div class="row">
+            <div class="col-sm-2 control-label">
+                <label class="form-label" for="notes">Notes</label>
+            </div>
+            <div class="col-sm-10">
+            	<textarea ng-model="purchase.notes" class="form-control">{{purchase.notes}}</textarea>
+            </div>
+        </div>
+    </div>
     <div class="form-group">
         <div class="row">
             <div class="col-sm-2 control-label">

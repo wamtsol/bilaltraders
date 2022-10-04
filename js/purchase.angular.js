@@ -24,7 +24,8 @@ angular.module('purchase', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angul
 			quantity: 0,
 			total: 0,
 			discount: 0,
-			net_total: 0
+			net_total: 0,
+			notes: ''
 		};
 		$scope.item = {
 			"id": 0,

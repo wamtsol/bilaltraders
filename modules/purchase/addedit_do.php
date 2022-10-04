@@ -82,7 +82,8 @@ if(isset($_POST["action"])){
 					"quantity" => $r[ "total_items" ],
 					"total" => $r[ "total_price" ],
 					"discount" => $r[ "discount" ],
-					"net_total" => $r[ "net_price" ]
+					"net_total" => $r[ "net_price" ],
+					"notes" => unslash($r[ "notes" ])
 				);
 				$items = array();
 				$rs = doquery( "select * from purchase_items where purchase_id='".$id."' order by id", $dblink );
@@ -124,11 +125,11 @@ if(isset($_POST["action"])){
 					$supplier_id = $purchase->supplier->id;
 				}
 				if( !empty( $purchase->id ) ) {
-					doquery( "update purchase set `datetime_added`='".slash(datetime_dbconvert(unslash($purchase->datetime_added)))."', `supplier_id`='".slash($supplier_id)."', `total_items`='".slash($purchase->quantity)."', `total_price`='".slash($purchase->total)."', `discount`='".slash($purchase->discount)."', `net_price`='".slash($purchase->net_total)."' where id='".$purchase->id."'", $dblink );
+					doquery( "update purchase set `datetime_added`='".slash(datetime_dbconvert(unslash($purchase->datetime_added)))."', `supplier_id`='".slash($supplier_id)."', `total_items`='".slash($purchase->quantity)."', `total_price`='".slash($purchase->total)."', `discount`='".slash($purchase->discount)."', `net_price`='".slash($purchase->net_total)."', `notes`='".slash($purchase->notes)."' where id='".$purchase->id."'", $dblink );
 					$purchase_id = $purchase->id;
 				}
 				else {
-					doquery( "insert into purchase (datetime_added, supplier_id, total_items, total_price, discount, net_price, added_by) VALUES ('".slash(datetime_dbconvert($purchase->datetime_added))."', '".slash($supplier_id)."', '".slash($purchase->quantity)."', '".slash($purchase->total)."', '".slash($purchase->discount)."', '".slash($purchase->net_total)."', '".$_SESSION[ "logged_in_admin" ][ "id" ]."')", $dblink );
+					doquery( "insert into purchase (datetime_added, supplier_id, total_items, total_price, discount, net_price, notes, added_by) VALUES ('".slash(datetime_dbconvert($purchase->datetime_added))."', '".slash($supplier_id)."', '".slash($purchase->quantity)."', '".slash($purchase->total)."', '".slash($purchase->discount)."', '".slash($purchase->net_total)."', '".slash($purchase->notes)."', '".$_SESSION[ "logged_in_admin" ][ "id" ]."')", $dblink );
 					$purchase_id = inserted_id();
 				}
 				

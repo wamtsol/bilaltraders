@@ -12,7 +12,7 @@ if(isset($_SESSION["customer_manage"]["q"]))
 else
 	$q="";
 if(!empty($q)){
-	$extra.=" and customer_name like '%".$q."%'";
+	$extra.=" and customer_name like '%".$q."%' || business_name like '%".$q."%'";
 	$is_search=true;
 }
 ?>
