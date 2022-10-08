@@ -62,7 +62,7 @@ else {
             </div>
         </div>
     </div>
-    <div class="form-group">
+    <!-- <div class="form-group">
         <div class="row">
             <div class="col-sm-2 control-label">
                 <label class="form-label" for="notes">Notes</label>
@@ -71,8 +71,8 @@ else {
             	<textarea ng-model="sales.notes" class="form-control">{{sales.notes}}</textarea>
             </div>
         </div>
-    </div>
-    <div class="form-group">
+    </div> -->
+    <!-- <div class="form-group">
         <div class="row">
             <div class="col-sm-2 control-label">
                 <label class="form-label" for="shipping_charges">Shipping Charges</label>
@@ -81,7 +81,7 @@ else {
             	<input ng-model="sales.shipping_charges" class="form-control" />
             </div>
         </div>
-    </div>
+    </div> -->
     <div class="form-group">
         <div class="row">
             <div class="col-sm-2 control-label">
@@ -141,6 +141,11 @@ else {
                                 <th class="text-right">&nbsp;</th>
                             </tr>
                             <tr>
+                                <th colspan="5" class="text-right">Shipping Charges</th>
+                                <th class="text-right"><input type="text" id="shipping_charges" style="text-align:right" ng-model="sales.shipping_charges" ng-change='update_net_total()' /></th>
+                                <th class="text-right">&nbsp;</th>
+                            </tr>
+                            <tr>
                                 <th colspan="5" class="text-right">Net Total</th>
                                 <th class="text-right"><input type="text" id="total" style="text-align:right" ng-model="sales.net_total" /></th>
                                 <th class="text-right">&nbsp;</th>
@@ -157,6 +162,10 @@ else {
                             <tr>
                                 <th class="text-right" colspan="5">Payment Amount</th>
                                 <th class="text-right" colspan="2"><input type="text" style="text-align:right" ng-model="sales.payment_amount" /></th>
+                            </tr>
+                            <tr>
+                                <th class="text-right" colspan="5">Notes</th>
+                                <th class="text-right" colspan="2"><textarea ng-model="sales.notes" class="form-control">{{sales.notes}}</textarea></th>
                             </tr>
                         </tbody>
                     </table>

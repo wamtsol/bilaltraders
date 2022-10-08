@@ -65,6 +65,7 @@ table {
         <th width="10%" style="text-align:right;">Total Price</th>
         <th width="8%" style="text-align:right;">Discount</th>
         <th width="8%" style="text-align:right;">Net Price</th>
+        <th width="15%" style="text-align:right;">Note</th>
     </tr>
     <?php
     $total_qty = 0;
@@ -109,6 +110,7 @@ table {
                 <td style="text-align:right;"><?php echo curr_format(unslash($r["total_price"])); ?></td>
                 <td style="text-align:right;"><?php echo curr_format(unslash($r["discount"])); ?></td>
                 <td style="text-align:right;"><?php echo curr_format(unslash($r["net_price"])); ?></td>
+                <td style="text-align:right;"><?php echo unslash($r["notes"]); ?></td>
             </tr>
             <?php
         }
@@ -120,6 +122,7 @@ table {
         <th style="text-align:right;"><?php echo curr_format($total_price);?></th>
         <th style="text-align:right;"><?php echo curr_format($discount);?></th>
         <th style="text-align:right;"><?php echo curr_format($net_price);?></th>
+        <th></th>
     </tr>
 </table>
 </div>

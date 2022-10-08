@@ -105,7 +105,7 @@ $orderby = $order_by." ".$order;
                         <td class="text-center"><?php echo $sn;?></td>
                         
                         <td><?php echo datetime_convert($r["datetime_added"]); ?></td>
-                        <td><?php if($r["customer_id"]==0) echo "Cash"; else echo get_field($r["customer_id"], "customer","customer_name");?></td>
+                        <td><?php if($r["customer_id"]==0) echo "Cash"; else echo get_field($r["customer_id"], "customer","business_name");?></td>
                         <td class="text-right"><?php echo unslash($r["total_items"]); ?></td>
                         <td class="text-right">Rs. <?php echo curr_format(unslash($r["total_price"])); ?></td>
                         <td class="text-right">Rs. <?php echo curr_format(unslash($r["discount"])); ?></td>

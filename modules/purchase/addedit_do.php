@@ -99,7 +99,7 @@ if(isset($_POST["action"])){
 		case "save_purchase":
 			$err = array();
 			$purchase = json_decode( $_POST[ "purchase" ] );
-			if( empty( $purchase->datetime_added ) || empty( $purchase->supplier->supplier_code ) ) {
+			if( empty( $purchase->datetime_added ) ) {
 				$err[] = "Fields with * are mandatory";
 				
 			}
@@ -109,7 +109,7 @@ if(isset($_POST["action"])){
 			else {
 				$i=1;
 				foreach( $purchase->items as $item ) {
-					if( empty( $item->item_category_id ) || empty( $item->item_id ) || empty( $item->purchase_price ) || empty( $item->sale_price ) || empty( $item->quantity ) ){
+					if( empty( $item->item_id ) || empty( $item->purchase_price ) || empty( $item->sale_price ) || empty( $item->quantity ) ){
 						$err[] = "Fill all the required fields on Row#".$i;
 					}
 					$i++;
@@ -136,12 +136,12 @@ if(isset($_POST["action"])){
 				$item_ids = array();
 				foreach( $purchase->items as $item ) {
 					if( empty( $item->id ) ) {
-						doquery( "insert into purchase_items( purchase_id, item_category_id, item_id, purchase_price, sale_price, quantity, total, is_return ) values( '".$purchase_id."', '".$item->item_category_id."', '".slash( $item->item_id )."',  '".$item->purchase_price."', '".$item->sale_price."', '".$item->quantity."', '".$item->total."', '".$item->return."' )", $dblink );
+						doquery( "insert into purchase_items( purchase_id, item_id, purchase_price, sale_price, quantity, total, is_return ) values( '".$purchase_id."', '".slash( $item->item_id )."',  '".$item->purchase_price."', '".$item->sale_price."', '".$item->quantity."', '".$item->total."', '".$item->return."' )", $dblink );
 						$item_ids[] = inserted_id();
 						$quantity = $item->quantity;
 					}
 					else {
-						doquery( "update purchase_items set `purchase_id`='".$purchase_id."', `item_category_id`='".$item->item_category_id."', `item_id`='".slash( $item->item_id )."',`purchase_price`='".$item->purchase_price."', `sale_price`='".$item->sale_price."', `quantity`='".$item->quantity."', `total`='".$item->total."', `is_return`='".$item->return."' where id='".$item->id."'", $dblink );
+						doquery( "update purchase_items set `purchase_id`='".$purchase_id."', `item_id`='".slash( $item->item_id )."',`purchase_price`='".$item->purchase_price."', `sale_price`='".$item->sale_price."', `quantity`='".$item->quantity."', `total`='".$item->total."', `is_return`='".$item->return."' where id='".$item->id."'", $dblink );
 						$item_ids[] = $item->id;
 					}
 					

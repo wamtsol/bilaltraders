@@ -91,8 +91,8 @@ if(!defined("APP_START")) die("No Direct Access");
  					</a>
                 </th>
                 <th width="15%">Customer Name</th>
-                <th width="18%">Items</th>
-                <th class="text-right" width="8%">Total Items</th>
+                <!-- <th width="18%">Items</th>
+                <th class="text-right" width="8%">Total Items</th> -->
                 <th class="text-right" width="10%">
                 	<a href="sales_manage.php?order_by=total_price&order=<?php echo $order=="asc"?"desc":"asc"?>" class="sorting">
                 		Total Price
@@ -129,7 +129,7 @@ if(!defined("APP_START")) die("No Direct Access");
                         <td class="text-center"><?php echo $r["id"]?></td>
                         <td><?php echo datetime_convert($r["datetime_added"]); ?></td>
                         <td><?php echo get_field($r["customer_id"], "customer","business_name");?></td>
-                        <td>
+                        <!-- <td>
                         	<?php 
 								$items=doquery("select * from sales_items where sales_id='".$r["id"]."'",$dblink);
 								while($item=dofetch($items)){
@@ -137,7 +137,7 @@ if(!defined("APP_START")) die("No Direct Access");
 								}
 							?>
                         </td>
-                        <td class="text-right"><?php echo unslash($r["total_items"]); ?></td>
+                        <td class="text-right"><?php echo unslash($r["total_items"]); ?></td> -->
                         <td class="text-right"><?php echo curr_format(unslash($r["total_price"])); ?></td> 
                         <td style="text-align:right;"><?php echo curr_format(unslash($r["discount"])); ?></td>
                         <td style="text-align:right;"><?php echo curr_format(unslash($r["net_price"])); ?></td>                       
@@ -175,14 +175,14 @@ if(!defined("APP_START")) die("No Direct Access");
                         </select>
                         <input type="button" name="apply" value="Apply" id="apply_bulk_action" class="btn btn-light" title="Apply Action"  />
                     </td>
-                    <td colspan="6" class="paging" title="Paging" align="right"><?php echo pages_list($rows, "sales", $sql, $pageNum)?></td>
+                    <td colspan="4" class="paging" title="Paging" align="right"><?php echo pages_list($rows, "sales", $sql, $pageNum)?></td>
                 </tr>
                 <?php	
             }
             else{	
                 ?>
                 <tr>
-                    <td colspan="12"  class="no-record">No Result Found</td>
+                    <td colspan="10"  class="no-record">No Result Found</td>
                 </tr>
                 <?php
             }

@@ -119,14 +119,14 @@ $orderby = $order_by." ".$order;
         </tr>
 		<?php
 		$payment_total = 0;
-		$rs = doquery( "select customer_name, sum(amount) as total, datetime_added from customer_payment a left join customer b on a.customer_id = b.id where a.status=1 $extra group by a.customer_id", $dblink );
+		$rs = doquery( "select customer_name, business_name, sum(amount) as total, datetime_added from customer_payment a left join customer b on a.customer_id = b.id where a.status=1 $extra group by a.customer_id", $dblink );
 		if( numrows( $rs ) > 0 ) {
 			while( $r = dofetch( $rs ) ) {
 				if( $r[ "total" ] > 0 ){
 					$payment_total += $r[ "total" ];
 					?>
 					<tr>
-						<td class="text-right"><?php echo unslash( $r[ "customer_name" ] )?></td>
+						<td class="text-right"><?php echo unslash( $r[ "business_name" ] )?></td>
 						<td class="text-right" >Rs. <?php echo curr_format($r[ "total" ])?></td>
 					</tr>	
 					<?php

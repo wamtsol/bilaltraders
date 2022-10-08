@@ -35,7 +35,7 @@ table {
     	<h1><?php echo get_config( 'site_title' )?></h1>
     	<h2>Customer Ledger</h2>
         <p>
-			<?php echo $customer["customer_name"]?>
+			<?php echo $customer["business_name"]?>
         </p>
     </th>
 </tr>
@@ -68,7 +68,7 @@ if(numrows($rs)>0){
 		<tr>
 			<td class="text-center"><?php echo $sn;?></td>
 			<td><?php echo datetime_convert($r["date"]); ?></td>
-			<td class="print_view"><?php echo unslash($r["details"])."TT- ".$invoice_id."/".date("m", $ts)."/".date("y", $ts); ?></td>
+			<td class="print_view"><?php echo unslash($r["details"])." ".$invoice_id."/".date("m", $ts)."/".date("y", $ts); ?></td>
 			<td align="right"><?php echo curr_format($r["debit"]); ?></td>
 			<td align="right"><?php echo curr_format($r["credit"]); ?></td>
 			<td align="right"><?php if($order == 'asc'){$balance += ($r["credit"])-$r["debit"]*($order == 'desc'?'-1':1);} echo curr_format( $balance ); if($order == 'desc'){$balance += ($r["credit"]-$r["debit"])*($order == 'desc'?'-1':1);} ?></td>

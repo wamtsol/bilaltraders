@@ -3,7 +3,7 @@ if(!defined("APP_START")) die("No Direct Access");
 
 ?>
 <div class="page-header">
-	<h1 class="title"><?php echo $customer["customer_name"]?></h1>
+	<h1 class="title"><?php echo $customer["business_name"]?></h1>
   	<ol class="breadcrumb">
     	<li class="active"><?php echo $customer["phone"]?></li>
   	</ol>

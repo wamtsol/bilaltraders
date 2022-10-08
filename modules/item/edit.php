@@ -67,7 +67,15 @@ if(!defined("APP_START")) die("No Direct Access");
                     <input type="text" value="<?php echo $unit_price; ?>" name="unit_price" id="unit_price" class="form-control" title="Enter Unit Price">
                 </div>
             </div>
-        </div>                  
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <label class="col-sm-3 control-label no-padding-right" for="">Sale Price</label>
+                <div class="col-sm-9">
+                    <input type="text" value="<?php echo $sale_price; ?>" name="sale_price" id="sale_price" class="form-control" title="Enter Sale Price">
+                </div>
+            </div>
+        </div>              
         <div class="form-group">
             <div class="row">
                 <label class="col-sm-3 control-label no-padding-right" for="">Quantity</label>
