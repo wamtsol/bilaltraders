@@ -72,29 +72,36 @@ $orderby = $order_by." ".$order;
 	<table class="table table-hover list">
     	<?php
 		$sql="select sum(total_items), sum(total_price), sum(discount), sum(net_price) from sales where 1 $extra";
-		$total=dofetch(doquery($sql, $dblink));
+		$total_sale=dofetch(doquery($sql, $dblink));
 		$sql="select sum(total_price)-sum(discount) as total from purchase where status = 1 $extra";
 		$purchase_total=dofetch(doquery($sql, $dblink));
+		if($purchase_total[ "total" ]==0){
+			$sql="select sum(unit_price) as total from items where status = 1";
+			$items_total=dofetch(doquery($sql, $dblink));
+		}
+		else{
+			$items_total = 0;
+		}
 		?>
     	<tr>
             <th class="text-right">Total Items Sold</th>
-            <th class="text-right"><?php echo $total[ "sum(total_items)" ]?></th>
+            <th class="text-right"><?php echo $total_sale[ "sum(total_items)" ]?></th>
         </tr>
         <tr>
             <th class="text-right">Total Price</th>
-            <th class="text-right">Rs. <?php echo curr_format($total[ "sum(total_price)" ])?></th>
+            <th class="text-right">Rs. <?php echo curr_format($total_sale[ "sum(total_price)" ])?></th>
         </tr>
         <tr>
             <th class="text-right">Total Discount</th>
-            <th class="text-right" >Rs. <?php echo curr_format($total[ "sum(discount)" ])?></th>
+            <th class="text-right" >Rs. <?php echo curr_format($total_sale[ "sum(discount)" ])?></th>
         </tr>
         <tr class="head">
             <th class="text-right">Net Total</th>
-            <th class="text-right" >Rs. <?php echo curr_format($total[ "sum(net_price)" ])?></th>
+            <th class="text-right" >Rs. <?php echo curr_format($total_sale[ "sum(net_price)" ])?></th>
         </tr>
         <tr>
             <th class="text-right">Total Purchase</th>
-            <th class="text-right" >Rs. <?php echo curr_format($purchase_total[ "total" ])?></th>
+            <th class="text-right" >Rs. <?php echo $purchase_total[ "total" ]==0?curr_format($items_total[ "total" ]):curr_format($purchase_total[ "total" ])?></th>
         </tr>
         <?php
 		$total = 0;
@@ -161,7 +168,7 @@ $orderby = $order_by." ".$order;
         </tr>
 		<tr class="head bg-success">
             <th class="text-right">Net Income</th>
-            <th class="text-right" >Rs. <?php echo curr_format($payment_total-$total-$supplier_payment_total)?></th>
+            <th class="text-right" >Rs. <?php echo curr_format($total_sale[ "sum(net_price)" ]-$total-$items_total["total"])?></th>
         </tr>
   	</table>
 </div>

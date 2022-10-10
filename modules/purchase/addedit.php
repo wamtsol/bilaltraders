@@ -44,7 +44,7 @@ else {
             </div>
         </div>
     </div>
-    <div class="form-group">
+    <!-- <div class="form-group">
         <div class="row">
             <div class="col-sm-2 control-label">
                 <label class="form-label" for="notes">Notes</label>
@@ -53,7 +53,7 @@ else {
             	<textarea ng-model="purchase.notes" class="form-control">{{purchase.notes}}</textarea>
             </div>
         </div>
-    </div>
+    </div> -->
     <div class="form-group">
         <div class="row">
             <div class="col-sm-2 control-label">
@@ -116,6 +116,10 @@ else {
                                 <th colspan="6" class="text-right">Net Total</th>
                                 <th class="text-right"><input type="text" id="total" style="text-align:right" ng-model="purchase.net_total" /></th>
                                 <th class="text-right">&nbsp;</th>
+                            </tr>
+                            <tr>
+                                <th class="text-right" colspan="1">Notes</th>
+                                <th class="text-right" colspan="6"><textarea ng-model="purchase.notes" class="form-control">{{sales.notes}}</textarea></th>
                             </tr>
                         </tbody>
                     </table>

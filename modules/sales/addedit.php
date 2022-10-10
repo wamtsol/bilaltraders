@@ -164,8 +164,8 @@ else {
                                 <th class="text-right" colspan="2"><input type="text" style="text-align:right" ng-model="sales.payment_amount" /></th>
                             </tr>
                             <tr>
-                                <th class="text-right" colspan="5">Notes</th>
-                                <th class="text-right" colspan="2"><textarea ng-model="sales.notes" class="form-control">{{sales.notes}}</textarea></th>
+                                <th class="text-right" colspan="1">Notes</th>
+                                <th class="text-right" colspan="6"><textarea ng-model="sales.notes" class="form-control">{{sales.notes}}</textarea></th>
                             </tr>
                         </tbody>
                     </table>

@@ -224,7 +224,7 @@ table td.grand {
 
 #signcompny {
     border-top: thin solid #000;
-    margin: 12px 0 0;
+    margin: 5px 0 0;
     padding-top: 5px;
     text-align: center;
 }
@@ -344,6 +344,7 @@ footer {
     <div class="contentbox">
         <p>Date/Time: <strong style="float:right"><?php echo datetime_convert($sale["datetime_added"]); ?></strong></p>
 		<p>Customer: <strong style="float:right"><?php echo get_field($sale["customer_id"], "customer", "business_name"); ?></strong></p>
+		
         <table cellpadding="0" cellspacing="0" align="center" width="800" border="0" class="items">
             <tr>
                 <th width="5%">S#</th>
@@ -375,7 +376,8 @@ footer {
         <hr style="border:0; border-top:1px solid #999">
         <p><strong>TOTAL</strong><strong style="float:right">Rs. <?php echo curr_format($sale["total_price"])?></strong></p>
         <p><strong>Discount</strong><strong style="float:right">Rs. <?php echo curr_format($sale["discount"])?></strong></p>
-        <p><strong>TOTAL</strong><strong style="float:right">Rs. <?php echo curr_format($sale["net_price"])?></strong></p>
+        <p style="border-bottom: 1px solid #ccc;padding-bottom: 5px;"><strong>TOTAL</strong><strong style="float:right">Rs. <?php echo curr_format($sale["net_price"])?></strong></p>
+		<p><strong>Note:</strong> <strong style="float:right"><?php echo unslash($sale["notes"]); ?></strong></p>
     </div>
     <div id="signcompny"><p>No Return No Exchange</p> Software developed by wamtSol http://wamtsol.com/ - 0346 3891 662</div> 
 </div>
