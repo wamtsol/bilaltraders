@@ -75,13 +75,10 @@ $orderby = $order_by." ".$order;
 		$total_sale=dofetch(doquery($sql, $dblink));
 		$sql="select sum(total_price)-sum(discount) as total from purchase where status = 1 $extra";
 		$purchase_total=dofetch(doquery($sql, $dblink));
-		if($purchase_total[ "total" ]==0){
+		
 			$sql="select sum(unit_price) as total from items where status = 1";
 			$items_total=dofetch(doquery($sql, $dblink));
-		}
-		else{
-			$items_total = 0;
-		}
+		
 		?>
     	<tr>
             <th class="text-right">Total Items Sold</th>
