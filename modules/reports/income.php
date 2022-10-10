@@ -101,7 +101,7 @@ $orderby = $order_by." ".$order;
         </tr>
         <tr>
             <th class="text-right">Total Purchase</th>
-            <th class="text-right" >Rs. <?php echo $purchase_total[ "total" ]==0?curr_format($items_total[ "total" ]):curr_format($purchase_total[ "total" ])?></th>
+            <th class="text-right" >Rs. <?php echo curr_format($items_total[ "total" ]+$purchase_total[ "total" ])?></th>
         </tr>
         <?php
 		$total = 0;
@@ -168,7 +168,7 @@ $orderby = $order_by." ".$order;
         </tr>
 		<tr class="head bg-success">
             <th class="text-right">Net Income</th>
-            <th class="text-right" >Rs. <?php echo curr_format($total_sale[ "sum(net_price)" ]-$total-$items_total["total"])?></th>
+            <th class="text-right" >Rs. <?php echo curr_format($total_sale[ "sum(net_price)" ]-$total-$items_total[ "total" ]+$purchase_total[ "total" ])?></th>
         </tr>
   	</table>
 </div>
