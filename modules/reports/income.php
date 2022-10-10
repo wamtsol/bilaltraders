@@ -78,7 +78,7 @@ $orderby = $order_by." ".$order;
 		
 			$sql="select sum(unit_price) as total from items where status = 1";
 			$items_total=dofetch(doquery($sql, $dblink));
-		
+		$purchase_total = $items_total[ "total" ]+$purchase_total[ "total" ];
 		?>
     	<tr>
             <th class="text-right">Total Items Sold</th>
@@ -98,7 +98,7 @@ $orderby = $order_by." ".$order;
         </tr>
         <tr>
             <th class="text-right">Total Purchase</th>
-            <th class="text-right" >Rs. <?php echo curr_format($items_total[ "total" ]+$purchase_total[ "total" ])?></th>
+            <th class="text-right" >Rs. <?php echo curr_format($purchase_total)?></th>
         </tr>
         <?php
 		$total = 0;
@@ -165,7 +165,7 @@ $orderby = $order_by." ".$order;
         </tr>
 		<tr class="head bg-success">
             <th class="text-right">Net Income</th>
-            <th class="text-right" >Rs. <?php echo curr_format($total_sale[ "sum(net_price)" ]-$total-$items_total[ "total" ]+$purchase_total[ "total" ])?></th>
+            <th class="text-right" >Rs. <?php echo curr_format($total_sale[ "sum(net_price)" ]-$purchase_total-$total)?></th>
         </tr>
   	</table>
 </div>
