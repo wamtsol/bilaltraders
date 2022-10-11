@@ -1,65 +1,17 @@
 <?php
 if(!defined("APP_START")) die("No Direct Access");
-$q="";
-$extra='';
-$is_search=false;
-if(isset($_GET["date_from"])){
-	$date_from=slash($_GET["date_from"]);
-	$_SESSION["expense"]["list"]["date_from"]=$date_from;
-}
-if(isset($_SESSION["expense"]["list"]["date_from"]))
-	$date_from=$_SESSION["expense"]["list"]["date_from"];
-else
-	$date_from="";
-if($date_from != ""){
-	$extra.=" and datetime_added>='".datetime_dbconvert($date_from)."'";
-}
-if(isset($_GET["date_to"])){
-	$date_to=slash($_GET["date_to"]);
-	$_SESSION["expense"]["list"]["date_to"]=$date_to;
-}
-if(isset($_SESSION["expense"]["list"]["date_to"]))
-	$date_to=$_SESSION["expense"]["list"]["date_to"];
-else
-	$date_to="";
-if($date_to != ""){
-	$extra.=" and datetime_added<'".datetime_dbconvert($date_to)."'";
-}
-if(isset($_GET["q"])){
-	$q=slash($_GET["q"]);
-	$_SESSION["expense_manage"]["q"]=$q;
-}
-if(isset($_SESSION["expense_manage"]["q"]))
-	$q=$_SESSION["expense_manage"]["q"];
-else
-	$q="";
-if(!empty($q)){
-	$extra.=" and amount like '%".$q."%'";
-	$is_search=true;
-}
-if(isset($_GET["expense_category_id"])){
-	$expense_category_id=slash($_GET["expense_category_id"]);
-	$_SESSION["expense_manage"]["expense_category_id"]=$expense_category_id;
-}
-if(isset($_SESSION["expense_manage"]["expense_category_id"]))
-	$expense_category_id=$_SESSION["expense_manage"]["expense_category_id"];
-else
-	$expense_category_id="";
-if($expense_category_id!=""){
-	$extra.=" and expense_category_id='".$expense_category_id."'";
-    $is_search=true;
-}
 
 ?>
 <div class="page-header">
 	<h1 class="title">Manage Expense</h1>
   	<ol class="breadcrumb">
-    	<li class="active">All the administrators who can use the manage item</li>
+    	<li class="active">All Expenses</li>
   	</ol>
   	<div class="right">
     	<div class="btn-group" role="group" aria-label="..."> 
         	<a href="expense_manage.php?tab=add" class="btn btn-light editproject">Add New Record</a> 
             <a id="topstats" class="btn btn-light" href="#"><i class="fa fa-search"></i></a> 
+            <a class="btn print-btn" href="expense_manage.php?tab=print"><i class="fa fa-print" aria-hidden="true"></i></a>
     	</div> 
     </div> 
 </div>
@@ -68,28 +20,42 @@ if($expense_category_id!=""){
     	<div>
         	<form class="form-horizontal" action="" method="get">
             <div class="col-sm-3">
-                 <select name="expense_category_id" id="expense_category_id" class="form-control">
-                <option value=""<?php echo ($expense_category_id=="")? " selected":"";?>>
-                Select Expense Category</option>
-                <?php
-                    $res=doquery("select * from expense_category order by title",$dblink);
-                    if(numrows($res)>=0){
-                        while($rec=dofetch($res)){
-                        ?>
-                        <option value="<?php echo $rec["id"]?>" <?php echo($expense_category_id==$rec["id"])?"selected":"";?>><?php echo unslash($rec["title"])?></option>
+                	<select name="expense_category_id" id="expense_category_id" class="custom_select">
+                        <option value=""<?php echo ($expense_category_id=="")? " selected":"";?>>Select Expense Category</option>
                         <?php
-                        }
-                    }	
-                ?>
-                </select>
+                            $res=doquery("select * from expense_category order by title",$dblink);
+                            if(numrows($res)>=0){
+                                while($rec=dofetch($res)){
+                                ?>
+                                <option value="<?php echo $rec["id"]?>" <?php echo($expense_category_id==$rec["id"])?"selected":"";?>><?php echo unslash($rec["title"])?></option>
+                            	<?php
+                                }
+                            }	
+                        ?>
+                    </select>
                 </div>
-                <div class="col-sm-3 col-xs-8">
-                  <input type="text" placeholder="Date From" title="Enter String" value="<?php echo $date_from;?>" name="date_from" id="date_from" class="form-control date-picker" >  
+                <div class="col-sm-3">
+                	<select name="account_id" id="account_id" class="custom_select">
+                        <option value=""<?php echo ($account_id=="")? " selected":"";?>>Select Account</option>
+                        <?php
+                            $res=doquery("select * from account order by title",$dblink);
+                            if(numrows($res)>=0){
+                                while($rec=dofetch($res)){
+                                ?>
+                                <option value="<?php echo $rec["id"]?>" <?php echo($account_id==$rec["id"])?"selected":"";?>><?php echo unslash($rec["title"])?></option>
+                            	<?php
+                                }
+                            }	
+                        ?>
+                    </select>
                 </div>
-                 <div class="col-sm-3 col-xs-8">
-                  <input type="text" placeholder="Date To" title="Enter String" value="<?php echo $date_to;?>" name="date_to" id="date_to" class="form-control date-picker" >  
+                <div class="col-sm-2 margin-btm-5">
+                    <input type="text" title="Enter Date From" value="<?php echo $date_from;?>" placeholder="Date From" name="date_from" id="date_from" class="form-control date-picker" autocomplete="off" />  
                 </div>
-                <div class="col-sm-3 col-xs-2 text-left">
+                <div class="col-sm-2 margin-btm-5">
+                    <input type="text" title="Enter Date To" value="<?php echo $date_to;?>" placeholder="Date To" name="date_to" id="date_to" class="form-control date-picker" autocomplete="off" />  
+                </div>
+                <div class="col-sm-2 col-xs-2 text-left">
                     <input type="button" class="btn btn-danger btn-l reset_search" value="Reset" alt="Reset Record" title="Reset Record" />
                     <input type="submit" class="btn btn-default btn-l" value="Search" alt="Search Record" title="Search Record" />
                 </div>
@@ -108,7 +74,7 @@ if($expense_category_id!=""){
                 <th width="20%">Date/Time</th>
                 <th width="15%">Expense Category</th>
                 <th width="10%">Paid By</th>
-                <th width="10%">Amount</th>
+                <th width="10%" class="text-right">Amount</th>
                 <th width="15%">Added By</th>
                 <th width="10%" class="center">Status</th>
                 <th width="10%" class="center">Actions</th>
@@ -116,11 +82,12 @@ if($expense_category_id!=""){
         </thead>
         <tbody>
             <?php 
-            $sql="select * from expense where 1 $extra order by datetime_added desc";
+            $total = 0;
             $rs=show_page($rows, $pageNum, $sql);
             if(numrows($rs)>0){
                 $sn=1;
-                while($r=dofetch($rs)){             
+                while($r=dofetch($rs)){       
+                    $total += $r["amount"];      
                     ?>
                     <tr>
                         <td><?php echo $sn;?></td>
@@ -131,7 +98,7 @@ if($expense_category_id!=""){
                         <td><?php echo datetime_convert($r["datetime_added"]); ?></td>
                         <td><?php echo get_field( unslash($r["expense_category_id"]), "expense_category", "title" ); ?></td>
                         <td><?php echo get_field( unslash($r["account_id"]), "account", "title" ); ?></td>
-                        <td><?php echo curr_format(unslash($r["amount"])); ?></td>
+                        <td class="text-right"><?php echo curr_format(unslash($r["amount"])); ?></td>
                         <td><?php echo get_field( unslash($r["added_by"]), "admin", "username" ); ?></td>
                         <td class="center">
                             <a href="expense_manage.php?id=<?php echo $r['id'];?>&tab=status&s=<?php echo ($r["status"]==0)?1:0;?>">
@@ -158,6 +125,13 @@ if($expense_category_id!=""){
                     $sn++;
                 }
                 ?>
+                <tr>
+                    <th class="text-right" colspan="5">Total</th>
+                    <th class="text-right"><?php echo curr_format($total);?></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
                 <tr>
                     <td colspan="5" class="actions">
                         <select name="bulk_action" class="" id="bulk_action" title="Choose Action">

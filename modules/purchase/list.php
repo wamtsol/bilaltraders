@@ -88,7 +88,7 @@ if(!defined("APP_START")) die("No Direct Access");
                             ?>
  					</a></th>
                 <th width="15%">Supplier</th>
-                <th width="18%">Items</th>
+                <!-- <th width="18%">Items</th>
                 <th class="text-right" width="8%"><a href="purchase_manage.php?order_by=total_items&order=<?php echo $order=="asc"?"desc":"asc"?>" class="sorting">
                         Total Items
                         <?php
@@ -100,7 +100,7 @@ if(!defined("APP_START")) die("No Direct Access");
                                 <?php
                             }
                             ?>
- 					</a></th>
+ 					</a></th> -->
                 <th class="text-right" width="10%"><a href="purchase_manage.php?order_by=net_price&order=<?php echo $order=="asc"?"desc":"asc"?>" class="sorting">
                         Total Price
                         <?php
@@ -160,7 +160,7 @@ if(!defined("APP_START")) die("No Direct Access");
                         <td class="text-center"><?php echo $r["id"]?></td>
                         <td><?php echo datetime_convert($r["datetime_added"]); ?></td>
                         <td><?php echo unslash($r["supplier_name"])." (".unslash($r["supplier_code"]).")<br />".unslash($r["phone"]); ?></td>
-                        <td>
+                        <!-- <td>
                         	<?php 
 								$items=doquery("select * from purchase_items where purchase_id='".$r["id"]."'",$dblink);
 								while($item=dofetch($items)){
@@ -168,7 +168,7 @@ if(!defined("APP_START")) die("No Direct Access");
 								}
 							?>
                         </td>
-                        <td class="text-right"><?php echo $r["total_items"]; ?></td>
+                        <td class="text-right"><?php echo $r["total_items"]; ?></td> -->
                         <td class="text-right"><?php echo curr_format(unslash($r["total_price"])); ?></td>
                         <!-- <td class="text-right"><?php echo $r["quantity_sold"]; ?></td>
                         <td class="text-right"><?php echo $r["remaining_stock"]; ?></td> -->
