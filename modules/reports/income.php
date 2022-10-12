@@ -82,7 +82,7 @@ $orderby = $order_by." ".$order;
 				if(numrows($items)>0){
 					while($item = dofetch($items)){
 						//print_r($item);
-						$purchase_total += $item[ "unit_price" ];
+						$purchase_total += $item[ "unit_price" ]*$sale["total_qty"];
 					}
 				}
 				$sale_total_item += $sale["total_qty"];
