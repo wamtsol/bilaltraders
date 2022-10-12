@@ -87,7 +87,7 @@ $orderby = $order_by." ".$order;
 				}
 				$sale_total_item += $sale["total_qty"];
 				$sale_total_price += $sale["total_p"];
-				$sale_total_discount += $sale["total_dis"];
+				// $sale_total_discount += $sale["total_dis"];
 				$sale_net_total += $sale["total_p"];
 
 			}
