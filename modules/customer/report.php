@@ -87,8 +87,8 @@ if(!defined("APP_START")) die("No Direct Access");
                         <td class="text-center"><?php echo $sn;?></td>
                         <td><?php echo datetime_convert($r["date"]); ?></td>
                         <td><?php echo unslash($r["details"])."".$invoice_id."/".date("m", $ts)."/".date("y", $ts); ?></td>
-                        <td class="text-right"><?php echo $r["debit"]>0?curr_format($r["debit"]):''; ?></td>
-                        <td class="text-right"><?php echo $r["credit"]>0?curr_format($r["credit"]):''; ?></td>
+                        <td class="text-right"><?php echo curr_format($r["debit"]); ?></td>
+                        <td class="text-right"><?php echo curr_format($r["credit"]); ?></td>
                         <td class="text-right"><?php if($order == 'asc'){$balance += ($r["credit"])-$r["debit"]*($order == 'desc'?'-1':1);} echo curr_format( $balance ); if($order == 'desc'){$balance += ($r["credit"]-$r["debit"])*($order == 'desc'?'-1':1);} ?></td>
                     </tr>
                     <?php 

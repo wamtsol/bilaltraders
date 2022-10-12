@@ -61,11 +61,13 @@ if(!empty($q)){
     	</thead>
     	<tbody>
 			<?php 
+            $total_balance = 0;
             $sql="select * from supplier where 1 $extra";
             $rs=show_page($rows, $pageNum, $sql);
             if(numrows($rs)>0){
                 $sn=1;
-                while($r=dofetch($rs)){             
+                while($r=dofetch($rs)){   
+                    $total_balance += get_supplier_balance( $r[ "id" ] );           
                     ?>
                     <tr>
                         <td class="text-center"><?php echo $sn;?></td>
@@ -105,6 +107,12 @@ if(!empty($q)){
                     $sn++;
                 }
                 ?>
+                <tr>
+                    <th colspan="5" class="text-right">Total</th>
+                    <th class="text-right"><?php echo curr_format($total_balance);?></th>
+                    <th></th>
+                    <th></th>
+                </tr>
                 <tr>
                     <td colspan="4" class="actions">
                         <select name="bulk_action" id="bulk_action" title="Choose Action">

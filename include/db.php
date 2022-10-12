@@ -3,7 +3,7 @@ error_reporting(E_ALL ^ E_DEPRECATED);
 session_start();
 include('config.php');
 $dblink=mysqli_connect($db_host,$db_username,$db_password, $db_name);
-$dblink1=mysqli_connect($db_host,$db_username,$db_password, $db_name1);
+// $dblink1=mysqli_connect($db_host,$db_username,$db_password, $db_name1);
 if (mysqli_connect_errno()){
 	echo "Failed to connect to MySQL: " . mysqli_connect_error();
 }

@@ -86,7 +86,8 @@ if($item_category_id!=""){
                     <th>Title</th>
                     <th width="10%">Unit</th>
                     <th width="10%">Unit Price</th>
-                    <th width="10%">Quaintity</th>
+                    <th width="8%">Quaintity</th>
+                    <th width="8%">Amount</th>
                     <th width="10%">Alert Quaintity</th>
                     <th class="text-center" width="5%">Status</th>
                     <th class="text-center" width="5%">Actions</th>
@@ -94,11 +95,13 @@ if($item_category_id!=""){
             </thead>
             <tbody>
                 <?php 
+                $total_amount = 0;
                 $sql="select * from items where 1 $extra";
                 $rs=show_page($rows, $pageNum, $sql);
                 if(numrows($rs)>0){
                     $sn=1;
-                    while($r=dofetch($rs)){             
+                    while($r=dofetch($rs)){     
+                        $total_amount += $r["unit_price"]*$r["quantity"];        
                         ?>
                         <tr>
                             <td class="text-center"><?php echo $sn;?></td>
@@ -112,6 +115,7 @@ if($item_category_id!=""){
                             <td><?php echo get_field($r["unit_id"], "units"); ?></td>
                             <td><?php echo unslash($r["unit_price"]); ?></td>
                             <td><?php echo unslash($r["quantity"]); ?></td>
+                            <td><?php echo curr_format($r["unit_price"]*$r["quantity"]); ?></td>
                             <td><?php echo unslash($r["alert_quantity"]); ?></td>
                             <td class="text-center"><a href="items_manage.php?id=<?php echo $r['id'];?>&tab=status&s=<?php echo ($r["status"]==0)?1:0;?>">
                                 <?php
@@ -137,7 +141,14 @@ if($item_category_id!=""){
                     }
                     ?>
                     <tr>
-                        <td colspan="5" class="actions">
+                        <th colspan="7" class="text-right">Total</th>
+                        <th><?php echo curr_format($total_amount);?></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    <tr>
+                        <td colspan="6" class="actions">
                             <select name="bulk_action" id="bulk_action" title="Choose Action">
                                 <option value="null">Bulk Action</option>
                                 <option value="delete">Delete</option>
@@ -153,7 +164,7 @@ if($item_category_id!=""){
                 else{	
                     ?>
                     <tr>
-                        <td colspan="10"  class="no-record">No Result Found</td>
+                        <td colspan="11"  class="no-record">No Result Found</td>
                     </tr>
                     <?php
                 }

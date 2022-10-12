@@ -50,7 +50,7 @@ if( isset( $_SESSION["customer_manage"]["report"]["order"] ) ){
 }
 $orderby = $order_by." ".$order;
 $main_sql = array();
-$main_sql[] = "select datetime_added as date, concat( 'Sale', if(net_price>0, '', ''),' ', '', '<a href=\"sales_manage.php?tab=edit&id=', a.id,'\" target=\"_blank\" class=\"view-link\"> View bill </a>' ) as details, 0 as debit, net_price as credit from sales a left join customer b on a.customer_id=b.id where a.status=1".(!empty($customer["id"])?" and customer_id='".$customer["id"]."'":"");
+$main_sql[] = "select datetime_added as date, concat( 'Sale', if(net_price>0, '', ''),' ', '', '<a href=\"sales_manage.php?tab=addedit&id=', a.id,'\" target=\"_blank\" class=\"view-link\"> View bill </a>' ) as details, 0 as debit, net_price as credit from sales a left join customer b on a.customer_id=b.id where a.status=1".(!empty($customer["id"])?" and customer_id='".$customer["id"]."'":"");
 $main_sql[] = "select datetime_added as date, concat( ' Payment ', details) as details, amount as debit, 0 as credit from customer_payment a left join customer b on a.customer_id=b.id where a.status=1".(!empty($customer["id"])?" and customer_id='".$customer["id"]."'":"");
 $main_sql="(".implode( ' union ', $main_sql ).") as total_records";
 $sql = "select * from ".$main_sql." where 1 $extra order by $orderby";
