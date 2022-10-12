@@ -73,7 +73,7 @@ $orderby = $order_by." ".$order;
     	<?php
 		$sale_total_item = $sale_total_price = $sale_total_discount = $sale_net_total = 0; 
 		$purchase_total = 0;
-		$sales=doquery("select a.*, b.item_id, b.quantity as total_qty, b.discount as total_dis, b.total as total_p from sales a left join sales_items b on a.id = b.sales_id where a.id = b.sales_id status = 1 $extra", $dblink);
+		$sales=doquery("select a.*, b.item_id, b.quantity as total_qty, b.discount as total_dis, b.total as total_p from sales a left join sales_items b on a.id = b.sales_id where a.id = b.sales_id and status = 1 $extra", $dblink);
 		if(numrows($sales)>0){
 			while($sale = dofetch($sales)){
 				
