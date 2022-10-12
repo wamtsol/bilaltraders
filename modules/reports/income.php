@@ -71,30 +71,44 @@ $orderby = $order_by." ".$order;
 <div class="panel-body table-responsive">
 	<table class="table table-hover list">
     	<?php
-		$sql="select sum(total_items), sum(total_price), sum(discount), sum(net_price) from sales where 1 $extra";
-		$total_sale=dofetch(doquery($sql, $dblink));
-		$sql="select sum(total_price)-sum(discount) as total from purchase where status = 1 $extra";
-		$purchase_total=dofetch(doquery($sql, $dblink));
+		$sale_total_item = $sale_total_price = $sale_total_discount = $sale_net_total = 0; 
+		$purchase_total = 0;
+		$sales=doquery("select a.*, b.item_id, b.quantity as total_qty, b.discount as total_dis, b.total as total_p from sales a left join sales_items b on a.id = b.sales_id where 1 $extra", $dblink);
+		if(numrows($sales)>0){
+			while($sale = dofetch($sales)){
+				
+				$purchase=dofetch(doquery("select a.* from purchase a left join purchase_items b on a.id = b.purchase_id where b.item_id = '".$sale["item_id"]."' and status = 1", $dblink));
+				$items=doquery("select * from items where status = 1 and id = '".$sale["item_id"]."'", $dblink);
+				if(numrows($items)>0){
+					while($item = dofetch($items)){
+						//print_r($item);
+						$purchase_total += $item[ "unit_price" ];
+					}
+				}
+				$sale_total_item += $sale["total_qty"];
+				$sale_total_price += $sale["total_p"];
+				$sale_total_discount += $sale["total_dis"];
+				$sale_net_total += $sale["total_p"];
+
+			}
+		}
 		
-			$sql="select sum(unit_price) as total from items where status = 1";
-			$items_total=dofetch(doquery($sql, $dblink));
-		$purchase_total = $items_total[ "total" ]+$purchase_total[ "total" ];
 		?>
     	<tr>
             <th class="text-right">Total Items Sold</th>
-            <th class="text-right"><?php echo $total_sale[ "sum(total_items)" ]?></th>
+            <th class="text-right"><?php echo $sale_total_item?></th>
         </tr>
         <tr>
             <th class="text-right">Total Price</th>
-            <th class="text-right">Rs. <?php echo curr_format($total_sale[ "sum(total_price)" ])?></th>
+            <th class="text-right">Rs. <?php echo curr_format($sale_total_price)?></th>
         </tr>
         <tr>
             <th class="text-right">Total Discount</th>
-            <th class="text-right" >Rs. <?php echo curr_format($total_sale[ "sum(discount)" ])?></th>
+            <th class="text-right" >Rs. <?php echo curr_format($sale_total_discount)?></th>
         </tr>
         <tr class="head">
             <th class="text-right">Net Total</th>
-            <th class="text-right" >Rs. <?php echo curr_format($total_sale[ "sum(net_price)" ])?></th>
+            <th class="text-right" >Rs. <?php echo curr_format($sale_net_total)?></th>
         </tr>
         <tr>
             <th class="text-right">Total Purchase</th>
@@ -108,10 +122,10 @@ $orderby = $order_by." ".$order;
 				if( $r[ "total" ] > 0 ){
 					$total += $r[ "total" ];
 					?>
-					<tr>
+					<!-- <tr>
 						<td class="text-right"><?php echo unslash( $r[ "title" ] )?></td>
 						<td class="text-right" >Rs. <?php echo curr_format($r[ "total" ])?></td>
-					</tr>	
+					</tr>	 -->
 					<?php
 				}
 			}
@@ -129,19 +143,19 @@ $orderby = $order_by." ".$order;
 				if( $r[ "total" ] > 0 ){
 					$payment_total += $r[ "total" ];
 					?>
-					<tr>
+					<!-- <tr>
 						<td class="text-right"><?php echo unslash( $r[ "business_name" ] )?></td>
 						<td class="text-right" >Rs. <?php echo curr_format($r[ "total" ])?></td>
-					</tr>	
+					</tr>	 -->
 					<?php
 				}
 			}
 		}
 		?>
-        <tr class="head">
+        <!-- <tr class="head">
             <th class="text-right">Total Payment</th>
             <th class="text-right" ><?php echo curr_format($payment_total)?></th>
-        </tr>
+        </tr> -->
 		<?php
 		$supplier_payment_total = 0;
 		$rs = doquery( "select supplier_name, sum(amount) as total, datetime_added from supplier_payment a left join supplier b on a.supplier_id = b.id where a.status=1 $extra group by a.supplier_id", $dblink );
@@ -150,22 +164,22 @@ $orderby = $order_by." ".$order;
 				if( $r[ "total" ] > 0 ){
 					$supplier_payment_total += $r[ "total" ];
 					?>
-					<tr>
+					<!-- <tr>
 						<td class="text-right"><?php echo unslash( $r[ "supplier_name" ] )?></td>
 						<td class="text-right" >Rs. <?php echo curr_format($r[ "total" ])?></td>
-					</tr>	
+					</tr>	 -->
 					<?php
 				}
 			}
 		}
 		?>
-        <tr class="head">
+        <!-- <tr class="head">
             <th class="text-right">Total Payment Supplier</th>
             <th class="text-right" ><?php echo curr_format($supplier_payment_total)?></th>
-        </tr>
+        </tr> -->
 		<tr class="head bg-success">
             <th class="text-right">Net Income</th>
-            <th class="text-right" >Rs. <?php echo curr_format($total_sale[ "sum(net_price)" ]-$purchase_total-$total)?></th>
+            <th class="text-right" >Rs. <?php echo curr_format($sale_net_total-$purchase_total-$total)?></th>
         </tr>
   	</table>
 </div>

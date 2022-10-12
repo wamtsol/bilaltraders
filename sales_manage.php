@@ -25,7 +25,7 @@ if(isset($_SESSION["sales_manage"]["date_from"]))
 else
 	$date_from="";
 if($date_from != ""){
-	$extra.=" and datetime_added>='".datetime_dbconvert($date_from)."'";
+	$extra.=" and datetime_added>='".date("Y/m/d H:i:s", strtotime(date_dbconvert($date_from)))."'";
 	$is_search=true;
 }
 if(isset($_GET["date_to"])){
@@ -37,7 +37,7 @@ if(isset($_SESSION["sales_manage"]["date_to"]))
 else
 	$date_to="";
 if($date_to != ""){
-	$extra.=" and datetime_added<'".datetime_dbconvert($date_to)."'";
+	$extra.=" and datetime_added<'".date("Y/m/d", strtotime(date_dbconvert($date_to))+3600*24)."'";
 	$is_search=true;
 }
 if(isset($_GET["q"])){

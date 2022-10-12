@@ -56,6 +56,7 @@ if(isset($_POST["action"])){
 						"category" => $r[ "category" ],
 						"item_category_id" => (int)$r[ "item_category_id" ],
 						"title" => unslash($r[ "title" ]),
+						"quantity" => unslash($r[ "quantity" ]),
 					);
 				}
 			}
@@ -121,20 +122,24 @@ if(isset($_POST["action"])){
 			}
 			else {
 				$i=1;
-				foreach( $sales->items as $item ) {
-					if(empty( $item->item_id ) || empty( $item->quantity ) ){
-						$err[] = (empty( $item->item_id )?"Select Item":"").(empty( $item->item_id ) && empty( $item->quantity )?" and ":"").(empty( $item->quantity )?"Enter quantity":"")." at Row#".$i;
-					}
-					$i++;
-					$quantity=$item->quantity;
-					$rqq=doquery("select title, quantity from items where id='".$item->item_id."'", $dblink);
-					if(numrows($rqq)>0){
-						$rq = dofetch( $rqq );
-						if($rq['quantity']<$quantity){
-							$err[]=unslash($rq["title"]). "is out of stock. Quantity available:" .$rq['quantity']."<br />";
+				//if(empty( $sales->id ) ) {
+					foreach( $sales->items as $item ) {
+						if(empty( $item->item_id ) || empty( $item->quantity ) ){
+							$err[] = (empty( $item->item_id )?"Select Item":"").(empty( $item->item_id ) && empty( $item->quantity )?" and ":"").(empty( $item->quantity )?"Enter quantity":"")." at Row#".$i;
+						}
+						$i++;
+						if( $item->id==0 ) {
+							$rqq=doquery("select title, quantity from items where id='".$item->item_id."'", $dblink);
+							if(numrows($rqq)>0){
+								$rq = dofetch( $rqq );
+								// echo $rq['quantity'];
+								if($rq['quantity']<$item->quantity){
+									$err[]=unslash($rq["title"]). "is out of stock. Quantity available:" .$rq['quantity']."<br />";
+								}
+							}
 						}
 					}
-				}
+				//}
 			}
 			if( count( $err ) == 0 ) {
 				if( !empty( $sales->id ) ) {

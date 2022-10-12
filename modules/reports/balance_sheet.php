@@ -111,7 +111,7 @@ if(!defined("APP_START")) die("No Direct Access");
 										$total += $balance;
 										?>
 										<tr>
-											<td><?php echo unslash($r["customer_name"] ); ?></td>
+											<td><?php echo unslash($r["business_name"] ); ?></td>
 											<td class="text-right"><?php echo curr_format( $balance ) ?></td>
 										</tr>
 										<?php 
@@ -119,7 +119,7 @@ if(!defined("APP_START")) die("No Direct Access");
 									}
 									else {
 										$customer_payable[] = array(
-											"name" => unslash($r["customer_name"] ),
+											"name" => unslash($r["business_name"] ),
 											"balance" => $balance
 										);
 									}
