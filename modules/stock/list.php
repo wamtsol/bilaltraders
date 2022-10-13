@@ -63,7 +63,7 @@ if(!defined("APP_START")) die("No Direct Access");
             <tr>
                 <th width="2%" class="text-center">S.no</th>
                 <th class="text-center" width="5%">ID</th>
-                <th width="15%">Supplier</th>
+                <!-- <th width="15%">Supplier</th> -->
                 <th width="15%"><a href="stock_manage.php?order_by=title&order=<?php echo $order=="asc"?"desc":"asc"?>" class="sorting">
                         Item
                         <?php
@@ -131,7 +131,7 @@ if(!defined("APP_START")) die("No Direct Access");
                     <tr>
                         <td class="text-center"><?php echo $sn;?></td>
                         <td class="text-center"><?php echo $r["id"]?></td>
-                        <td><?php // echo unslash( $r["supplier_name"] )?></td>
+                        <!-- <td><?php echo unslash( $r["supplier_name"] )?></td> -->
                         <td><?php echo unslash($r["title"]); ?></td>
                         <td class="text-right"><?php echo unslash($r["unit_price"]); ?></td>
                         <td class="text-right"><?php echo unslash($r["sale_price"]); ?></td>
