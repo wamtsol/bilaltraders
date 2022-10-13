@@ -26,7 +26,7 @@ if(!defined("APP_START")) die("No Direct Access");
                 <div class="col-sm-2">
                     <input type="text" title="Enter Date To" name="date_to" id="date_to" placeholder="" class="form-control date-picker"  value="<?php echo $date_to?>" >
                 </div>
-            	<div class="col-sm-3">
+            	<!-- <div class="col-sm-3">
                   <select name="supplier_id">
                   	<option value="">All Suppliers</option>
                     <?php
@@ -40,7 +40,7 @@ if(!defined("APP_START")) die("No Direct Access");
 					}
 					?>
                   </select>
-                </div>
+                </div> -->
                 <!-- <div class="col-sm-2">
                   <select name="stock_status">
                   	<option value="1"<?php echo $stock_status=="1"?" selected":""?>>Available Stock</option>
@@ -79,18 +79,10 @@ if(!defined("APP_START")) die("No Direct Access");
                 <th class="text-right" width="10%">Purchase Value</th>
                 <th class="text-right" width="10%">Sale Value</th>
                 <th class="text-right" width="10%">Opening Stock</th>
-                <th class="text-right" width="10%"><a href="stock_manage.php?order_by=quantity&order=<?php echo $order=="asc"?"desc":"asc"?>" class="sorting">
+                <th class="text-right" width="10%">
                         Item Purchased
-                        <?php
-                            if( $order_by == "quantity" ) {
-                                ?>
-                                <span class="sort-icon">
-                                    <i class="fa fa-angle-<?php echo $order=="asc"?"up":"down"?>" data-hover_in="<?php echo $order=="asc"?"down":"up"?>" data-hover_out="<?php echo $order=="desc"?"down":"up"?>" aria-hidden="true"></i>
-                                </span>
-                                <?php
-                            }
-                            ?>
- 					</a></th>
+                        
+ 				</th>
                 <th class="text-right" width="12%">Purchasing Price</th>
                 <th class="text-right" width="8%"><a href="stock_manage.php?order_by=quantity_sold&order=<?php echo $order=="asc"?"desc":"asc"?>" class="sorting">
                         Item Sold
@@ -128,28 +120,31 @@ if(!defined("APP_START")) die("No Direct Access");
                 $sn=1;
                 $sold = $total_sale = $remaining_stock = 0;
                 while($r=dofetch($rs)){        
-                    $sale = dofetch(doquery( "select sum(quantity) as sold_qty, sum(total) as total_sale from sales_items where item_id='".$r[ "item_id" ]."'", $dblink ));
+                    $sale = dofetch(doquery( "select sum(a.quantity) as sold_qty, sum(a.total) as total_sale from sales_items a left join sales b on a.sales_id = b.id where item_id='".$r[ "id" ]."' $extra order by $orderby", $dblink ));
                     $sold = $sale[ "sold_qty" ];
                     $total_sale = $sale[ "total_sale" ];
-                    $remaining_stock = $r["opening_stock"]+$r[ "quantity" ]-$sold;
+                    $purchase = dofetch(doquery( "select sum(a.quantity) as purchase_qty, sum(a.total) as total_purchase from purchase_items a left join purchase b on a.purchase_id = b.id where item_id='".$r[ "id" ]."' $extra order by $orderby", $dblink ));
+                    $purchased = $purchase[ "purchase_qty" ];
+                    $total_purchase= $purchase[ "total_purchase" ];
+                    $remaining_stock = $r["quantity"]+$purchased-$sold;
                     ?>
                     <tr>
                         <td class="text-center"><?php echo $sn;?></td>
-                        <td class="text-center"><?php echo $r["item_id"]?></td>
-                        <td><?php echo unslash( $r["supplier_name"] )?></td>
+                        <td class="text-center"><?php echo $r["id"]?></td>
+                        <td><?php // echo unslash( $r["supplier_name"] )?></td>
                         <td><?php echo unslash($r["title"]); ?></td>
-                        <td class="text-right"><?php echo unslash($r["purchase_price"]); ?></td>
+                        <td class="text-right"><?php echo unslash($r["unit_price"]); ?></td>
                         <td class="text-right"><?php echo unslash($r["sale_price"]); ?></td>
-                        <td class="text-right"><?php echo $r["opening_stock"]; ?></td>
                         <td class="text-right"><?php echo $r["quantity"]; ?></td>
-                        <td class="text-right"><?php echo curr_format( $r[ "quantity" ]*$r[ "purchase_price" ] )?></td>
+                        <td class="text-right"><?php echo $purchased; ?></td>
+                        <td class="text-right"><?php echo curr_format( $total_purchase )?></td>
                         <td class="text-right"><?php echo $sold; ?></td>
                         <td class="text-right"><?php echo curr_format($total_sale); ?></td>
                         <td class="text-right"><?php echo $remaining_stock; ?></td>
                         <td class="text-right">
                             <?php 
                             if($remaining_stock>0){
-                                echo $remaining_stock*$r[ "purchase_price" ];
+                                echo $remaining_stock*$r[ "unit_price" ];
                             }
                             else{
                                 echo $remaining_stock;

@@ -1,19 +1,147 @@
 <?php
 if(!defined("APP_START")) die("No Direct Access");
 if(isset($_GET["id"]) && !empty($_GET["id"])){
-	$id = $_GET["id"];
-	$rs=doquery("select b.*, c.supplier_code from purchase a left join purchase_items b on a.id = b.purchase_id left join supplier c on a.supplier_id = c.id where a.id='".slash($id)."' order by item_id",$dblink);
-	if(numrows($rs)>0){
-		?>
-		<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-		<html xmlns="http://www.w3.org/1999/xhtml">
-		<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<link type="text/css" rel="stylesheet" href="css/barcode.css" />
-        <script type="text/javascript" src="js/jquery.js"></script>
-        <script>
+	$sale=dofetch(doquery("select * from purchase where id='".slash($_GET["id"])."'", $dblink));
+	?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Invoice</title>
+<style>
+.clearfix:after {
+	content: "";
+	display: table;
+	clear: both;
+}
+#main {
+width:71mm;
+border:0;
+}
+a {
+	color: #5D6975;
+	text-decoration: underline;
+}
+body {
+	position: relative;
+	margin: 0;
+	color: #000;
+	font-size: 12px;
+	font-family: Arial, Helvetica, sans-serif;
+	padding: 0px
+}
+p{margin:0 0 5px 0}
+#logo img {
+    width: 100%;
+	margin-bottom: 0.7em;
+}
+table {
+	width: 100%;
+	border-collapse: collapse;
+	border-spacing: 0;
+	margin-bottom: 10px;
+}
+table tr:nth-child(2n-1) td {
+	background: #F5F5F5;
+}
+table th, table td {
+	text-align: left;
+}
+table th {
+    border: 1px solid #fff;
+    color: #fff;
+    font-weight: bold;
+    line-height: 0.9em;
+    padding: 10px 0;
+    text-align: center;
+	background-color:#000;
+    white-space: nowrap;
+}
+table td {
+	text-align: right;
+	padding-top: 8px;
+	padding-right: 2px;
+	padding-bottom: 8px;
+	padding-left: 2px;
+	font-size:11px;
+}
+table tr{ font-size:10px}
+
+table td.unit, table td.qty, table td.total {
+	font-size: 1.2em;
+}
+table td.grand {
+	border-top: 1px solid #5D6975;
+}
+
+#signcompny {
+    border-top: thin solid #000;
+    margin: 5px 0 0;
+    padding-top: 5px;
+    text-align: center;
+}
+footer {
+	color: #5D6975;
+	width: 100%;
+	height: 30px;
+	position: absolute;
+	bottom: 0;
+	border-top: 1px solid #C1CED9;
+	padding: 8px 0;
+	text-align: center;
+}
+.comnme {
+	font-size: 22px;
+	font-weight: bold;
+}
+.contentbox{display:block}
+
+#logo {
+    border-radius: 3px;
+    display: block;
+    font-size: 26px;
+    font-weight: bold;
+    margin: 10px auto 0;
+    padding: 6px 15px;
+	text-align: center;
+}
+#receipt {
+    border: 1px solid;
+    border-radius: 3px;
+    display: block;
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 13px;
+    margin: 10px auto 16px;
+    padding: 5px;
+    text-align: center;
+    width: 82px;
+}
+#order {
+    border: 1px solid #000000;
+    border-radius: 5px;
+    color: #000000;
+    display: block;
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 16px;
+    margin: 16px auto 20px;
+    padding: 5px;
+    text-align: center;
+    width: 150px;
+}
+#logo span {
+    line-height: 20px;
+}
+.address{
+	text-align:center;
+	display:block;
+	font-size:11px;
+}
+</style>
+		<script>
 		function print_page(){
-			printer = '<?php echo get_config( 'barcode_printer_title' );?>';
+			printer = '<?php echo get_config( 'thermal_printer_title' );?>';
 			printers = jsPrintSetup.getPrintersList().split(",");
 			if( printers.indexOf( printer ) !== -1 ) {
 				jsPrintSetup.setPrinter( printer );
@@ -31,49 +159,74 @@ if(isset($_GET["id"]) && !empty($_GET["id"])){
 				jsPrintSetup.setOption('footerStrLeft', '');
 				jsPrintSetup.setOption('footerStrCenter', '');
 				jsPrintSetup.setOption('footerStrRight', '');
-				jsPrintSetup.setOption('numCopies', <?php if( isset($_GET["copies"]) && is_integer((int)$_GET["copies"]) && (int)$_GET["copies"] > 0 ) echo $_GET["copies"]; else echo "1";?>);
+				jsPrintSetup.setOption('printBGColors', 1);
 				// Suppress print dialog
 				jsPrintSetup.setSilentPrint(true);
 				// Do Print
 				jsPrintSetup.printWindow(window);
-				
 				// Restore print dialog
 				//jsPrintSetup.setSilentPrint(false);
 			}
 			else {
 				alert( printer + " is not installed." );
 			}
+			
 		}
-		$(window).load(function(){
-			//print_page();
-		});
-		$(document).ready(function(){
-			$('#print_btn').click(function(){
-				print_page();
-			});
-		});
         </script>
-		</head>
-		<body>
-        <?php
-        while( $r=dofetch($rs) ){
-			$barcode = str_repeat('0', 7-strlen($r[ "id" ])).$r[ "id" ];
-			for( $i = 0; $i < $r[ "quantity" ]-$r[ "quantity_sold" ]; $i++ ) {
-				?>
-				<div class="wrapper">
-					<span class="barcode"><img src="barcode.php?text=<?php echo $barcode?>&size=30" /></span>
-					<span class="number"><?php echo $barcode?></span>
-					<span class="item_name"><?php echo (!empty($r[ "supplier_code" ])?unslash($r[ "supplier_code" ]).'-':'').unslash( $r[ "item_id" ] )?></span>
-					<span class="item_name price">Price: <?php echo curr_format( $r[ "sale_price" ] )?></span>
-				</div>
-				<?php
-			}
-		}
-		?>
-        <button id="print_btn">Print</button>
-		</body>
-		</html>
-		<?php
-	}
+</head>
+<body onload="print_page();">
+<div id="main">
+    <div id="logo">
+    	<?php $reciept_logo=get_config("reciept_logo"); if(empty($reciept_logo)) echo $site_title; else { ?><img src="<?php echo $file_upload_root;?>config/<?php echo $reciept_logo?>" /><?php }?>
+    </div>
+    <span class="address"><?php echo nl2br(get_config("address_phone"))?></span>
+    <div id="receipt" style="width: 150px">RECEIPT #<strong><?php echo $sale["id"]; ?></div>
+    <?php
+    $order_id = dofetch(doquery("select count(1) from purchase where datetime_added >='".date("Y-m-d", strtotime($sale["datetime_added"]))." 00:00:00"."' and datetime_added<='".$sale["datetime_added"]."'", $dblink));
+	$order_id = $order_id[ "count(1)" ] + 1;
+	?>
+    <div class="contentbox">
+        <p>Date/Time: <strong style="float:right"><?php echo datetime_convert($sale["datetime_added"]); ?></strong></p>
+		<p>Supplier: <strong style="float:right"><?php echo get_field($sale["supplier_id"], "supplier", "supplier_name"); ?></strong></p>
+		
+        <table cellpadding="0" cellspacing="0" align="center" width="800" border="0" class="items">
+            <tr>
+                <th width="5%">S#</th>
+                <th width="65%">Item</th>
+                <th width="10%">Qty</th>
+                <th width="10%">Rate</th>
+                <th width="10%">Amount</th>
+            </tr>
+            <?php
+            $items=doquery("select * from purchase_items where purchase_id='".$sale["id"]."' order by id", $dblink);
+            if(numrows($items)>0){
+                $sn=1;
+                while($item=dofetch($items)){
+					$item_name = get_field($item[ "item_id" ], "items", "title");
+					
+                    ?>
+                    <tr>
+                    	<td style="text-align:center"><?php echo $sn++?></td>
+                        <td style="text-align:left;"><?php echo $item_name;?></td>
+                        <td style="text-align:center; font-size:9px;"><?php echo $item["quantity"]?></td>
+                        <td style="text-align:right; font-size:9px;"><?php echo curr_format($item["purchase_price"])?></td>
+                        <td style="text-align:right; font-size:9px;"><?php echo curr_format($item["total"])?></td>
+                    </tr>
+                    <?php
+                }
+            }
+            ?>
+        </table>
+        <hr style="border:0; border-top:1px solid #999">
+        <p><strong>TOTAL</strong><strong style="float:right">Rs. <?php echo curr_format($sale["total_price"])?></strong></p>
+        <p><strong>Discount</strong><strong style="float:right">Rs. <?php echo curr_format($sale["discount"])?></strong></p>
+        <p style="border-bottom: 1px solid #ccc;padding-bottom: 5px;"><strong>TOTAL</strong><strong style="float:right">Rs. <?php echo curr_format($sale["net_price"])?></strong></p>
+		<p><strong>Note:</strong> <strong style="float:right"><?php echo unslash($sale["notes"]); ?></strong></p>
+    </div>
+    <div id="signcompny"><p>No Return No Exchange</p> Software developed by wamtSol http://wamtsol.com/ - 0346 3891 662</div> 
+</div>
+</body>
+</html>
+<?php
+die;
 }
-?>

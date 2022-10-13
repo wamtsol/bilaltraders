@@ -42,17 +42,17 @@ else
 if($date_to != ""){
 	$extra.=" and datetime_added<='".date('Y-m-d',strtotime(date_dbconvert($date_to)))." 23:59:59'";
 }
-if(isset($_GET["supplier_id"])){
-	$supplier_id=slash($_GET["supplier_id"]);
-	$_SESSION["stock"]["list"]["supplier_id"]=$supplier_id;
-}
-if(isset($_SESSION["stock"]["list"]["supplier_id"]))
-	$supplier_id=$_SESSION["stock"]["list"]["supplier_id"];
-else
-	$supplier_id="";
-if(!empty($supplier_id)){
-	$extra.=" and supplier_id = '".$supplier_id."'";
-}
+// if(isset($_GET["supplier_id"])){
+// 	$supplier_id=slash($_GET["supplier_id"]);
+// 	$_SESSION["stock"]["list"]["supplier_id"]=$supplier_id;
+// }
+// if(isset($_SESSION["stock"]["list"]["supplier_id"]))
+// 	$supplier_id=$_SESSION["stock"]["list"]["supplier_id"];
+// else
+// 	$supplier_id="";
+// if(!empty($supplier_id)){
+// 	$extra.=" and supplier_id = '".$supplier_id."'";
+// }
 // if(isset($_GET["stock_status"])){
 // 	$stock_status=slash($_GET["stock_status"]);
 // 	$_SESSION["stock"]["list"]["stock_status"]=$stock_status;
@@ -82,7 +82,9 @@ if( isset( $_SESSION["stock"]["list"]["order"] ) ){
 	$order = $_SESSION["stock"]["list"]["order"];
 }
 $orderby = $order_by." ".$order;
-$sql="select c.item_id as item_id, c.quantity, c.purchase_price, c.sale_price, supplier_name, concat( b.supplier_code, '-', d.title) as title, quantity_sold, c.quantity-quantity_sold as remaining_stock, d.quantity as opening_stock from purchase a left join supplier b on a.supplier_id = b.id left join purchase_items c on a.id = c.purchase_id left join items d on c.item_id = d.id where 1 $extra order by $orderby";
+$sql1="select c.item_id as item_id, c.quantity, c.purchase_price, c.sale_price, supplier_name, concat( b.supplier_code, '-', d.title) as title, quantity_sold, c.quantity-quantity_sold as remaining_stock, d.quantity as opening_stock from purchase a left join supplier b on a.supplier_id = b.id left join purchase_items c on a.id = c.purchase_id left join items d on c.item_id = d.id where 1 $extra order by $orderby";
+// $sql="select a.*, b.item_id as item_id, b.quantity, b.purchase_price, supplier_name,  quantity_sold, a.quantity-quantity_sold as remaining_stock, a.quantity as opening_stock from items a left join purchase_items b on a.id = b.item_id left join purchase c on b.purchase_id = c.id left join supplier d on c.supplier_id = d.id where 1 $extra order by $orderby";
+$sql="select * from items where status = 1";
 switch($tab){
 	case 'list':
 		include("modules/stock/list_do.php");

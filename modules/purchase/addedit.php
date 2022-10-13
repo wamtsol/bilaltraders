@@ -69,7 +69,7 @@ else {
                                 <th width="25%">Items</th>
                                 <th width="5%">Return</th>
                                 <th class="text-right" width="13%">Purchase Price</th>
-                                <th class="text-right" width="10%">Sale Price</th>
+                                <!-- <th class="text-right" width="10%">Sale Price</th> -->
                                 <th class="text-right" width="10%">Total Items</th>
                                 <th class="text-right" width="10%">Total Price</th>
                                 <th class="text-center" width="10%">Actions</th>
@@ -92,28 +92,28 @@ else {
                                 </td>
                                 <td><input type="checkbox" ng-model="purchase.items[ $index ].return" ng-click="purchase_return($index)" /></td>
                                 <td class="text-right"><input type="text" ng-model="purchase.items[ $index ].purchase_price" ui-mask="{{numberMask}}" ng-change="update_total( $index )" /></td>
-                                <td class="text-right"><input type="text" ng-model="purchase.items[ $index ].sale_price" ui-mask="{{numberMask}}" /></td>
+                                <!-- <td class="text-right"><input type="text" ng-model="purchase.items[ $index ].sale_price" ui-mask="{{numberMask}}" /></td> -->
                                 <td class="text-right"><input type="text" ng-change="update_total( $index )" ng-model="purchase.items[ $index ].quantity" /></td>
                                 <td class="text-right"><input type="text" ng-model="purchase.items[ $index ].total" /></td>                        
                                 <td class="text-center"><a href="" ng-click="add( $index )">Add</a> - <a href="" ng-click="remove( $index )">Delete</a><span ng-show="purchase.items[ $index ].id>0"> - <a href="purchase_manage.php?tab=single_print_item&id={{purchase.items[ $index ].id}}&count={{purchase.items[ $index ].quantity}}" target="_blank">Print</a></span></td>
                             </tr>
                             <tr>
-                                <th colspan="6" class="text-right">Total Items</th>
+                                <th colspan="5" class="text-right">Total Items</th>
                                 <th class="text-right">{{ purchase.quantity }}</th>
                                 <th class="text-right">&nbsp;</th>
                             </tr>
                             <tr>
-                                <th colspan="6" class="text-right">Total</th>
+                                <th colspan="5" class="text-right">Total</th>
                                 <th class="text-right"><input type="text" style="text-align:right" ng-model="purchase.total" ng-change='update_net_total()' /></th>
                                 <th class="text-right">&nbsp;</th>
                             </tr>
                             <tr>
-                                <th colspan="6" class="text-right">Discount</th>
+                                <th colspan="5" class="text-right">Discount</th>
                                 <th class="text-right"><input type="text" id="discount" style="text-align:right" ng-model="purchase.discount" ng-change='update_net_total()' /></th>
                                 <th class="text-right">&nbsp;</th>
                             </tr>
                             <tr>
-                                <th colspan="6" class="text-right">Net Total</th>
+                                <th colspan="5" class="text-right">Net Total</th>
                                 <th class="text-right"><input type="text" id="total" style="text-align:right" ng-model="purchase.net_total" /></th>
                                 <th class="text-right">&nbsp;</th>
                             </tr>
