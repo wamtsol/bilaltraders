@@ -29,6 +29,7 @@ angular.module('purchase', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angul
 		};
 		$scope.item = {
 			"id": 0,
+			"item_id": undefined,
 			"item_category_id": 0,
 			"purchase_price": 0,
 			"sale_price": 0,
