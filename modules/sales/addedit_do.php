@@ -52,10 +52,12 @@ if(isset($_POST["action"])){
 			if( numrows( $rs ) > 0 ) {
 				while( $r = dofetch( $rs ) ) {
 					$items[] = array(
-						"id" => $r[ "id" ],
+						"id" => (int)$r[ "id" ],
 						"category" => $r[ "category" ],
 						"item_category_id" => (int)$r[ "item_category_id" ],
 						"title" => unslash($r[ "title" ]),
+						"unit_price" => unslash($r[ "unit_price" ]),
+						"sale_price" => unslash($r[ "sale_price" ]),
 						"quantity" => unslash($r[ "quantity" ]),
 					);
 				}
@@ -97,7 +99,7 @@ if(isset($_POST["action"])){
 						$items[] = array(
                         "id" => $r["id"],
                         "item_category_id" => (int)$r[ "item_category_id" ],
-                        "item_id" => $r["item_id"],
+                        "item_id" => (int)$r["item_id"],
                         "quantity" => $r[ "quantity" ],
                         "discount" => $r[ "discount" ],
 				        "total" => $r[ "total" ],

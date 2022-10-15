@@ -219,7 +219,8 @@ footer {
         </table>
         <hr style="border:0; border-top:1px solid #999">
         <p><strong>TOTAL</strong><strong style="float:right">Rs. <?php echo curr_format($sale["total_price"])?></strong></p>
-        <p><strong>Discount</strong><strong style="float:right">Rs. <?php echo curr_format($sale["discount"])?></strong></p>
+        <p><strong>Shipping Charges</strong><strong style="float:right">Rs. <?php echo curr_format($sale["shipping_charges"])?></strong></p>
+		<p><strong>Discount</strong><strong style="float:right">Rs. <?php echo curr_format($sale["discount"])?></strong></p>
         <p style="border-bottom: 1px solid #ccc;padding-bottom: 5px;"><strong>TOTAL</strong><strong style="float:right">Rs. <?php echo curr_format($sale["net_price"])?></strong></p>
 		<p><strong>Note:</strong> <strong style="float:right"><?php echo unslash($sale["notes"]); ?></strong></p>
     </div>

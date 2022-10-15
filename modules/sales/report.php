@@ -1,7 +1,7 @@
 <?php
 if(!defined("APP_START")) die("No Direct Access");
 $rs = doquery( $sql, $dblink );
-	$total_items = $total_price = $discount = $net_price = 0;
+	$total_items = $total_price = $discount = $net_price = $total_shipping_charges = 0;
 	
 	?>
 <style>
@@ -63,6 +63,7 @@ table {
         <th width="18%">Items</th>
         <th width="8%" style="text-align:right;">Total Items</th>
         <th width="10%" style="text-align:right;">Total Price</th>
+        <th width="12%" style="text-align:right;">Shipping Charges</th>
         <th width="8%" style="text-align:right;">Discount</th>
         <th width="8%" style="text-align:right;">Net Price</th>
         <th width="15%" style="text-align:right;">Note</th>
@@ -76,6 +77,7 @@ table {
             $total_price += $r["total_price"];
             $discount += $r["discount"];
             $net_price += $r["net_price"];
+            $total_shipping_charges += $r["shipping_charges"];
             ?>
             <tr>
                 <td style="text-align:center"><?php echo $sn++?></td>
@@ -108,6 +110,7 @@ table {
                 </td>
                 <td style="text-align:right;"><?php echo unslash($r["total_items"]); ?></td>
                 <td style="text-align:right;"><?php echo curr_format(unslash($r["total_price"])); ?></td>
+                <td style="text-align:right;"><?php echo curr_format(unslash($r["shipping_charges"])); ?></td>
                 <td style="text-align:right;"><?php echo curr_format(unslash($r["discount"])); ?></td>
                 <td style="text-align:right;"><?php echo curr_format(unslash($r["net_price"])); ?></td>
                 <td style="text-align:right;"><?php echo unslash($r["notes"]); ?></td>
@@ -120,6 +123,7 @@ table {
         <th colspan="5" style="text-align:right;">Total</th>
         <th style="text-align:right;"><?php echo $total_items;?></th>
         <th style="text-align:right;"><?php echo curr_format($total_price);?></th>
+        <th style="text-align:right;"><?php echo curr_format($total_shipping_charges);?></th>
         <th style="text-align:right;"><?php echo curr_format($discount);?></th>
         <th style="text-align:right;"><?php echo curr_format($net_price);?></th>
         <th></th>

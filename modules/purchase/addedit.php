@@ -85,13 +85,13 @@ else {
                                     </select>
                                 </td> -->
                                 <td>
-                                    <select title="Choose Option" ng-model="purchase.items[ $index ].item_id" data-ng-options="item.id as item.title for item in items" chosen convert-to-number>
+                                    <select title="Choose Option" ng-model="purchase.items[ $index ].item_id" data-ng-options="item.id as item.title for item in items" ng-change="getItems(purchase.items[ $index ].item_id, item)" chosen convert-to-number>
                                         <option value="">Select Items</option>
                                         <!-- <option ng-repeat="item in items|filter:{item_category_id: sales.items[ $index ].item_category_id}:1" value="{{ item.id }}">{{ item.title }}</option> -->
                                     </select>
                                 </td>
                                 <td><input type="checkbox" ng-model="purchase.items[ $index ].return" ng-click="purchase_return($index)" /></td>
-                                <td class="text-right"><input type="text" ng-model="purchase.items[ $index ].purchase_price" ui-mask="{{numberMask}}" ng-change="update_total( $index )" /></td>
+                                <td class="text-right"><input type="text" ng-model="purchase.items[ $index ].purchase_price" ng-change="update_total( $index )" /></td>
                                 <!-- <td class="text-right"><input type="text" ng-model="purchase.items[ $index ].sale_price" ui-mask="{{numberMask}}" /></td> -->
                                 <td class="text-right"><input type="text" ng-change="update_total( $index )" ng-model="purchase.items[ $index ].quantity" /></td>
                                 <td class="text-right"><input type="text" ng-model="purchase.items[ $index ].total" /></td>                        

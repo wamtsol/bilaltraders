@@ -92,6 +92,11 @@ angular.module('purchase', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angul
 			}
 			$scope.update_grand_total();
 		}		
+		$scope.getItems = function( item, index ) {
+			var foundItem = $filter('filter')($scope.items, { id: item }, true)[0];
+			console.log(foundItem);
+			index.purchase_price = foundItem.unit_price;
+		}
 		$scope.update_total = function( position ) {
 			$scope.purchase.items[ position ].total = parseFloat( $scope.purchase.items[ position ].purchase_price ) * parseFloat( $scope.purchase.items[ position ].quantity );
 			$scope.update_grand_total();

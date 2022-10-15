@@ -25,7 +25,7 @@ angular.module('sales', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angularj
 		};
 		$scope.item = {
 			"id": 0,
-			"item_id": 0,
+			"item_id": undefined,
 			"item_category_id": 0,
 			"sale_price": 0,
 			"quantity": 0,
@@ -88,12 +88,17 @@ angular.module('sales', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angularj
 			}
 			$scope.update_grand_total();
 		}
-				
+		$scope.getItems = function( item, index ) {
+			var foundItem = $filter('filter')($scope.items, { id: item }, true)[0];
+			console.log(foundItem);
+			index.sale_price = foundItem.sale_price;
+		}
 		$scope.update_total = function( position ) {
 			var quantity = parseFloat( $scope.sales.items[ position ].quantity?$scope.sales.items[ position ].quantity:0 );
 			$scope.sales.items[ position ].total = ( parseFloat( $scope.sales.items[ position ].sale_price )* quantity - parseFloat( $scope.sales.items[ position ].discount?$scope.sales.items[ position ].discount:0 ) ) ;
 			$scope.update_grand_total();
 		}
+		
         $scope.update_grand_total = function(){
 			total = 0;
 			quantity = 0;

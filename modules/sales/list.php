@@ -107,6 +107,7 @@ if(!defined("APP_START")) die("No Direct Access");
                             ?>
                     </a>
                 </th>
+                <th width="10%" style="text-align:right;">Shipping Charges</th>
                 <th width="8%" style="text-align:right;">Discount</th>
                 <th width="8%" style="text-align:right;">Net Price</th>
                 <th class="text-center" width="3%">Status</th>
@@ -115,14 +116,15 @@ if(!defined("APP_START")) die("No Direct Access");
     	</thead>
     	<tbody>
 			<?php
-            $total_price = $total_discount = $total_net_price = 0;
+            $total_price = $total_discount = $total_net_price = $total_shipping_charges = 0;
             $rs=show_page($rows, $pageNum, $sql);
             if(numrows($rs)>0){
                 $sn=1;
                 while($r=dofetch($rs)){
                     $total_price += $r["total_price"];
                     $total_discount += $r["discount"];
-                    $total_net_price += $r["net_price"];          
+                    $total_net_price += $r["net_price"];
+                    $total_shipping_charges += $r["shipping_charges"];          
                     ?>
                     <tr>
                         <td class="text-center"><?php echo $sn;?></td>
@@ -143,6 +145,7 @@ if(!defined("APP_START")) die("No Direct Access");
                         </td>
                         <td class="text-right"><?php echo unslash($r["total_items"]); ?></td> -->
                         <td class="text-right"><?php echo curr_format(unslash($r["total_price"])); ?></td> 
+                        <td style="text-align:right;"><?php echo curr_format(unslash($r["shipping_charges"])); ?></td>
                         <td style="text-align:right;"><?php echo curr_format(unslash($r["discount"])); ?></td>
                         <td style="text-align:right;"><?php echo curr_format(unslash($r["net_price"])); ?></td>                       
                         <td class="text-center"><a href="sales_manage.php?id=<?php echo $r['id'];?>&tab=status&s=<?php echo ($r["status"]==0)?1:0;?>">
@@ -172,6 +175,7 @@ if(!defined("APP_START")) die("No Direct Access");
                 <tr>
                     <th class="text-right" colspan="5">Total</th>
                     <th class="text-right"><?php echo curr_format($total_price);?></th>
+                    <th class="text-right"><?php echo curr_format($total_shipping_charges);?></th>
                     <th class="text-right"><?php echo curr_format($total_discount);?></th>
                     <th class="text-right"><?php echo curr_format($total_net_price);?></th>
                     <th></th>
@@ -187,7 +191,7 @@ if(!defined("APP_START")) die("No Direct Access");
                         </select>
                         <input type="button" name="apply" value="Apply" id="apply_bulk_action" class="btn btn-light" title="Apply Action"  />
                     </td>
-                    <td colspan="4" class="paging" title="Paging" align="right"><?php echo pages_list($rows, "sales", $sql, $pageNum)?></td>
+                    <td colspan="5" class="paging" title="Paging" align="right"><?php echo pages_list($rows, "sales", $sql, $pageNum)?></td>
                 </tr>
                 <?php	
             }

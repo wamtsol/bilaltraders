@@ -38,10 +38,12 @@ if(isset($_POST["action"])){
 			if( numrows( $rs ) > 0 ) {
 				while( $r = dofetch( $rs ) ) {
 					$items[] = array(
-						"id" => $r[ "id" ],
+						"id" => (int)$r[ "id" ],
 						"category" => $r[ "category" ],
 						"item_category_id" => (int)$r[ "item_category_id" ],
 						"title" => unslash($r[ "title" ]),
+						"unit_price" => unslash($r[ "unit_price" ]),
+						"sale_price" => unslash($r[ "sale_price" ]),
 					);
 				}
 			}
