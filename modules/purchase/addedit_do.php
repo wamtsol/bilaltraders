@@ -91,9 +91,6 @@ if(isset($_POST["action"])){
 				$rs = doquery( "select * from purchase_items where purchase_id='".$id."' order by id", $dblink );
 				if( numrows( $rs ) > 0 ) {
 					while( $r = dofetch( $rs ) ) {
-						$items[] = $r;
-					}
-					while( $r = dofetch( $rs ) ) {
 						$items[] = array(
                         "id" => $r["id"],
                         "item_category_id" => (int)$r[ "item_category_id" ],
