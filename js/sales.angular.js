@@ -106,7 +106,7 @@ angular.module('sales', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angularj
 			$scope.update_net_total();
 		}
 		$scope.update_net_total = function(){
-			$scope.sales.net_total = parseFloat( $scope.sales.total ) - parseFloat( $scope.sales.discount );
+			$scope.sales.net_total = parseFloat( $scope.sales.total ) + parseFloat( $scope.sales.shipping_charges ) - parseFloat( $scope.sales.discount );
 		}
 		// $scope.is_return = false;
 		$scope.sale_return = function( position ) {
