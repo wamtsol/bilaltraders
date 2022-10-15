@@ -93,6 +93,17 @@ if(isset($_POST["action"])){
 					while( $r = dofetch( $rs ) ) {
 						$items[] = $r;
 					}
+					while( $r = dofetch( $rs ) ) {
+						$items[] = array(
+                        "id" => $r["id"],
+                        "item_category_id" => (int)$r[ "item_category_id" ],
+                        "item_id" => (int)$r["item_id"],
+                        "purchase_price" => $r[ "purchase_price" ],
+				        "quantity" => $r[ "quantity" ],
+				        "total" => $r[ "total" ],
+						"return" => (int)$r[ "is_return" ],
+						);
+					}
 				}
 				$purchase[ "items" ] = $items;
 			}
