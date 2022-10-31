@@ -145,11 +145,14 @@ if(!defined("APP_START")) die("No Direct Access");
     	</thead>
     	<tbody>
 			<?php 
-            
+            $total_price = $total_discount = $total_net_price = 0;
             $rs=show_page($rows, $pageNum, $sql);
             if(numrows($rs)>0){
                 $sn=1;
-                while($r=dofetch($rs)){             
+                while($r=dofetch($rs)){  
+                    $total_price += $r["total_price"];
+                    $total_discount += $r["discount"];
+                    $total_net_price += $r["net_price"];           
                     ?>
                     <tr>
                         <td class="text-center"><?php echo $sn;?></td>
@@ -198,6 +201,14 @@ if(!defined("APP_START")) die("No Direct Access");
                     $sn++;
                 }
                 ?>
+                <tr>
+                    <th class="text-right" colspan="5">Total</th>
+                    <th class="text-right"><?php echo curr_format($total_price);?></th>
+                    <th class="text-right"><?php echo curr_format($total_discount);?></th>
+                    <th class="text-right"><?php echo curr_format($total_net_price);?></th>
+                    <th></th>
+                    <th></th>
+                </tr>
                 <tr>
                     <td colspan="6" class="actions">
                         <select name="bulk_action" id="bulk_action" title="Choose Action">

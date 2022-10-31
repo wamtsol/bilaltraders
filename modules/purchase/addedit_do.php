@@ -44,6 +44,7 @@ if(isset($_POST["action"])){
 						"title" => unslash($r[ "title" ]),
 						"unit_price" => unslash($r[ "unit_price" ]),
 						"sale_price" => unslash($r[ "sale_price" ]),
+						"quantity" => unslash($r[ "quantity" ]),
 					);
 				}
 			}

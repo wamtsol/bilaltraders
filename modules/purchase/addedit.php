@@ -87,7 +87,7 @@ else {
                                 <td>
                                     <select title="Choose Option" ng-model="purchase.items[ $index ].item_id" ng-change="getItems(purchase.items[ $index ].item_id, item)" chosen convert-to-number>
                                         <option value="">Select Items</option>
-                                        <option ng-repeat="item in items" value="{{ item.id }}">{{item.title}} </option>
+                                        <option ng-repeat="item in items" value="{{ item.id }}">{{item.title}} ({{item.quantity}})</option>
                                         <!-- <option value="">Select Items</option> -->
                                         <!-- <option ng-repeat="item in items|filter:{item_category_id: sales.items[ $index ].item_category_id}:1" value="{{ item.id }}">{{ item.title }}</option> -->
                                     </select>
