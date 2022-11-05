@@ -125,6 +125,12 @@ if(!defined("APP_START")) die("No Direct Access");
 									}
 								}
 							}
+							?>
+							<tr>
+                            	<th>Total</th>
+                                <th class="text-right"><?php echo curr_format( $total )?></th>
+                            </tr>
+							<?php
 						}
 						?>
 						
