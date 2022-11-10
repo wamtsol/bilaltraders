@@ -51,7 +51,7 @@ if( isset( $_SESSION["supplier_manage"]["report"]["order"] ) ){
 }
 $orderby = $order_by." ".$order;
 $main_sql = array();
-$main_sql[] = "select datetime_added as date, concat( 'Purchase ', if(net_price>0, 'from', 'to'),' Purchase # ', a.id, '<a href=\"purchase_manage.php?tab=edit&id=', a.id,'\" target=\"_blank\" class=\"view-link\"> View bill</a>' ) as details, 0 as debit, net_price as credit from purchase a left join supplier b on a.supplier_id=b.id where a.status=1".(!empty($supplier["id"])?" and supplier_id='".$supplier["id"]."'":"");
+$main_sql[] = "select datetime_added as date, concat( 'Purchase ', if(net_price>0, 'from', 'to'),' Purchase # ', a.id, '<a href=\"purchase_manage.php?tab=addedit&id=', a.id,'\" target=\"_blank\" class=\"view-link\"> View bill</a>' ) as details, 0 as debit, net_price as credit from purchase a left join supplier b on a.supplier_id=b.id where a.status=1".(!empty($supplier["id"])?" and supplier_id='".$supplier["id"]."'":"");
 $main_sql[] = "select datetime_added as date, concat( details) as details, amount as debit, 0 as credit from supplier_payment a left join supplier b on a.supplier_id=b.id where a.status=1".(!empty($supplier["id"])?" and supplier_id='".$supplier["id"]."'":"");
 $main_sql="(".implode( ' union ', $main_sql ).") as total_records";
 $sql = "select * from ".$main_sql." where 1 $extra order by $orderby";
