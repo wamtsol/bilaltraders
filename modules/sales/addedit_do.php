@@ -105,6 +105,8 @@ if(isset($_POST["action"])){
 				        "total" => $r[ "total" ],
 				        "sale_price" => $r[ "sale_price" ],
 						"return" => (int)$r[ "is_return" ],
+						"stock_type" => (int)$r[ "stock_type" ],
+						
 						);
 					}
 				}
@@ -174,18 +176,23 @@ if(isset($_POST["action"])){
 					if( !empty( $item->id ) ) {  
 						$prev_item = dofetch( doquery( "select quantity from sales_items where id = '".$item->id."'", $dblink ) );
 						$quantity = $item->quantity-$prev_item[ "quantity" ]; 
-						doquery( "update sales_items set `item_id`='".slash( $item->item_id )."', `sale_price`='".$item->sale_price."', `quantity`='".$item->quantity."', `discount`='".$item->discount."', `total`='".$item->total."', `is_return`='".$item->return."' where id='".$item->id."'", $dblink );
+						doquery( "update sales_items set `item_id`='".slash( $item->item_id )."', `sale_price`='".$item->sale_price."', `quantity`='".$item->quantity."', `discount`='".$item->discount."', `total`='".$item->total."', `is_return`='".$item->return."', `stock_type`='".$item->stock_type."' where id='".$item->id."'", $dblink );
 						//doquery( "update purchase_items set quantity_sold = quantity_sold+".$quantity." where item_id = '".$item->item_id."'", $dblink );
 						$item_ids[] = $item->id;
 					}
 					else {						
-						doquery( "insert into sales_items ( sales_id, item_id, sale_price, quantity, discount, total, is_return ) values( '".$sales_id."', '".$item->item_id."', '".$item->sale_price."', '".$item->quantity."', '".$item->discount."','".$item->total."', '".$item->return."' )", $dblink );
+						doquery( "insert into sales_items ( sales_id, item_id, sale_price, quantity, discount, total, is_return, stock_type ) values( '".$sales_id."', '".$item->item_id."', '".$item->sale_price."', '".$item->quantity."', '".$item->discount."','".$item->total."', '".$item->return."', '".$item->stock_type."' )", $dblink );
 						$item->id = inserted_id();
 						$item_ids[] = $item->id;
 						$quantity = $item->quantity;
 						//doquery( "update purchase_items set quantity_sold = quantity_sold+".$item->quantity." where item_id = '".$item->item_id."'", $dblink );
 					}
-					doquery( "update items set quantity = quantity-".$quantity." where id = '".$item->item_id."'", $dblink );
+					if($item->return && $item->stock_type==1){
+						doquery( "update items set quantity = quantity-".$quantity." where id = '".$item->item_id."'", $dblink );
+					}
+					elseif(!$item->return){
+						doquery( "update items set quantity = quantity-".$quantity." where id = '".$item->item_id."'", $dblink );
+					}
 				}
 				if( !empty( $sales_id ) && count( $item_ids ) > 0 ) {
 					$rs = doquery( "select * from sales_items where sales_id='".$sales_id."' and id not in( ".implode( ",", $item_ids )." )", $dblink );

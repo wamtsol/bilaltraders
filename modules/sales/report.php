@@ -70,6 +70,7 @@ table {
     </tr>
     <?php
     $total_qty = 0;
+	
     if(numrows($rs)>0){
         $sn=1;
         while($r=dofetch($rs)){
@@ -95,7 +96,17 @@ table {
                                 $total_qty += $item["quantity"];
                                 ?>
                                 <tr>
-                                    <td width="50%"><?php echo unslash($item["quantity"])." X ".get_field($item["item_id"], "items", "title")?></td>
+                                    <td width="50%">
+									<?php 
+										if($item["stock_type"]==1){
+											echo "Fresh --";
+										}
+										elseif($item["stock_type"]==2){
+											echo "Damage --";
+										}
+										echo unslash($item["quantity"])." X ".get_field($item["item_id"], "items", "title");
+									?>
+								</td>
                                 </tr>
                                 <?php 
                             }

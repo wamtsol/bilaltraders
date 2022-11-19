@@ -65,6 +65,7 @@ if(!defined("APP_START")) die("No Direct Access");
     	</thead>
     	<tbody>
 			<?php 
+			$total_debit = $total_credit = 0;
             $rs=doquery( $sql, $dblink );
             if(numrows($rs)>0){
                 $sn=1;
@@ -77,7 +78,9 @@ if(!defined("APP_START")) die("No Direct Access");
                     <td class="text-right"><?php echo curr_format( $balance )?></td>
                 </tr>
 				<?php
-				while($r=dofetch($rs)){             
+				while($r=dofetch($rs)){
+					$total_debit += $r["debit"];
+					$total_credit += $r["credit"];					
                     ?>
                     <tr>
                         <td class="text-center"><?php echo $sn;?></td>
@@ -94,9 +97,9 @@ if(!defined("APP_START")) die("No Direct Access");
                 <tr>
                 	<td colspan="2"></td>
                     <td><?php echo $order != 'desc'?'Closing':'Opening'?> Balance</td>
-                    <td></td>
-                    <td></td>
-                    <td class="text-right"><?php echo curr_format( $balance )?></td>
+                    <td class="text-right"><?php echo curr_format( $total_debit )?></td>
+					<td class="text-right"><?php echo curr_format( $total_credit )?></td>
+					<td class="text-right"><?php echo curr_format( $balance )?></td>
                 </tr>
                 <?php	
             }

@@ -59,7 +59,10 @@ if(numrows($rs)>0){
 		<td align="right"><?php echo curr_format( $balance )?></td>
 	</tr>
 	<?php
+	$total_debit = $total_credit = 0;
 	while($r=dofetch($rs)){
+		$total_debit += $r["debit"];
+		$total_credit += $r["credit"];
 		?>
 		<tr>
 			<td class="text-center"><?php echo $sn;?></td>
@@ -75,8 +78,8 @@ if(numrows($rs)>0){
 	<tr>
 		<td colspan="2"></td>
 		<td><?php echo $order != 'desc'?'Closing':'Opening'?> Balance</td>
-		<td></td>
-		<td></td>
+		<td align="right"><?php echo curr_format( $total_debit )?></td>
+		<td align="right"><?php echo curr_format( $total_credit )?></td>
 		<td align="right"><?php echo curr_format( $balance )?></td>
 	</tr>
 	<?php

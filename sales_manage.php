@@ -64,6 +64,18 @@ if($item_id!=""){
 	$extra.=" and id in (select sales_id from sales_items where item_id = '".$item_id."')";
 	$is_search=true;
 }
+if(isset($_GET["stock_type"])){
+	$stock_type=slash($_GET["stock_type"]);
+	$_SESSION["sales_manage"]["stock_type"]=$stock_type;
+}
+if(isset($_SESSION["sales_manage"]["stock_type"]))
+	$stock_type=$_SESSION["sales_manage"]["stock_type"];
+else
+	$stock_type="";
+if($stock_type!=""){
+	$extra.=" and id in (select sales_id from sales_items where stock_type = '".$stock_type."')";
+	$is_search=true;
+}
 $order_by = "datetime_added";
 $order = "desc";
 if( isset($_GET["order_by"]) ){

@@ -31,7 +31,8 @@ angular.module('sales', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angularj
 			"quantity": 0,
 			"discount":0,
 			"total": 0,
-			"return": 0
+			"return": 0,
+			"stock_type": 0
 		};
 		$scope.units = ['pieces', 'pair', 'bag', 'dozen', 'grus', 'packet']
 		$scope.updateDate = function(){

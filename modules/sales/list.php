@@ -18,21 +18,24 @@ if(!defined("APP_START")) die("No Direct Access");
 	<li class="col-xs-12 col-lg-12 col-sm-12">
         <div>
         	<form class="form-horizontal" action="" method="get">
-            <div class="col-sm-2">
-                <select name="customer_id" id="customer_id" class="select_multiple">
-                    <option value=""<?php echo ($customer_id=="")? " selected":"";?>>
-                    Select Customers</option>
-                    <?php
-                        $res=doquery("select * from customer order by business_name",$dblink);
-                        if(numrows($res)>=0){
-                            while($rec=dofetch($res)){
-                            ?>
-                            <option value="<?php echo $rec["id"]?>" <?php echo($customer_id==$rec["id"])?"selected":"";?>><?php echo unslash($rec["business_name"])?></option>
-                            <?php
-                            }
-                        }	
-                    ?>
-                </select>
+				<div class="row">
+					
+				</div>
+				<div class="col-sm-2">
+					<select name="customer_id" id="customer_id" class="select_multiple">
+						<option value=""<?php echo ($customer_id=="")? " selected":"";?>>
+						Select Customers</option>
+						<?php
+							$res=doquery("select * from customer order by business_name",$dblink);
+							if(numrows($res)>=0){
+								while($rec=dofetch($res)){
+								?>
+								<option value="<?php echo $rec["id"]?>" <?php echo($customer_id==$rec["id"])?"selected":"";?>><?php echo unslash($rec["business_name"])?></option>
+								<?php
+								}
+							}	
+						?>
+					</select>
 
                 </div>
                 <div class="col-sm-2">
@@ -59,7 +62,14 @@ if(!defined("APP_START")) die("No Direct Access");
                         ?>
                     </select>
                 </div>
-                <div class="col-sm-2 text-left">
+				<div class="col-sm-2">
+				  <select name="stock_type">
+					<option value=""<?php echo $stock_type==""?" selected":""?>>Select Stock Type</option>
+					<option value="1"<?php echo $stock_type=="1"?" selected":""?>>Fresh Stock</option>
+					<option value="2"<?php echo $stock_type=="2"?" selected":""?>>Damage Stock</option>                    
+				  </select>
+				</div>
+                <div class="col-sm-2 text-left" style="margin-top: 10px;">
                     <input type="button" class="btn btn-danger btn-l reset_search" value="Reset" alt="Reset Record" title="Reset Record" />
                     <input type="submit" class="btn btn-default btn-l" value="Search" alt="Search Record" title="Search Record" />
                 </div>

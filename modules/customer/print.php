@@ -48,6 +48,7 @@ table {
     <th align="right">Balance</th>
 </tr>
 <?php 
+$total_debit = $total_credit = 0;
 $rs=doquery( $sql, $dblink );
 if(numrows($rs)>0){
 	$sn=1;
@@ -64,6 +65,8 @@ if(numrows($rs)>0){
 		$ts = strtotime( $r["date"] );
 		$count = dofetch(doquery( "select count(1) from sales where datetime_added >= '".date("Y-m-01 00:00:00", $ts)."' and datetime_added<'".date("Y-m-d H:i:s", $ts)."'", $dblink ));
 		$invoice_id = $count["count(1)"]+1;
+		$total_debit += $r["debit"];
+		$total_credit += $r["credit"];
 		?>
 		<tr>
 			<td class="text-center"><?php echo $sn;?></td>
@@ -79,8 +82,8 @@ if(numrows($rs)>0){
 	<tr>
 		<td colspan="2"></td>
 		<td><?php echo $order != 'desc'?'Closing':'Opening'?> Balance</td>
-		<td></td>
-		<td></td>
+		<td align="right"><?php echo curr_format( $total_debit )?></td>
+		<td align="right"><?php echo curr_format( $total_credit )?></td>
 		<td align="right"><?php echo curr_format( $balance )?></td>
 	</tr>
 	<?php

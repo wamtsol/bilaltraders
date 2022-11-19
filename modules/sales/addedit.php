@@ -95,10 +95,10 @@ else {
                                 <th width="2%" class="text-center">S.no</th>
                                 <!-- <th width="25%">Item Category </th> -->
                                 <th width="25%">Items </th>
-                                <th width="5%">Return</th>
+                                <th width="10%">Return</th>
                                 <th class="text-right" width="10%">Sale Price</th>
                                 <th class="text-right" width="10%">Quantity</th>
-                                <th class="text-right" width="10%">Discount</th>
+                                <th class="text-right" width="8%">Discount</th>
                                 <th class="text-right" width="10%">Total Price</th>
                                 <th class="text-center" width="10%">Actions</th>
                             </tr>
@@ -119,7 +119,14 @@ else {
                                         <!-- <option ng-repeat="item in items|filter:{item_category_id: sales.items[ $index ].item_category_id}:1" value="{{ item.id }}">{{ item.title }}</option> -->
                                     </select>
                                 </td>
-                                <td><input type="checkbox" ng-model="sales.items[ $index ].return" ng-click="sale_return($index)" /></td>
+                                <td>
+									<input type="checkbox" ng-model="sales.items[ $index ].return" ng-click="sale_return($index)" />
+									<select title="Choose Option" ng-model="sales.items[ $index ].stock_type" ng-if="sales.items[ $index ].return" convert-to-number="">
+                                        <option value="0">Select Stock</option>
+                                        <option value="1">Fresh </option>
+										<option value="2">Damage </option>
+                                    </select>
+								</td>
                                 <td class="text-right"><input type="text" ng-change="update_total( $index )" ng-model="sales.items[$index].sale_price" /></td>
                                 <td class="text-right"><input type="text" ng-change="update_total( $index )" ng-model="sales.items[$index].quantity" /></td>
                                 <td class="text-right"><input type="text" ng-change="update_total( $index )" ng-model="sales.items[$index].discount" /></td>
