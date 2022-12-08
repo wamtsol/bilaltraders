@@ -154,6 +154,7 @@ if(isset($_POST["action"])){
 					else {
 						doquery( "update purchase_items set `purchase_id`='".$purchase_id."', `item_id`='".slash( $item->item_id )."',`purchase_price`='".$item->purchase_price."', `quantity`='".$item->quantity."', `total`='".$item->total."', `is_return`='".$item->return."' where id='".$item->id."'", $dblink );
 						$item_ids[] = $item->id;
+						$quantity = $item->quantity;
 					}
 					
 					doquery( "update items set quantity = quantity+".$quantity." where id = '".$item->item_id."'", $dblink );
