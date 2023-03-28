@@ -152,14 +152,22 @@ if(isset($_POST["action"])){
 						$quantity = $item->quantity;
 					}
 					else {
+						$prev_item = dofetch( doquery( "select quantity from purchase_items where id = '".$item->id."'", $dblink ) );
+						$quantity = $item->quantity-$prev_item[ "quantity" ];
 						doquery( "update purchase_items set `purchase_id`='".$purchase_id."', `item_id`='".slash( $item->item_id )."',`purchase_price`='".$item->purchase_price."', `quantity`='".$item->quantity."', `total`='".$item->total."', `is_return`='".$item->return."' where id='".$item->id."'", $dblink );
 						$item_ids[] = $item->id;
-						$quantity = $item->quantity;
+						//$quantity = $item->quantity;
 					}
 					
 					doquery( "update items set quantity = quantity+".$quantity." where id = '".$item->item_id."'", $dblink );
 				}
 				if( !empty( $purchase->id ) && count( $item_ids ) > 0 ) {
+					$deleted_items = doquery( "select * from purchase_items where purchase_id='".$purchase_id."' and id not in( ".implode( ",", $item_ids )." )", $dblink );
+					if( numrows( $deleted_items ) > 0 ) {
+						while( $deleted_item = dofetch( $deleted_items ) ){
+							doquery( "update items set quantity = quantity-".$deleted_item[ "quantity" ]." where id = '".$deleted_item[ "item_id" ]."'", $dblink );
+						}
+					}
 					doquery( "delete from purchase_items where purchase_id='".$purchase_id."' and id not in( ".implode( ",", $item_ids )." )", $dblink );
 				}
 				$response = array(
