@@ -1,6 +1,39 @@
 <?php
 if(!defined("APP_START")) die("No Direct Access");
 ?>
+<script>
+  $( function() {
+    $( "#tabs" ).tabs();
+  } );
+  </script>
+<style>
+    .table-box{
+        display: flex;
+        gap: 24px;
+        align-items: baseline;
+    }
+    
+    .table-box table td {
+        font-size: 12px;
+        padding: 5px;
+    }
+    .table-box table td span {
+    display: block;
+}
+.main-tabs .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+    
+    color: black !important;
+    border-top: solid 3px #0d6efd;
+    border-radius: 0px;
+}
+.main-tabs .nav-link{
+    color: black !important;
+    font-weight: bold;
+}
+.main-tabs button {
+    background: none !important;
+}
+</style>
 <div class="page-header">
 	<h1 class="title">Reports</h1>
   	<ol class="breadcrumb">
@@ -33,7 +66,7 @@ if(!defined("APP_START")) die("No Direct Access");
   	</li>
 </ul>
 <div class="panel-body table-responsive">
-	<table class="table table-hover list">
+	<!--<table class="table table-hover list">
     	<thead>
             <tr>
                 <th width="5%" class="text-center">S.no</th>
@@ -66,5 +99,336 @@ if(!defined("APP_START")) die("No Direct Access");
             }
             ?>
     	</tbody>
-  	</table>
+  	</table>-->
+	<div class="table-box">
+		<table class="table table-striped">
+			<tbody>
+					<tr>
+						<td scope="row">
+							<b>Opening Stock</b>
+							<span>(By purchase price)</span>
+						</td>
+						<td scope="row">
+							Rs 9,231116.0
+
+						</td>
+					</tr>
+					<tr>
+						<td scope="row">
+							<b>Opening Stock</b>
+							<span>(By purchase price)</span>
+
+						</td>
+						<td scope="row">
+							Rs 9,231116.0
+
+						</td>
+					</tr>
+					<tr>
+						<td scope="row">
+							<b>Opening Stock</b>
+							<span>(By purchase price)</span>
+
+						</td>
+						<td scope="row">
+							Rs 9,231116.0
+
+						</td>
+					</tr>
+					<tr>
+						<td scope="row">
+							<b>Opening Stock</b>
+							<span>(By purchase price)</span>
+
+						</td>
+						<td scope="row">
+							Rs 9,231116.0
+
+						</td>
+					</tr>
+					<tr>
+						<td scope="row">
+							<b>Opening Stock</b>
+							<span>(By purchase price)</span>
+						</td>
+						<td scope="row">
+							Rs 9,231116.0
+
+						</td>
+					</tr>
+					<tr>
+						<td scope="row">
+							<b>Opening Stock</b>
+							<span>(By purchase price)</span>
+
+						</td>
+						<td scope="row">
+							Rs 9,231116.0
+
+						</td>
+					</tr>
+					<tr>
+						<td scope="row">
+							<b>Opening Stock</b>
+							<span>(By purchase price)</span>
+						</td>
+						<td scope="row">
+							Rs 9,231116.0
+
+						</td>
+					</tr>
+					<tr>
+						<td scope="row">
+							<b>Opening Stock</b>
+							<span>(By purchase price)</span>
+
+						</td>
+						<td scope="row">
+							Rs 9,231116.0
+
+						</td>
+					</tr>
+					<tr>
+						<td scope="row">
+							<b>Opening Stock</b>
+							<span>(By purchase price)</span>
+						</td>
+						<td scope="row">
+							Rs 9,231116.0
+
+						</td>
+					</tr>
+					<tr>
+						<td scope="row">
+							<b>Opening Stock</b>
+							<span>(By purchase price)</span>
+
+						</td>
+						<td scope="row">
+							Rs 9,231116.0
+
+						</td>
+					</tr>
+					<tr>
+						<td scope="row">
+							<b>Opening Stock</b>
+							<span>(By purchase price)</span>
+
+						</td>
+						<td scope="row">
+							Rs 9,231116.0
+
+						</td>
+					</tr>                    
+			</tbody>
+		</table>
+		<table class="table table-striped">
+			<tbody>
+					<tr>
+						<td scope="row">
+							<b>Opening Stock</b>
+							<span>(By purchase price)</span>
+						</td>
+						<td scope="row">
+							Rs 9,231116.0
+
+						</td>
+					</tr>
+					<tr>
+						<td scope="row">
+							<b>Opening Stock</b>
+							<span>(By purchase price)</span>
+
+						</td>
+						<td scope="row">
+							Rs 9,231116.0
+
+						</td>
+					</tr>
+					<tr>
+						<td scope="row">
+							<b>Opening Stock</b>
+							<span>(By purchase price)</span>
+
+						</td>
+						<td scope="row">
+							Rs 9,231116.0
+
+						</td>
+					</tr>
+					<tr>
+						<td scope="row">
+							<b>Opening Stock</b>
+							<span>(By purchase price)</span>
+
+						</td>
+						<td scope="row">
+							Rs 9,231116.0
+
+						</td>
+					</tr>
+					<tr>
+						<td scope="row">
+							<b>Opening Stock</b>
+							<span>(By purchase price)</span>
+						</td>
+						<td scope="row">
+							Rs 9,231116.0
+
+						</td>
+					</tr>
+					<tr>
+						<td scope="row">
+							<b>Opening Stock</b>
+							<span>(By purchase price)</span>
+
+						</td>
+						<td scope="row">
+							Rs 9,231116.0
+
+						</td>
+					</tr>
+					<tr>
+						<td scope="row">
+							<b>Opening Stock</b>
+							<span>(By purchase price)</span>
+						</td>
+						<td scope="row">
+							Rs 9,231116.0
+
+						</td>
+					</tr>
+					<tr>
+						<td scope="row">
+							<b>Opening Stock</b>
+							<span>(By purchase price)</span>
+
+						</td>
+						<td scope="row">
+							Rs 9,231116.0
+
+						</td>
+					</tr>
+					<tr>
+						<td scope="row">
+							<b>Opening Stock</b>
+							<span>(By purchase price)</span>
+						</td>
+						<td scope="row">
+							Rs 9,231116.0
+
+						</td>
+					</tr>             
+			</tbody>
+		</table>
+	</div>
+	<div class="main-tabs" id="tabs">
+		<ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+			<li><a href="#tabs-1">profit by products</a></li>
+			<li><a href="#tabs-2">profit by categories</a></li>
+			<li><a href="#tabs-3">profit by brands</a></li>
+			
+		</ul>
+		<div id="tabs-1" role="tabpanel" aria-labelledby="pills-products-tab" tabindex="0">
+			<table class="table table-striped table-bordered">
+				<tbody>
+					<thead>
+						<tr>
+							<th>Product</th>
+							<th>Gross Profit</th>
+						</tr>
+						
+					</thead>
+						<tr>
+							<td scope="row">
+								BALL COCK 1/2" SHAHID (1094)
+							</td>
+							<td scope="row">
+								RS 1,296.00
+
+							</td>
+						</tr>
+						<tr>
+							<td scope="row">
+								BALL COCK 1/2" SHAHID (1094)
+
+							</td>
+							<td scope="row">
+								RS 1,296.00
+
+							</td>
+						</tr>
+						<tr>
+							<td scope="row">
+								BALL COCK 1/2" SHAHID (1094)
+
+							</td>
+							<td scope="row">
+								RS 1,296.00
+
+							</td>
+						</tr>
+						<tr>
+							<td scope="row">
+								BALL COCK 1/2" SHAHID (1094)
+
+							</td>
+							<td scope="row">
+								RS 1,296.00
+
+							</td>
+						</tr>
+						<tr>
+							<td scope="row">
+								BALL COCK 1/2" SHAHID (1094)
+							</td>
+							<td scope="row">
+								RS 1,296.00
+
+							</td>
+						</tr>
+						<tr>
+							<td scope="row">
+								BALL COCK 1/2" SHAHID (1094)
+
+							</td>
+							<td scope="row">
+								RS 1,296.00
+
+							</td>
+						</tr>
+						<tr>
+							<td scope="row">
+								BALL COCK 1/2" SHAHID (1094)
+							</td>
+							<td scope="row">
+								RS 1,296.00
+
+							</td>
+						</tr>
+						<tr>
+							<td scope="row">
+								BALL COCK 1/2" SHAHID (1094)
+
+							</td>
+							<td scope="row">
+								RS 1,296.00
+
+							</td>
+						</tr>
+						<tr>
+							<td scope="row">
+								BALL COCK 1/2" SHAHID (1094)
+							</td>
+							<td scope="row">
+								RS 1,296.00
+
+							</td>
+						</tr>             
+				</tbody>
+			</table>
+		</div>
+		<div id="tabs-2" role="tabpanel" aria-labelledby="pills-categories-tab" tabindex="0">...</div>
+		<div id="tabs-3" role="tabpanel" aria-labelledby="pills-categories-tab" tabindex="0">...</div>
+	</div>
 </div>
